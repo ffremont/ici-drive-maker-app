@@ -1,0 +1,62 @@
+{
+    "email": "ff.fremont.florent@gmail.com",
+    "id": "AB7",
+    "created":120394949,
+    "name":"GAEC de terre noire",
+    "webPage": "https://www.acheteralasource.com/producteur/77782",
+    "description":"Producteur de fruits et de légume en deux-sèvres",
+    "image" : "https://icidrive.b-cdn.net/20200421_062257_0000%20(1).png",
+    "prefixOrderRef": "REF_GAEG79_",
+    "phone": "0101010110",
+    "place": {
+        "label": "Parking de terre noire",
+        "address" : "5 rue de la terre, 79000 Niort",
+        "description": "Situé près de la rocade Sud de Niort, au calme.",
+        "image":"https://icidrive.b-cdn.net/normandie-ferme-bio-grande-suardiere.jpg",
+        "slotsDescription": "Ouvert habituellement la semaine et le week-end",
+        "hebdoSlot": {
+            "lundi": {"openAt": "8:00", "closeAt": "12:00"},
+            "mardi": {"openAt": "8:00", "closeAt": "12:00"},
+            "mercredi": {"openAt": "8:00", "closeAt": "12:00"},
+            "jeudi": {"openAt": "8:00", "closeAt": "12:00"},
+            "vendredi": {"openAt": "8:00", "closeAt": "12:00"},
+            "samedi": {"openAt": "8:00", "closeAt": "12:00"},
+            "dimanche": {"openAt": "8:00", "closeAt": "18:00"}
+        }
+    },
+    "categories": [ "boisson-vin", "fruit-leg"],
+    "products": [{
+        "label": "Pomme de terre BIO",
+        "image": "https://icidrive.b-cdn.net/large.jpg",
+        "categoryId": "fruit-leg",
+        "ref":"GTN_PDT_01",
+        "price": 1.3,
+        "description":"Pomme de terre Standard. Filet de 5 kg",
+        "weight":5000,
+    
+        "available": true,
+        "maxInCart": 10
+    },{
+        "label": "Carotte BIO",
+        "image": "https://icidrive.b-cdn.net/carotte.jpg",
+        "categoryId": "fruit-leg",
+        "ref":"GTN_CAR_01",
+        "price": 1.3,
+        "description":"Carotte Standard. Filet de 2 kg",
+        "weight":2000,
+    
+        "available": true,
+        "maxInCart": 10
+    },{
+        "label": "Chateau la terre noire 2016",
+        "image": "https://icidrive.b-cdn.net/aperitif-1246311_1280.jpg",
+        "categoryId": "boisson-vin",
+        "ref":"GTN_VIN_01",
+        "price": 1.3,
+        "description":"Sépage merlot, année excellente 2016",
+        "volume":0.75,
+    
+        "available": true,
+        "maxInCart": 10
+    }]
+}

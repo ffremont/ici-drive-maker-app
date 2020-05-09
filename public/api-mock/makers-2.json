@@ -1,0 +1,96 @@
+[{
+    "webPage": "http://google.fr",
+    "image": "https://icidrive.b-cdn.net/2019-03-01.jpg",
+    "email": "NM8fqfGq3p@gmail.com",
+    "name": "aaxcSutMZo",
+    "place": {
+        "description": "6pr3JRDiFF3NvpPfafcX3MdLpnz1EsQIOsC1ODyTde7mkdbk1u",
+        "address": "13 rue de la e6wZQHb 68254 à ntv4Za",
+        "label": "Parking du Super U",
+        "image": "https://icidrive.b-cdn.net/ferme_d.jpg",
+        "slotsDescription": "Ouvert habituellement la semaine et le week-end",
+        "point": {
+            "latitude": 46.22234881531788,
+            "longitude": -0.5410038560647535,
+            "geohash": "gbpwgww09"
+        },
+        "hebdoSlot": {
+            "mercredi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            },
+            "mardi": {
+                "openAt": "11:00",
+                "closeAt": "12:00"
+            },
+            "lundi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            },
+            "samedi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            },
+            "vendredi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            }
+        }
+    },
+    "prefixOrderRef": "REF_",
+    "id": "GUMJWC7N5TW9Z",
+    "categories": ["viande", "fruit-leg"],
+    "phone": "4696311703",
+    "created": 1588358269139,
+    "description": "washmtVzfwj6yODOWqCVXKR1LnBMT89r8t7C9mld9n4upCNNFz",
+    "payments":{
+        "acceptCoins":true,
+        "acceptCards":true,
+        "acceptPaypal": true,
+        "paypalMeUrl": "http"
+}}  , {
+    "place": {
+        "description": "9kikUD82ywkI7ujtemhogjoYjGuaW3Vq61MBe2qlq8tupGpQm5",
+        "address": "13 rue de la of6Lk2S 02144 à Zi6reX",
+        "label": "Parking du Super U",
+        "image": "https://icidrive.b-cdn.net/ferme_d.jpg",
+        "slotsDescription": "Ouvert habituellement la semaine et le week-end",
+        "point": {
+            "geohash": "gbpx9k0cp",
+            "latitude": 46.34051943970918,
+            "longitude": -0.6468456178187555
+        },
+        "hebdoSlot": {
+            "vendredi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            },
+            "mercredi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            },
+            "mardi": {
+                "openAt": "11:00",
+                "closeAt": "12:00"
+            },
+            "lundi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            },
+            "samedi": {
+                "openAt": "8:00",
+                "closeAt": "12:00"
+            }
+        }
+    },
+    "prefixOrderRef": "REF_",
+    "id": "SJ1QKBZH9NW7Y",
+    "categories": ["mer", "mer"],
+    "phone": "5466420199",
+    "created": 1588358274903,
+    "description": "jv8eSD61rMgxfqyRnApJdOW2wGjORdMahD51dXVreLBtnpdbxw",
+    "webPage": "http://google.fr",
+    "image": "https://icidrive.b-cdn.net/2019-03-01.jpg",
+    "email": "75APJnuaWB@gmail.com",
+    "name": "m1XFYeDrPj"
+}]
