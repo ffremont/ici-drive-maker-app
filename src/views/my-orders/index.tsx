@@ -12,7 +12,6 @@ import Avatar from '@material-ui/core/Avatar';
 import * as moment from 'moment';
 import { withStyles, Theme } from '@material-ui/core/styles';
 import { deepOrange, grey, green } from '@material-ui/core/colors';
-import ReceiptIcon from '@material-ui/icons/Receipt';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
@@ -46,9 +45,9 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
   }
 
   componentDidMount() {
-    this.statusLabel[OrderState.PENDING] = {label: 'En cours de validation', color: this.props.classes.orange};
+    this.statusLabel[OrderState.PENDING] = {label: 'A vérifier', color: this.props.classes.orange};
     this.statusLabel[OrderState.CANCELLED] = {label: 'Annulée', color: this.props.classes.grey};
-    this.statusLabel[OrderState.VERIFIED] = {label: 'Vérifiée, en attente de confirmation', color: this.props.classes.orange};
+    this.statusLabel[OrderState.VERIFIED] = {label: 'En attente de confirmation', color: this.props.classes.orange};
     this.statusLabel[OrderState.CONFIRMED] = {label: 'Confirmée', color: this.props.classes.green};
     this.statusLabel[OrderState.REFUSED] = {label:'Refusée', color: this.props.classes.grey}
 
@@ -66,8 +65,7 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
 
   render() {
     return (<div className="my-orders">
-      <MenuApp mode={'my-orders'} history={this.props.history} />
-
+      <MenuApp mode={'full'} history={this.props.history} />
 
        <div className="orders">
         <List>

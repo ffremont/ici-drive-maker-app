@@ -1,7 +1,5 @@
-import httpClientService from './http-client.service';
+//import httpClientService from './http-client.service';
 import conf from '../confs';
-import myProfilStore from '../stores/my-profil';
-import { User } from '../models/user';
 
 export class FcmService {
     fcm: string = '';
@@ -23,14 +21,14 @@ export class FcmService {
 
         setTimeout(() => {
             // à chaque rechargement de l'utilisateur, on met à jour le refresh s'il a changé
-            myProfilStore.subscribe((myProfil: User) => {
+            /*myProfilStore.subscribe((myProfil: User) => {
                 if (this.lastFcm !== this.fcm) {
                     this.lastFcm = this.fcm;
                     myProfil.fcm = this.fcm;
 
                     httpClientService.axios.put(conf.API.myProfil(), myProfil).catch((e: any) => console.log(e));
                 }
-            })
+            })*/
         }, 0);
     }
 

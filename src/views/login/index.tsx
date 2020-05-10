@@ -14,6 +14,7 @@ import GoogleIcon from '../../assets/images/google.svg';
 import MailIcon from '../../assets/images/mail.svg';
 import authService from '../../services/auth.service';
 import {FirebaseStub} from '../../stubs/firebase';
+import makerStore from '../../stores/maker';
 
 if(process.env.REACT_APP_STAGE !== 'prod'){
   (window as any).firebase = (new FirebaseStub()).init();
@@ -26,7 +27,7 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
   state = {
     loading: true, // waiting onAuthStateChanged
     isSignedIn: false, // Local signed-in state.
-    from: '/makers'
+    from: '/'
   };
 
   private sign(provider:any){
@@ -59,10 +60,13 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
   private registerOnFirebase(){
     this.unregisterAuthObserver = (window as any).firebase.auth().onAuthStateChanged(
       (user:any) => {
+        // déclenche la redirection
         this.setState({ loading: false, isSignedIn: !!user })
         if(user){
           (window as any).firebase.auth().currentUser.getIdToken().then((token:string) => authService.setIdToken(token));
-          authService.authenticate({email: user.email});
+
+          // avec le idToken, self() marchera
+          authService.authenticated()
         }else{
           // no authenticated, noop show buttons
         }        

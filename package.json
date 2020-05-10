@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cp -r functions/src/models/* src/models/ && react-scripts build",
+    "build": "cp -r /home/florent/VisualStudioCode/ici-drive-customer-app/functions/src/models/* src/models/ && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "serve": "serve build",

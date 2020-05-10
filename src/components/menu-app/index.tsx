@@ -14,28 +14,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BugReportIcon from '@material-ui/icons/BugReport';
-import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Badge from '@material-ui/core/Badge';
 import IciDriveTypoIcon from '../../assets/images/ici-drive-icon.png';
 import IciDriveBannerIcon from '../../assets/images/ici-drive-banner.png';
 import './MenuApp.scss';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import HelpIcon from '@material-ui/icons/Help';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
-import BuildIcon from '@material-ui/icons/Build';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import cartStore from '../../stores/cart';
-import { Order } from '../../models/order';
+import RoomIcon from '@material-ui/icons/Room';
 import conf from '../../confs';
 import authService from '../../services/auth.service';
-import About from '../about';
-import myProfilStore from '../../stores/my-profil';
-import { User } from '../../models/user';
-
-
+import StorefrontIcon from '@material-ui/icons/Storefront';
+import makerStore from '../../stores/maker';
+import { Maker } from '../../models/maker';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,7 +57,6 @@ const MenuApp = (props: any) => {
   const [mode, setMode] = useState('full');
   const [auth] = useState(false);
   const [email, setEmail] = useState('');
-  const [quantity, setQuantity] = useState(0);
   const [open, setOpen] = useState(false);
   const [openAbout, setOpenAbout] = useState(false);
 
@@ -76,17 +65,13 @@ const MenuApp = (props: any) => {
   }, [props.mode])
 
   useEffect(() => {
-    const subscription = cartStore.subscribe((order: Order) => {
-      setQuantity(order.choices.map(pc => pc.quantity).reduce((acc, cv) => acc + cv, 0));
-    });
-    const subMyProfil = myProfilStore.subscribe((user:User) =>{
-      if(user && user.email)
-        setEmail(user.email.substr(0, user.email.indexOf('@')));
+    const subMaker = makerStore.subscribe((maker:Maker) =>{
+      if(maker && maker.email)
+        setEmail(maker.email.substr(0, maker.email.indexOf('@')));
     })
     return () => {
       // Nettoyage de l'abonnement
-      subscription.unsubscribe();
-      subMyProfil.unsubscribe();
+      subMaker.unsubscribe();
     };
   });
 
@@ -105,22 +90,19 @@ const MenuApp = (props: any) => {
             <ListItemIcon><AccountCircleIcon /></ListItemIcon>
             <ListItemText primary="Connecté" secondary={email} />
           </ListItem>)}
-          <ListItem button key="orders" onClick={() => props.history.push('/my-orders')}>
+          <ListItem button key="orders" onClick={() => props.history.push('/')}>
             <ListItemIcon><ReceiptIcon /></ListItemIcon>
             <ListItemText primary="Mes réservations" secondary="En cours et passées" />
           </ListItem>
+          <ListItem button key="point" onClick={() => props.history.push('/my-profil')}>
+            <ListItemIcon><RoomIcon /></ListItemIcon>
+            <ListItemText primary="Retrait &amp; livraison" />
+          </ListItem>
           <ListItem button key="account" onClick={() => props.history.push('/my-profil')}>
-            <ListItemIcon><BuildIcon /></ListItemIcon>
-            <ListItemText primary="Mon compte" secondary="Informations personnelles" />
+            <ListItemIcon><StorefrontIcon /></ListItemIcon>
+            <ListItemText primary="Mon drive" />
           </ListItem>
-          <ListItem button key="how-to" onClick={() => props.history.push('/how')}>
-            <ListItemIcon><HelpIcon /></ListItemIcon>
-            <ListItemText primary="Comment ça marche ?" secondary="" />
-          </ListItem>
-          <ListItem button key="concept" onClick={() => props.history.push('/concept')} >
-            <ListItemIcon><EmojiObjectsIcon /></ListItemIcon>
-            <ListItemText primary="Concept &amp; histoire" secondary="" />
-          </ListItem>
+
           <ListItem button key="support" onClick={() => window.open(conf.support)}>
             <ListItemIcon><BugReportIcon /></ListItemIcon>
             <ListItemText primary="Support" secondary="Déclarer un incident" />
@@ -130,10 +112,6 @@ const MenuApp = (props: any) => {
             <ListItemText primary="Mentions" secondary="CGU, CGR, ..." />
           </ListItem>
           
-          <ListItem button key="about" onClick={() =>setOpenAbout(true)}>
-            <ListItemIcon><InfoIcon /></ListItemIcon>
-            <ListItemText primary="A propos" secondary="De l'application" />
-          </ListItem>
           {email && (<ListItem button key="logout" onClick={logout}>
             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
             <ListItemText primary="Se déconnecter" secondary="Dissocier cet appareil" />
@@ -165,47 +143,14 @@ const MenuApp = (props: any) => {
 
             </Typography>
           )}
-          {['cart'].indexOf(mode) > -1 && (
-            <Typography variant="h6" align="center" className={classes.title}>
-              Mon panier
-            </Typography>
-          )}
-          {['slots'].indexOf(mode) > -1 && (
-            <Typography variant="h6" align="center" className={classes.title}>
-              Heure du retrait
-            </Typography>
-          )}
-          {['summary'].indexOf(mode) > -1 && (
-            <Typography variant="h6" align="center" className={classes.title}>
-              Récapitulatif
-            </Typography>
-          )}
+         
           {['my-orders'].indexOf(mode) > -1 && (
             <Typography variant="h6" align="center" className={classes.title}>
               Mes réservations
             </Typography>
           )}
-          {['my-profil'].indexOf(mode) > -1 && (
-            <Typography variant="h6" align="center" className={classes.title}>
-              Mon compte
-            </Typography>
-          )}
+         
 
-          {['full', 'catalog'].indexOf(mode) > -1 && (
-            <IconButton aria-label="nb. de produits" onClick={() => props.history.push('/cart')} color="inherit">
-              <Badge badgeContent={quantity} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
-          )}
-          
-          {['cart'].indexOf(mode) > -1 && (
-            <IconButton aria-label="vider le panier" onClick={props?.onResetCart} color="inherit">
-              <RemoveShoppingCartIcon />
-            </IconButton>
-          )}
-
-          <About open={openAbout} onClose={() => setOpenAbout(false)}/>
 
           {auth && (
             <div>

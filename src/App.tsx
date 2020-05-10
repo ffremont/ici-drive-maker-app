@@ -10,24 +10,17 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Login from './views/login';
-import Makers from './views/makers';
 import PrivateRoute from './components/private-route';
 import NoMatch from './views/no-match';
 import { Subscription } from 'rxjs';
 import httpClientService from './services/http-client.service';
 import fcmService from './services/fcm.service';
-import Catalog from './views/catalog';
 import * as moment from 'moment';
 import 'moment/locale/fr';
-import Cart from './views/cart';
-import Place from './views/place';
-import Slots from './views/slots';
 import MyOrders from './views/my-orders';
 import Order from './views/order';
 import Error from './views/error';
-import MyProfil from './views/my-profil';
-import How from './views/how';
-import Concept from './views/concept';
+import Home from './views/home';
 
 
 // @see https://material-ui.com/customization/palette/
@@ -70,21 +63,11 @@ class App extends React.Component<{}, { concurrentCalls: number }>{
           <Switch>
             {/*<Route exact path="/" render={(routeProps) => <Makers {...routeProps} />} />*/}
 
-            <Route exact path="/" component={Makers} />
-            <Route exact path="/makers" component={Makers} />
-            <Route exact path="/how" component={How} />
-            <Route exact path="/concept" component={Concept} />
-            <Route path="/makers/:id/catalog" component={Catalog} />
-            <Route path="/makers/:id/place" component={Place} />
+            
 
-            <Route path="/login" component={Login} />
-            <PrivateRoute exact path="/cart" component={Cart} />
-            <PrivateRoute exact path="/cart/slots" component={Slots} />
-            <PrivateRoute exact path="/cart/summary" component={Cart} />
-            <PrivateRoute exact path="/my-orders" component={MyOrders} />            
-            <PrivateRoute exact path="/my-orders/:id" component={Order} />            
-            <PrivateRoute exact path="/my-profil" component={MyProfil} />            
-
+            <Route path="/login" component={Login} />         
+            <PrivateRoute exact path="/" component={MyOrders} /> 
+            <PrivateRoute exact path="/my-orders/:id" component={Order} />           
 
             <Route path="/error" component={Error} />
             <Route path="*" component={NoMatch} />

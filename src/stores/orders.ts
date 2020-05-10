@@ -25,7 +25,7 @@ export class OrdersStore implements Store<Order[]>{
     public load(id?:string):Promise<Order[]>{
         return httpClientService.axios.get(conf.API.orders(id))
         .then((response: AxiosResponse<any>) => {
-            if(id){
+            if(!Array.isArray(response.data)){
                 this.set([response.data]);
             }else{
                 this.set(response.data);

@@ -2,7 +2,6 @@ import React from 'react';
 import './Place.scss';
 import { Subscription } from 'rxjs';
 import Grid from '@material-ui/core/Grid';
-import makerStore from '../../stores/makers';
 import { Maker } from '../../models/maker';
 import MenuApp from '../../components/menu-app';
 import Typography from '@material-ui/core/Typography';
@@ -20,7 +19,7 @@ class Place extends React.Component<{ history: any, match: any }, { maker: Maker
   }
 
   componentDidMount() {
-    const makerId = this.props.match.params.id;
+    /*const makerId = this.props.match.params.id;
     this.subMakers = makerStore.subscribe((makers: Maker[]) => {
       const maker = makers.find((p: Maker) => p.id === makerId) || null;
       if (!maker) {
@@ -33,7 +32,7 @@ class Place extends React.Component<{ history: any, match: any }, { maker: Maker
       }
     });
 
-    makerStore.refresh(makerId);
+    makerStore.refresh(makerId);*/
   }
 
   render() {

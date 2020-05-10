@@ -1,11 +1,8 @@
 import { Item } from "../models/item";
-import { Url } from "url";
 
 interface APIS{
-    makers:any;
     orders:any;
-    myProfil:any;
-    searchMakers:any;
+    self:any;
 }
 
 export interface Configuration{
@@ -13,9 +10,7 @@ export interface Configuration{
     categories: Item[],
     baseURL: string,
     fcmPublicVapidKey:string,
-    startDriveAfterDays:number,
 
-    publicHolidays:{date:string, public_holiday:boolean, label:string}[],
     cgu:string;
     cgr:string;
     support:string;

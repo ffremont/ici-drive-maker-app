@@ -1,18 +1,16 @@
-import { User } from "../models/user";
-import myProfilStore from '../stores/my-profil';
+import { Maker } from "../models/maker";
 import { BehaviorSubject } from "rxjs";
+import makerStore from '../stores/maker';
 
 export class AuthService{
     public subToken = new BehaviorSubject<string|null>(null);
-    public subUser = new BehaviorSubject<User|null>(null);
     public isAuth = false;
 
-    public authenticate(user:User): void {
+    public authenticated(): void {
+        if(!this.isAuth){
+            makerStore.load();
+        }
         this.isAuth = true;
-        this.subUser.next(user);
-
-        // provoque la récupération du profil dès qu'on est connecté
-        myProfilStore.load();
     }
 
     public setIdToken(idToken:string){
@@ -21,7 +19,6 @@ export class AuthService{
 
     signout() {
         this.isAuth = false;
-        this.subUser.next(null);
         this.subToken.next(null);
         
         if((window as any).firebase){
