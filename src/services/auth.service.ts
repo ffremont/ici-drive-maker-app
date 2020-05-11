@@ -1,4 +1,3 @@
-import { Maker } from "../models/maker";
 import { BehaviorSubject } from "rxjs";
 import makerStore from '../stores/maker';
 

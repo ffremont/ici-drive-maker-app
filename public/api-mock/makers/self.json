@@ -45,7 +45,7 @@
     "webPage": "http://google.fr",
     "products": [{
         "price": 0,
-        "available": true,
+        "available": false,
         "maxInCart": 4,
         "description": "8kjXo12xIGVL8Kae4BRn8lM4wVJtGW",
         "ref": "R+S4Jke",

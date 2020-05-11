@@ -20,7 +20,8 @@ import 'moment/locale/fr';
 import MyOrders from './views/my-orders';
 import Order from './views/order';
 import Error from './views/error';
-import Home from './views/home';
+import Catalog from './views/catalog';
+import Product from './views/product';
 
 
 // @see https://material-ui.com/customization/palette/
@@ -68,6 +69,8 @@ class App extends React.Component<{}, { concurrentCalls: number }>{
             <Route path="/login" component={Login} />         
             <PrivateRoute exact path="/" component={MyOrders} /> 
             <PrivateRoute exact path="/my-orders/:id" component={Order} />           
+            <PrivateRoute exact path="/products" component={Catalog} />   
+            <PrivateRoute exact path="/products/:id" component={Product} />   
 
             <Route path="/error" component={Error} />
             <Route path="*" component={NoMatch} />

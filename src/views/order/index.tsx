@@ -1,6 +1,6 @@
 import React from 'react';
 import './Order.scss';
-import ordersStore, {OrdersStore} from '../../stores/orders';
+import ordersStore, { OrdersStore } from '../../stores/orders';
 import { Subscription } from 'rxjs';
 import * as O from '../../models/order';
 import * as moment from 'moment';
@@ -28,18 +28,25 @@ import PrintIcon from '@material-ui/icons/Print';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import PhoneIcon from '@material-ui/icons/Phone';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 
 import Confirm from './confirm';
 import MenuApp from '../../components/menu-app';
+import SnackAdd from '../../components/snack-add';
 
 
-const pendingActions = [
-  { icon: <PrintIcon />, name: 'print', label:'Imprimer' },
-  { icon: <ClearIcon />, name: 'cancel', label:'Annuler' }
+import notifStore from '../../stores/notif';
+import { NotifType } from '../../models/notif';
+
+const waitingConfirmation = [
+  { icon: <PrintIcon />, name: 'print', label: 'Imprimer' },
+  { icon: <ClearIcon />, name: 'cancel', label: 'Annuler' }
 ];
 const actions = [
-  { icon: <PrintIcon />, name: 'print', label:'Imprimer' },
-  { icon: <PhoneIcon />, name: 'phone', label:'Contacter' }
+  { icon: <PrintIcon />, name: 'print', label: 'Imprimer' },
+  { icon: <PhoneIcon />, name: 'phone', label: 'Contacter' },
+  { icon: <AlternateEmailIcon />, name: 'copy-email', label: 'Copier' },
+  { icon: <ClearIcon />, name: 'cancel', label: 'Annuler' }
 ];
 
 const useStyles = (theme: Theme) => ({
@@ -60,9 +67,9 @@ const useStyles = (theme: Theme) => ({
   }
 });
 
-class Order extends React.Component<{ history: any, classes: any, match: any }, { openInfoConfirmed: boolean, openCancelDialog:boolean, order: O.Order | null, open: boolean, hidden: boolean }>{
+class Order extends React.Component<{ history: any, classes: any, match: any }, { openVerifiedDialog: boolean, openRefusedDialog: boolean, openCancelDialog: boolean, order: O.Order | null, open: boolean, hidden: boolean }>{
 
-  state = { order: null, open: false, hidden: false, openCancelDialog:false, openInfoConfirmed:false };
+  state = { order: null, open: false, hidden: false, openCancelDialog: false, openRefusedDialog: false, openVerifiedDialog: false };
   status: any = {};
   sub: Subscription | null = null;
 
@@ -72,15 +79,15 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
   }
 
   componentDidMount() {
-    this.status[O.OrderState.PENDING] = {label: 'A vérifier', color: this.props.classes.orange};
-    this.status[O.OrderState.CANCELLED] = {label: 'Annulée', color: this.props.classes.grey};
-    this.status[O.OrderState.VERIFIED] = {label: 'En attente de confirmation', color: this.props.classes.orange};
-    this.status[O.OrderState.CONFIRMED] = {label: 'Confirmée', color: this.props.classes.green};
-    this.status[O.OrderState.REFUSED] = {label:'Refusée', color: this.props.classes.grey}
+    this.status[O.OrderState.PENDING] = { label: 'A vérifier', color: this.props.classes.orange };
+    this.status[O.OrderState.CANCELLED] = { label: 'Annulée', color: this.props.classes.grey };
+    this.status[O.OrderState.VERIFIED] = { label: 'En attente de confirmation', color: this.props.classes.orange };
+    this.status[O.OrderState.CONFIRMED] = { label: 'Confirmée', color: this.props.classes.green };
+    this.status[O.OrderState.REFUSED] = { label: 'Refusée', color: this.props.classes.grey }
 
     const id: string = this.props.match.params.id;
     this.sub = ordersStore.subscribe((orders: O.Order[]) => {
-      console.log('Order > ordersStore.sub ',orders);
+      console.log('Order > ordersStore.sub ', orders);
       if (orders && orders.length) {
         this.setState({ order: orders[0] });
       }
@@ -90,18 +97,27 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
     ordersStore.load(id);
   }
 
-  onClickConfirmOrder(){
-    const newOrder:O.Order = {...(this.state.order as any)};
-    newOrder.reasonOf = '';
-    newOrder.status = O.OrderState.CONFIRMED;
+  onClickVerifiedOrder(txt: string) {
+    const newOrder: O.Order = { ...(this.state.order as any) };
+    newOrder.reasonOf = txt;
+    newOrder.status = O.OrderState.VERIFIED;
     OrdersStore.update(newOrder)
-      .then(() => this.setState({openInfoConfirmed:true}))
+      .then(() => ordersStore.load(this.props.match.params.id))
+      .catch(() => this.props.history.push('/error'));
+  }
+
+  onClickRefusedOrder(txt: string) {
+    const newOrder: O.Order = { ...(this.state.order as any) };
+    newOrder.reasonOf = txt;
+    newOrder.status = O.OrderState.REFUSED;
+    OrdersStore.update(newOrder)
+      .then(() => ordersStore.load(this.props.match.params.id))
       .catch(() => this.props.history.push('/error'));
   }
 
 
-  cancel(text:string){
-    const newOrder:O.Order = {...(this.state.order as any)};
+  cancel(text: string) {
+    const newOrder: O.Order = { ...(this.state.order as any) };
     newOrder.reasonOf = text;
     newOrder.status = O.OrderState.CANCELLED;
     OrdersStore.update(newOrder)
@@ -109,16 +125,26 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
       .catch(() => this.props.history.push('/error'));
   }
 
-
-
-  onClickDialAction(action:any){
+  onClickDialAction(action: any) {
     this.setState({ open: false });
-    if(action && (action.name === 'print')){
+    if (action && (action.name === 'print')) {
       window.print();
-    }else if(action && (action.name === 'cancel')){
-      this.setState({openCancelDialog:true});
-    }else if(action && (action.name === 'phone')){
+    } else if (action && (action.name === 'cancel')) {
+      this.setState({ openCancelDialog: true });
+    } else if (action && (action.name === 'phone')) {
       window.open(`tel:${(this.state.order as any).maker.phone}`, '_blank');
+    } else if (action && (action.name === 'copy-email')) {
+      const copyText = document.querySelector('#customer_email') as any;
+      if (copyText) {
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+
+        notifStore.set({ message: 'Copier dans le presse-papier', type: NotifType.DEFAULT })
+      }
     }
   }
 
@@ -126,13 +152,15 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
     const currentOrder: O.Order = (this.state.order as any) as O.Order;
     const maker: Maker = (currentOrder?.maker as any) as Maker;
 
+
+
     let paymentsLabels = '';
-    if(maker && maker.payments && !maker.payments.acceptPaypal){
+    if (maker && maker.payments && !maker.payments.acceptPaypal) {
       paymentsLabels = [
         maker.payments?.acceptCards ? `par carte` : null,
         maker.payments?.acceptBankCheck ? `par chèque` : null,
         maker.payments?.acceptCoins ? `en espèce` : null].filter(c => c !== null).join(' / ');
-    }else if(maker && maker.payments && maker.payments.acceptPaypal){
+    } else if (maker && maker.payments && maker.payments.acceptPaypal) {
       paymentsLabels = 'en ligne via Paypal';
     }
 
@@ -140,11 +168,12 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
       <MenuApp mode="light" history={this.props.history} />
       {currentOrder && (<Grid container direction="column" justify="center" spacing={1}>
 
+        <SnackAdd />
         <Grid item>
           <Chip label={this.status[(currentOrder.status as any)].label} className={this.status[(currentOrder.status as any)].color} />
         </Grid>
 
-        {currentOrder.status === O.OrderState.CONFIRMED && paymentsLabels && (<Grid item>
+        {(currentOrder.status === O.OrderState.CONFIRMED) && paymentsLabels && (<Grid item>
           <Alert severity="warning">
             <strong>Consignes de paiement : </strong>{paymentsLabels}
           </Alert>
@@ -153,7 +182,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         {currentOrder.reasonOf && (<Grid item>
           <Alert severity="info">{currentOrder.reasonOf}</Alert>
         </Grid>)}
-        
+
 
         <Grid item>
           <Grid container direction="column" justify="center" spacing={1}>
@@ -181,13 +210,13 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         <Grid item>
           <Grid container className="my-group" direction="column" justify="center" spacing={1}>
             <Grid item>
-              <TextField label="@ Client" variant="filled" fullWidth={true} value={currentOrder.customer?.email} inputProps={{ readOnly: true }} />
+              <TextField label="@ Client" id="customer_email" variant="filled" fullWidth={true} value={currentOrder.customer?.email} inputProps={{ readOnly: true }} />
             </Grid>
             {currentOrder.customer?.lastname && currentOrder.customer?.firstname && (<Grid item>
               <TextField label="Nom / Prénom" variant="filled" fullWidth={true} value={`${currentOrder.customer?.lastname} ${currentOrder.customer?.firstname}`} inputProps={{ readOnly: true }} />
             </Grid>)}
             {currentOrder.customer?.phone && (<Grid item>
-              <TextField label="Téléphone" variant="filled" fullWidth={true} value={currentOrder.customer?.phone} inputProps={{ readOnly: true }} />
+              <TextField label="Téléphone" id="customer_phone" variant="filled" fullWidth={true} value={currentOrder.customer?.phone} inputProps={{ readOnly: true }} />
             </Grid>)}
             {currentOrder.customer?.address && (<Grid item>
               <TextField label="Adresse" variant="filled" fullWidth={true} value={currentOrder.customer?.address} inputProps={{ readOnly: true }} />
@@ -240,14 +269,30 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         </Table>
       </TableContainer>)}
 
-    <Confirm title="Annuler la commande" withText={true} onClose={() => this.setState({openCancelDialog:false})} onConfirm={(txt:string) => this.cancel(txt)} message="Je souhaite annuler pour le motif :" open={this.state.openCancelDialog}/>
-    <Confirm title="La suite par email" withText={false} onClose={() => this.setState({openInfoConfirmed:false})} onConfirm={(txt:string) => this.props.history.push('/my-orders')} message="Un email récapitulatif vous a été transmis." open={this.state.openInfoConfirmed}/>
+      <Confirm title="Annuler la commande" withText={true} onClose={() => this.setState({ openCancelDialog: false })} onConfirm={(txt: string) => this.cancel(txt)} message="Je souhaite annuler pour le motif :" open={this.state.openCancelDialog} />
 
-    
+
+      <Confirm title="Vérification de stocks"
+        withText={true}
+        onClose={() => this.setState({ openVerifiedDialog: false })}
+        onConfirm={(txt: string) => this.onClickVerifiedOrder(txt || '')}
+        okText={`J'ai vérifié`}
+        message="La commande passera à l'état 'à confirmer' par le demandeur. Dès qu'elle sera confirmée, vous serez notifié."
+        open={this.state.openVerifiedDialog} />
+
+      <Confirm title="Refuser la demande"
+        withText={true}
+        onClose={() => this.setState({ openRefusedDialog: false })}
+        onConfirm={(txt: string) => this.onClickRefusedOrder(txt || '')}
+        okText={`Je refuse`}
+        message="La commande passera à l'état 'refuser'. Merci d'indiquer un motif."
+        open={this.state.openRefusedDialog} />
+
+
 
       {/* Actions en fonction des états */}
 
-      {currentOrder && currentOrder.status !== O.OrderState.VERIFIED && (<SpeedDial
+      {currentOrder && currentOrder.status !== O.OrderState.PENDING && (<SpeedDial
         ariaLabel="SpeedDial tooltip example"
         className="my-speed-dial"
         hidden={this.state.hidden}
@@ -256,7 +301,10 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         onOpen={() => this.setState({ open: true })}
         open={this.state.open}
       >
-        {(currentOrder.status === O.OrderState.PENDING ? pendingActions : actions).map((action) => (
+        {(currentOrder.status === O.OrderState.CONFIRMED ? waitingConfirmation : actions)
+        .filter(a => ((currentOrder.status === O.OrderState.CANCELLED) || (
+          currentOrder.status === O.OrderState.REFUSED) )&& a.name === 'cancel' ? false : true)
+        .map((action) => (
           <SpeedDialAction
             key={action.name}
             icon={action.icon}
@@ -267,18 +315,18 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         ))}
       </SpeedDial>)}
 
-      { currentOrder && currentOrder.status === O.OrderState.VERIFIED && (
+      {currentOrder && currentOrder.status === O.OrderState.PENDING && (
         <div className="fab-actions">
-          
-        <Fab size="large" color="default" onClick={() => this.setState({openCancelDialog:true})} aria-label="add" className="fab-cancelled">
-            <CloseIcon />
-        </Fab>
 
-        <Fab size="large" color="secondary" onClick={() => this.onClickConfirmOrder()} aria-label="add" className="fab-verified">
+          <Fab size="large" color="default" onClick={() => this.setState({ openRefusedDialog: true })} aria-label="add" className="fab-cancelled">
+            <CloseIcon />
+          </Fab>
+
+          <Fab size="large" color="secondary" onClick={() => this.setState({ openVerifiedDialog: true })} aria-label="add" className="fab-verified">
             <CheckIcon />
-        </Fab>
-        
-          </div>
+          </Fab>
+
+        </div>
       )}
 
     </div>);

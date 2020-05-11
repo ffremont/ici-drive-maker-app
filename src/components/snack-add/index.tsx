@@ -12,7 +12,7 @@ const SnackAdd = (props: any) => {
 
     useEffect(() => {
         const subscription = notifStore.subscribe((notif: Notif) => {
-            if ([NotifType.SNACK_CART, NotifType.MY_PROFIL].indexOf(notif.type) > -1){
+            if ([NotifType.DEFAULT].indexOf(notif.type) > -1){
                 setText(notif.message);
                 setOpen(true);                
             }

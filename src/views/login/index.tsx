@@ -14,7 +14,6 @@ import GoogleIcon from '../../assets/images/google.svg';
 import MailIcon from '../../assets/images/mail.svg';
 import authService from '../../services/auth.service';
 import {FirebaseStub} from '../../stubs/firebase';
-import makerStore from '../../stores/maker';
 
 if(process.env.REACT_APP_STAGE !== 'prod'){
   (window as any).firebase = (new FirebaseStub()).init();

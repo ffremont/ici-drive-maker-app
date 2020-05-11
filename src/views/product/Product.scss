@@ -1,0 +1,29 @@
+.area{
+    margin-top:70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    img{
+        max-width: 200px;
+        border-radius: 4px;
+        width: 90vw;
+        border: 0px;
+    }
+
+    
+}
+
+.input-upload{
+    display: none;
+}
+
+.fields{
+    padding: 0px 20px;
+}
+
+.fields > div {
+    margin: 7px 0px;
+}

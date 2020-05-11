@@ -4,8 +4,9 @@ import { Store } from './store';
 import httpClientService from '../services/http-client.service';
 import conf from '../confs';
 import {AxiosResponse} from 'axios';
+import { Product } from '../models/product';
 
-class MakerStore implements Store<Maker|null>{
+export class MakerStore implements Store<Maker|null>{
     private sub = new BehaviorSubject<Maker|null>(null);
 
     public set(maker: Maker|null): void{
@@ -14,6 +15,10 @@ class MakerStore implements Store<Maker|null>{
 
     public subscribe(func:any): Subscription{
         return this.sub.subscribe(func);
+    }
+
+    static async update(maker:Maker){
+        await httpClientService.axios.put(conf.API.self(), maker);
     }
 
     public load():void{

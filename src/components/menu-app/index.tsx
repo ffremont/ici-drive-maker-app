@@ -11,10 +11,11 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ReceiptIcon from '@material-ui/icons/Receipt';
+
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import IciDriveTypoIcon from '../../assets/images/ici-drive-icon.png';
 import IciDriveBannerIcon from '../../assets/images/ici-drive-banner.png';
 import './MenuApp.scss';
@@ -58,7 +59,6 @@ const MenuApp = (props: any) => {
   const [auth] = useState(false);
   const [email, setEmail] = useState('');
   const [open, setOpen] = useState(false);
-  const [openAbout, setOpenAbout] = useState(false);
 
   React.useEffect(() => {
     setMode(props.mode);
@@ -81,8 +81,9 @@ const MenuApp = (props: any) => {
       window.location.reload();
     }
   }
-
+  
   return (
+    
     <div className={classes.root}>
       <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
         <List className="drawer-list">
@@ -90,9 +91,10 @@ const MenuApp = (props: any) => {
             <ListItemIcon><AccountCircleIcon /></ListItemIcon>
             <ListItemText primary="Connecté" secondary={email} />
           </ListItem>)}
-          <ListItem button key="orders" onClick={() => props.history.push('/')}>
-            <ListItemIcon><ReceiptIcon /></ListItemIcon>
-            <ListItemText primary="Mes réservations" secondary="En cours et passées" />
+         
+          <ListItem button key="catalog" onClick={() => props.history.push('/products')}>
+            <ListItemIcon><ImportContactsIcon /></ListItemIcon>
+            <ListItemText primary="Catalogue produits" />
           </ListItem>
           <ListItem button key="point" onClick={() => props.history.push('/my-profil')}>
             <ListItemIcon><RoomIcon /></ListItemIcon>
@@ -137,7 +139,7 @@ const MenuApp = (props: any) => {
               <img alt="icon ici drive" className="ici-drive-icon" src={IciDriveBannerIcon} />
             </Typography>
           )}
-          {['light', 'catalog'].indexOf(mode) > -1 && (
+          {['light'].indexOf(mode) > -1 && (
             <Typography variant="h6" align="center" className={classes.title}>
               <img alt="icon ici drive" className="ici-drive-icon" src={IciDriveTypoIcon} />
 
@@ -149,6 +151,22 @@ const MenuApp = (props: any) => {
               Mes réservations
             </Typography>
           )}
+          {['catalog'].indexOf(mode) > -1 && (
+            <Typography variant="h6" align="center" className={classes.title}>
+              Catalogue
+            </Typography>
+          )}
+          {['product-edit'].indexOf(mode) > -1 && (
+            <Typography variant="h6" align="center" className={classes.title}>
+              Editer produit
+            </Typography>
+          )}
+          {['product-new'].indexOf(mode) > -1 && (
+            <Typography variant="h6" align="center" className={classes.title}>
+              Ajouter produit
+            </Typography>
+          )}
+          
          
 
 

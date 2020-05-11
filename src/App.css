@@ -37,6 +37,14 @@
   }
 }
 
+form.formik{
+  display: flex;
+  flex-direction: column;
+  padding: 0px 20px;
+}
+.formik-validate{
+  margin-top:20px !important;
+}
 
 .backdrop{
   z-index:1201 !important;
