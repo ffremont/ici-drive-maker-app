@@ -22,12 +22,17 @@ class HttpClientService{
             responseType: 'json',
             timeout: 15000,
             transformRequest: [(data:any, headers:any)=>{
-                headers['Content-Type'] = 'application/json';
+                let myData:any = data;
+                if(!(myData instanceof FormData)){
+                    headers['Content-Type'] = 'application/json';
+                    myData = JSON.stringify(data);
+                }
+                
                 if(this.idToken !== null){
                     headers.Authorization = `Bearer ${this.idToken}`;
                 }
-                this.subRequest.next({data, headers});
-                return JSON.stringify(data);
+                this.subRequest.next({data:myData, headers});
+                return myData;
             }],
             transformResponse: [(data:any, headers:any)=>{
                 this.subResponse.next({data, headers});

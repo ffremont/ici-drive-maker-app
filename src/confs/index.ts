@@ -11,8 +11,10 @@ const other: Configuration = {
     fcmPublicVapidKey: 'BO7yESbBXsx7ddVzYqvkNpWf-3S6sjqQxEoolQQ1OG02D0-nmrpowEsYRHuoGEzT4w5Np6Gdwto5FiLsS--sONw',
     API: {
         self: () => `${DEV_API_BASEURL}/makers/self.json`,
+        products: (ref?:string) => `${DEV_API_BASEURL}/makers/self.json?ref=${ref}`,
         orders: (ref?:string) => `${DEV_API_BASEURL}/my-orders.json?ref=${ref}`,
     },
+    slotQuantity:900000, // 15 minutes par créneau
     categories:[
         { "label": "Viandes", "id": "viandes"},
         { "label": "Oeufs", "id": "oeufs"},
@@ -34,8 +36,10 @@ const prod: Configuration = {
     fcmPublicVapidKey: 'BO7yESbBXsx7ddVzYqvkNpWf-3S6sjqQxEoolQQ1OG02D0-nmrpowEsYRHuoGEzT4w5Np6Gdwto5FiLsS--sONw',
     API: {
         self: () => `${API_BASEURL}/admin/makers/self`,
+        products: (ref?:string) => `${API_BASEURL}/admin/makers/self/products/${ref}`,
         orders: (ref?:string) => `${API_BASEURL}/admin/my-orders/${ref || ''}`,
     },
+    slotQuantity:900000, // 15 minutes par créneau
     categories:[
         { "label": "Viandes", "id": "viandes"},
         { "label": "Oeufs", "id": "oeufs"},

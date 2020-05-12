@@ -3,6 +3,7 @@ import { Item } from "../models/item";
 interface APIS{
     orders:any;
     self:any;
+    products:any;
 }
 
 export interface Configuration{
@@ -10,6 +11,7 @@ export interface Configuration{
     categories: Item[],
     baseURL: string,
     fcmPublicVapidKey:string,
+    slotQuantity: number;
 
     cgu:string;
     cgr:string;

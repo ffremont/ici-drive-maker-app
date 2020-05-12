@@ -24,10 +24,12 @@ import Fab from '@material-ui/core/Fab';
 import ClearIcon from '@material-ui/icons/Clear';
 import { Item } from '../../models/item';
 import conf from '../../confs';
-import { grey, green,common } from '@material-ui/core/colors';
+import { grey, green, common } from '@material-ui/core/colors';
 import Paper from '@material-ui/core/Paper';
 import { Maker } from '../../models/maker';
 import { Order } from '../../models/order';
+import AppDialog from '../../components/app-dialog';
+import {MakerStore} from '../../stores/maker';
 
 
 interface GraphicProduct extends Product {
@@ -35,19 +37,19 @@ interface GraphicProduct extends Product {
 }
 
 const useStyles = (theme: Theme) => ({
-  grey:{
-    color: theme.palette.getContrastText(grey[500]),
+  grey: {
+    color: common.white,
     backgroundColor: grey[500],
   },
-  green:{
+  green: {
     color: common.white,
     backgroundColor: green[500],
   }
 });
 
-class Catalog extends React.Component<{ history: any, match: any, classes:any }, { products: GraphicProduct[], openPreview: string, maker: Maker | null, activeIndex: number, wantToAdd: Product | null, openCleanCart: boolean, cart: Order | null }>{
+class Catalog extends React.Component<{ history: any, match: any, classes: any }, { openRemove:boolean, wantRemove:Product|null, products: GraphicProduct[], openPreview: string, maker: Maker | null, activeIndex: number, wantToAdd: Product | null, openCleanCart: boolean, cart: Order | null }>{
 
-  state = { products: [], openCleanCart: false, activeIndex: -1, maker: null, openPreview: '', cart: null, wantToAdd: null };
+  state = { products: [], openCleanCart: false, activeIndex: -1, maker: null, openPreview: '', cart: null, wantToAdd: null, openRemove:false, wantRemove:null };
   subMaker: Subscription | null = null;
 
   componentWillUnmount() {
@@ -56,8 +58,8 @@ class Catalog extends React.Component<{ history: any, match: any, classes:any },
 
   componentDidMount() {
     this.subMaker = makerStore.subscribe((maker: Maker) => {
-      if(maker){
-        const products = (maker.products || []).map((p: GraphicProduct) => {
+      if (maker) {
+        const products = (maker.products || []).map((p: GraphicProduct) => {
           p.category = conf.categories.find(c => c.id === p.categoryId);
           return p;
         });
@@ -69,14 +71,27 @@ class Catalog extends React.Component<{ history: any, match: any, classes:any },
     })
   }
 
+  onConfirmRemove(){
+    MakerStore.deleteProduct((this.state.wantRemove as any).ref)
+    .then( ()=> this.setState({wantRemove: null}))
+    .catch( () => this.props.history.push('/error'));    
+  }
+
   render() {
     return (
       <div className="maker">
         <MenuApp mode="catalog" history={this.props.history} />
 
-        <Fab size="large" onClick={() => this.props.history.push(`/products/0000`)} color="primary" className="add-product"  aria-label="add product">
+        <Fab size="large" onClick={() => this.props.history.push(`/products/0000`)} color="primary" className="add-product" aria-label="add product">
           <AddIcon />
         </Fab>
+
+        <AppDialog 
+        open={this.state.wantRemove !== null} 
+        onConfirm={() => this.onConfirmRemove()} 
+        onClose={() => this.setState({wantRemove: null})} 
+        message={`Confirmez-vous la suppression de produit "${ this.state.wantRemove !== null ? (this.state.wantRemove as any).label  : 'inconnu'}" ?`} 
+        title="Suppression définitive" />
 
         <Modal
           open={!!this.state.openPreview}
@@ -97,13 +112,13 @@ class Catalog extends React.Component<{ history: any, match: any, classes:any },
                   title={p.label}
                   subheader={p.category?.label}
                   avatar={
-                    <Avatar aria-label="recipe" className={this.props.classes.green}><CheckIcon/></Avatar>
+                    <Avatar aria-label="recipe" className={this.props.classes.green}>A</Avatar>
                   }
                 />)}{!p.available && (<CardHeader
                   title={p.label}
                   subheader={p.category?.label}
                   avatar={
-                    <Avatar aria-label="recipe" className={this.props.classes.grey}><ClearIcon/></Avatar>
+                    <Avatar aria-label="recipe" className={this.props.classes.grey}>I</Avatar>
                   }
                 />)}
                 <CardMedia onClick={() => this.setState({ openPreview: p.image })}
@@ -115,16 +130,19 @@ class Catalog extends React.Component<{ history: any, match: any, classes:any },
                   title={p.label}
                 />
                 <CardContent className="content-price">
-                <Fab size="large" onClick={() => this.props.history.push(`/products/${p.ref}`)} color="secondary" className="look-product"  aria-label="edit product">
+                  <Fab size="medium" onClick={() => this.setState({wantRemove: p})} className="fab-remove fab-action" aria-label="clear product">
+                    <ClearIcon />
+                  </Fab>
+                  <Fab size="large" onClick={() => this.props.history.push(`/products/${p.ref}`)} color="secondary" className="fav-look fab-action" aria-label="edit product">
                     <SearchIcon />
                   </Fab>
                 </CardContent>
                 <CardActions disableSpacing className="cardaction-product">
-                <Typography className="typo-price" variant="h5" color="textSecondary">
+                  <Typography className="typo-price" variant="h5" color="textSecondary">
                     <div className="price">
                       {parseFloat(`${p.price}`).toFixed(2)}<sup>€</sup>
                     </div>
-                    
+
                   </Typography>
                   <IconButton
                     className={(this.state.activeIndex === i ? 'expandOpen' : 'expanded')}

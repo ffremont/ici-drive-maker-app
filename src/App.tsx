@@ -22,6 +22,8 @@ import Order from './views/order';
 import Error from './views/error';
 import Catalog from './views/catalog';
 import Product from './views/product';
+import MyPlace from './views/my-place';
+import MyDrive from './views/my-drive';
 
 
 // @see https://material-ui.com/customization/palette/
@@ -71,6 +73,8 @@ class App extends React.Component<{}, { concurrentCalls: number }>{
             <PrivateRoute exact path="/my-orders/:id" component={Order} />           
             <PrivateRoute exact path="/products" component={Catalog} />   
             <PrivateRoute exact path="/products/:id" component={Product} />   
+            <PrivateRoute exact path="/my-drive" component={MyDrive} />   
+            <PrivateRoute exact path="/my-place" component={MyPlace} />   
 
             <Route path="/error" component={Error} />
             <Route path="*" component={NoMatch} />

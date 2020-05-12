@@ -11,12 +11,17 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import './Product.scss';
+import imageCompression from 'browser-image-compression';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 // @see formik https://stackworx.github.io/formik-material-ui/docs/api/material-ui
 class Product extends React.Component<{ history: any, match: any }, { editMode: boolean, maker: Maker | null, product: P.Product, isSubmitting: boolean }>{
 
-  state = { maker: null, editMode: false, isSubmitting: false, product: { maxInCart: 10, ref: '', image: conf.baseURL + '/default_image.jpg', label: '', price: 0, categoryId: '', available: false } };
+  state = { maker: null, editMode: false, isSubmitting: false, product: { weight: 0, volume: 0, description: '', topOfList: false, bio: false, maxInCart: 10, ref: '', image: conf.baseURL + '/default_image.jpg', label: '', price: 0, categoryId: 'fruit-leg', available: false } };
   subMaker: Subscription | null = null;
+
+  myBlob: Blob | null = null;
 
   componentWillUnmount() {
     this.subMaker?.unsubscribe();
@@ -24,17 +29,18 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
 
   componentDidMount() {
     const ref: string = this.props.match.params.id;
-    this.setState({ editMode: ref !== '0000' });
+    const editMode = ref !== '0000'
+    this.setState({ editMode });
 
     this.subMaker = makerStore.subscribe((maker: Maker) => {
       if (maker) {
         const product: any = (maker.products || []).filter(p => p.ref === ref);
         if (product.length) {
-          product[0].draftImage = null;
-          product[0].ref = maker.prefixOrderRef;
           this.setState({ maker, product: product[0] });
         } else {
-          this.setState({ maker });
+          const newProduct = { ...this.state.product };
+          newProduct.ref = maker.prefixOrderRef;
+          this.setState({ maker, product: newProduct });
         }
       }
     });
@@ -62,44 +68,51 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
   onSubmit(e: any) {
     e.preventDefault();
     const newMaker = { ...(this.state.maker as any) };
-    if (this.state.editMode) {
-      newMaker.products = newMaker.products.map((p: any) => {
-        if (p.ref === this.state.product.ref) {
-          p = this.state.product;
-        }
-        return p;
-      })
-    } else {
-      newMaker.products.push(this.state.product);
-    }
 
-    if (newMaker.products.map((p: any) => newMaker.products.filter((pp: P.Product) => pp.ref === p.ref).length).filter((nb: any) => nb > 1)) {
+    if (!this.state.editMode && newMaker.products.map((p: any) => newMaker.products.filter((pp: P.Product) => pp.ref === p.ref).length).filter((nb: any) => nb > 1).length) {
       alert('La référence produit est déjà utilisée');
       return;
     }
 
+    let myPromise: any = null;
+    if (this.state.editMode) {
+      myPromise = MakerStore.updateProduct(this.state.product, this.myBlob);
+    } else {
+      myPromise = MakerStore.addProduct(this.state.product, this.myBlob);
+    }
 
-    MakerStore.update(newMaker)
+    myPromise
       .then(() => makerStore.load())
       .catch(() => this.props.history.push('/error'));
   }
 
-  onChangeUpload(target:any){
+  onChangeUpload(target: any) {
     console.log(target.files[0]);
-    /*
-    https://www.npmjs.com/package/browser-image-compression
-    
-const fileReader = new FileReader();
-        const name = target.accept.includes('image') ? 'images' : 'videos';
+    const imageFile = target.files[0];
 
-        fileReader.readAsDataURL(target.files[0]);
-        fileReader.onload = (e) => {
-            this.setState((prevState) => ({
-                [name]: [...prevState[name], e.target.result]
-            }));
-        };
-    */
+    console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+    console.log(`originalFile size ${imageFile.size / 1024} KB`);
 
+    const options = {
+      maxSizeMB: 50 / 1024,
+      maxWidthOrHeight: 512,
+      useWebWorker: true
+    }
+
+    imageCompression(imageFile, options)
+      .then((compressedFile) => {
+        console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+        console.log(`compressedFile size ${compressedFile.size / 1024} KB`); // smaller than maxSizeMB
+
+        const newProduct: any = { ...this.state.product };
+        this.myBlob = compressedFile;
+
+        newProduct.image = (window as any).URL.createObjectURL(compressedFile);
+        this.setState({ product: newProduct });
+      })
+      .catch(function (error) {
+        console.log(error.message);
+      });
   }
 
   render() {
@@ -119,13 +132,13 @@ const fileReader = new FileReader();
           <input
             className="input-upload"
             id="upload_product_image"
-            type="file" 
+            type="file"
             accept="image/jpeg"
-            onChange={(e:any) => this.onChangeUpload(e.target)}
+            onChange={(e: any) => this.onChangeUpload(e.target)}
           />
           <label htmlFor="upload_product_image">
-            <Button  color="primary" component="span">
-            Changer l'image
+            <Button color="primary" component="span">
+              Changer l'image
         </Button>
           </label>
 
@@ -141,8 +154,10 @@ const fileReader = new FileReader();
           value={this.state.product.ref}
           label="Référence"
           type="text"
+          helperText="caractères alphanumérique"
           inputProps={{
             maxLength: 24,
+            pattern:"[A-Za-z0-9]+",
             readOnly: this.state.editMode
           }}
         />
@@ -153,7 +168,7 @@ const fileReader = new FileReader();
             value={product.available ? 1 : 0}
             autoFocus
             required
-            onChange={(e) => this.onChangeStatus(e.target.value as any)}
+            onChange={(e) => this.onChangeStatus(parseInt(e.target.value as any))}
             inputProps={{
               name: 'status',
               id: 'status',
@@ -193,32 +208,22 @@ const fileReader = new FileReader();
           id="price"
           fullWidth
           required
-          onChange={(e) => this.onChangeValue('price', parseFloat(e.target.value as any))}
+          onChange={(e) => this.onChangeValue('price', e.target.value ? parseFloat(e.target.value as any) : '')}
           value={this.state.product.price}
           label="Prix"
           type="number"
           inputProps={{
             max: 1000,
-            min: 0
+            min: 0,
+            step: "0.01"
           }}
         />
 
-        <TextField
-          id="maxInCart"
-          required
-          fullWidth
-          onChange={(e) => this.onChangeValue('maxInCart', parseInt(e.target.value as any))}
-          value={this.state.product.maxInCart}
-          label="Quantité max dans le panier"
-          type="number"
-          inputProps={{
-            max: 1000,
-            min: 0
-          }}
-        />
+
         <TextField
           id="description"
           fullWidth
+          value={this.state.product.description}
           onChange={(e) => this.onChangeValue('description', `${e.target.value}`)}
           label="Description"
           multiline
@@ -228,13 +233,23 @@ const fileReader = new FileReader();
           }}
         />
 
+        <div className="options">
+          <FormControlLabel control={<Checkbox name="topOfList"
+            onChange={(e) => this.onChangeValue('topOfList', e.target.checked)}
+            value={this.state.product.topOfList} />} label="Top de la liste" />
+
+          <FormControlLabel control={<Checkbox name="bio"
+            onChange={(e) => this.onChangeValue('bio', e.target.checked)}
+            value={this.state.product.bio} />} label="Bio" />
+        </div>
 
         <div className="weight-volume">
           <TextField
             id="weight"
             fullWidth
-            onChange={(e) => this.onChangeValue('weight', parseFloat(e.target.value as any))}
+            onChange={(e) => this.onChangeValue('weight', e.target.value ? parseFloat(e.target.value as any) : '')}
             label="Poids (gramme)"
+            value={this.state.product.weight || ''}
             type="number"
             inputProps={{
               max: 10000000,
@@ -244,18 +259,34 @@ const fileReader = new FileReader();
           <TextField
             id="volume"
             fullWidth
-            onChange={(e) => this.onChangeValue('volume', parseFloat(e.target.value as any))}
+            value={this.state.product.volume || ''}
+            onChange={(e) => this.onChangeValue('volume', e.target.value ? parseFloat(e.target.value as any) : '')}
             label="Volume (litre)"
             type="number"
             inputProps={{
               max: 1000,
+              step: "0.01",
               min: 0
             }}
           />
         </div>
 
+        <TextField
+          id="maxInCart"
+          required
+          fullWidth
+          onChange={(e) => this.onChangeValue('maxInCart', e.target.value ? parseInt(e.target.value as any) : '')}
+          value={this.state.product.maxInCart}
+          label="Quantité max dans le panier"
+          type="number"
+          inputProps={{
+            max: 1000,
+            min: 0
+          }}
+        />
+
         <Button type="submit" fullWidth variant="contained" color="primary">
-          Valider
+          {this.state.editMode ? 'Modifier' : 'Ajouter'}
         </Button>
 
       </form>

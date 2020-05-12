@@ -5,16 +5,27 @@
   justify-content: flex-end;
 }
 
+.maker{
+  margin-bottom: 60px;
+}
+
 .my-p {
   margin-bottom: 5px !important;
 }
 
-.look-product{
+.fab-action{
   margin-top: -35px !important;
 }
+.fab-remove{
+  margin-top: -30px !important;
+}
+.fab-action+.fab-action{
+  margin-left:10px;
+}
+
 .add-product{
   position: fixed !important;
-  top: 35px;
+  bottom: 30px;
   right: 36px;
   z-index: 9999;
 }
