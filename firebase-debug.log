@@ -1,0 +1,57 @@
+[debug] [2020-05-16T14:53:28.603Z] ----------------------------------------------------------------------
+[debug] [2020-05-16T14:53:28.605Z] Command:       /home/florent/Applications/node-v10.15.1-linux-x64/bin/node /home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/.bin/firebase deploy
+[debug] [2020-05-16T14:53:28.605Z] CLI Version:   8.2.0
+[debug] [2020-05-16T14:53:28.606Z] Platform:      linux
+[debug] [2020-05-16T14:53:28.606Z] Node Version:  v10.15.1
+[debug] [2020-05-16T14:53:28.606Z] Time:          Sat May 16 2020 16:53:28 GMT+0200 (GMT+02:00)
+[debug] [2020-05-16T14:53:28.606Z] ----------------------------------------------------------------------
+[debug] [2020-05-16T14:53:28.606Z] 
+[debug] [2020-05-16T14:53:28.617Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-16T14:53:28.618Z] > authorizing via signed-in user
+[debug] [2020-05-16T14:53:28.618Z] [iam] checking project ici-drive for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-05-16T14:53:28.622Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/ici-drive:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2020-05-16T14:53:29.428Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 16 May 2020 14:53:29 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=660","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-16T14:53:29.430Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/ici-drive/serviceAccounts/ici-drive@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2020-05-16T14:53:30.110Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 16 May 2020 14:53:30 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-16T14:53:30.114Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/ici-drive  
+ 
+[debug] [2020-05-16T14:53:30.331Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 16 May 2020 14:53:30 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-16T14:53:30.433Z] TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received type undefined
+    at assertPath (path.js:39:11)
+    at Object.join (path.js:1152:7)
+    at Object.checkFunctionsSDKVersion [as fn] (/home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/firebase-tools/lib/checkFirebaseSDKVersion.js:33:28)
+    at Command.<anonymous> (/home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/firebase-tools/lib/command.js:159:30)
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/firebase-tools/lib/command.js:5:58)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2020-05-16T14:54:53.262Z] ----------------------------------------------------------------------
+[debug] [2020-05-16T14:54:53.264Z] Command:       /home/florent/Applications/node-v10.15.1-linux-x64/bin/node /home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/.bin/firebase deploy --only hosting:admin-ici-drive-prod
+[debug] [2020-05-16T14:54:53.265Z] CLI Version:   8.2.0
+[debug] [2020-05-16T14:54:53.265Z] Platform:      linux
+[debug] [2020-05-16T14:54:53.265Z] Node Version:  v10.15.1
+[debug] [2020-05-16T14:54:53.266Z] Time:          Sat May 16 2020 16:54:53 GMT+0200 (GMT+02:00)
+[debug] [2020-05-16T14:54:53.266Z] ----------------------------------------------------------------------
+[debug] [2020-05-16T14:54:53.266Z] 
+[debug] [2020-05-16T14:54:53.276Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-16T14:54:53.276Z] > authorizing via signed-in user
+[debug] [2020-05-16T14:54:53.277Z] [iam] checking project ici-drive for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-05-16T14:54:53.280Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/ici-drive:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2020-05-16T14:54:54.070Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 16 May 2020 14:54:54 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=681","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-16T14:54:54.073Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/ici-drive  
+ 
+[debug] [2020-05-16T14:54:54.299Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 16 May 2020 14:54:54 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-16T14:54:54.399Z] TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received type undefined
+    at assertPath (path.js:39:11)
+    at Object.join (path.js:1152:7)
+    at Object.checkFunctionsSDKVersion [as fn] (/home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/firebase-tools/lib/checkFirebaseSDKVersion.js:33:28)
+    at Command.<anonymous> (/home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/firebase-tools/lib/command.js:159:30)
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/florent/VisualStudioCode/ici-drive-maker-app/node_modules/firebase-tools/lib/command.js:5:58)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+[error] 
+[error] Error: An unexpected error has occurred.

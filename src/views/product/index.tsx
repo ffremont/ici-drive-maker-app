@@ -125,7 +125,7 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
       <div className="area">
 
         <div className="image">
-          <img src={product.draftImage || product.image} alt="apercu produit" />
+          <img src={product.image} alt="apercu produit" />
         </div>
         <div className="action">
 
