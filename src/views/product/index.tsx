@@ -157,7 +157,7 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
           helperText="caractères alphanumérique"
           inputProps={{
             maxLength: 24,
-            pattern:"[A-Za-z0-9]+",
+            pattern:"[A-Za-z0-9_]+",
             readOnly: this.state.editMode
           }}
         />

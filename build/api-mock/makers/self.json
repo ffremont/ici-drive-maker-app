@@ -16,7 +16,7 @@
         "hebdoSlot": {
             "mercredi": {
                 "openAt": "8:00",
-                "closeAt": "12:00"
+                "closeAt": "18:00"
             },
             "mardi": {
                 "openAt": "11:00",
@@ -43,6 +43,9 @@
     "created": 1588358270684,
     "description": "CqIIAQBpwDbjaoLM30s33OS7BVJ8K7Y9utdaKc2YMYJFh3ZhvK",
     "webPage": "http://google.fr",
+    "payments":{
+        "acceptPaypal": true
+    },
     "products": [{
         "price": 0,
         "available": false,
