@@ -82,12 +82,11 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
     }
 
     myPromise
-      .then(() => makerStore.load())
+      .then(() => this.props.history.push('/products'))
       .catch(() => this.props.history.push('/error'));
   }
 
   onChangeUpload(target: any) {
-    console.log(target.files[0]);
     const imageFile = target.files[0];
 
     console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
@@ -117,7 +116,6 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
 
   render() {
     const product: P.Product = (this.state.product as any);
-    console.log(product);
 
     return <div className="product">
       <MenuApp mode="light" history={this.props.history} />

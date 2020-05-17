@@ -23,7 +23,7 @@ export class MakerStore implements Store<Maker|null>{
         if(file)
             myform.append('file',file);
 
-        await httpClientService.axios.put(conf.API.products(), myform);
+        await httpClientService.axios.put(conf.API.products(p.ref), myform);
     }
 
     static async deleteProduct(ref:string){
