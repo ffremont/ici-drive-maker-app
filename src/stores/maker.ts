@@ -44,11 +44,13 @@ export class MakerStore implements Store<Maker|null>{
     }
 
     public load():void{
-        httpClientService.axios.get(conf.API.self())
+        return httpClientService.axios.get(conf.API.self())
         .then((response: AxiosResponse<any>) => {
-            this.set(response.data);    
+            this.set(response.data);  
+            return response;  
         }).catch((e:any) => {
             console.error(e);
+            return Promise.reject(e);
         });
     }
 }

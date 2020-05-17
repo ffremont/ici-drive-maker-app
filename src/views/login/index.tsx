@@ -6,13 +6,14 @@ import {
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GoogleIcon from '../../assets/images/google.svg';
 import MailIcon from '../../assets/images/mail.svg';
+import IciDriveIcon from '../../assets/images/ici-drive-icon.png';
 import authService from '../../services/auth.service';
+import conf from '../../confs';
 import {FirebaseStub} from '../../stubs/firebase';
 
 if(process.env.REACT_APP_STAGE !== 'prod'){
@@ -59,14 +60,21 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
   private registerOnFirebase(){
     this.unregisterAuthObserver = (window as any).firebase.auth().onAuthStateChanged(
       (user:any) => {
-        // déclenche la redirection
-        this.setState({ loading: false, isSignedIn: !!user })
         if(user){
           (window as any).firebase.auth().currentUser.getIdToken().then((token:string) => authService.setIdToken(token));
-
           // avec le idToken, self() marchera
           authService.authenticated()
+          .then(()=> {
+            // déclenche la redirection
+            this.setState({ loading: false, isSignedIn: !!user })
+          }).catch(e => {
+              this.setState({from :'/create-account', loading: false, isSignedIn: !!user});
+          });
+
+          
         }else{
+          // déclenche la redirection
+          this.setState({ loading: false, isSignedIn: !!user })
           // no authenticated, noop show buttons
         }        
       }
@@ -103,13 +111,24 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="paper">
-              <Avatar className="avatar">
-                <LockOutlinedIcon />
-              </Avatar>
+              <Avatar className="avatar" src={IciDriveIcon} alt="ici drive logo"/>
               <Typography component="h1" variant="h5">
                 Connexion
           </Typography>
+           <Typography variant="body1">
+                Plateforme de drive pour producteurs locaux
+          </Typography>
               
+          <Button
+                type="button"
+                fullWidth
+                size="medium"
+                color="default"
+                onClick={() => window.location.href= conf.signin}
+                className="signin"
+              >
+                S'inscrire
+            </Button>
               <Button
                 type="button"
                 fullWidth

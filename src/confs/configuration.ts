@@ -12,6 +12,7 @@ export interface Configuration{
     baseURL: string,
     fcmPublicVapidKey:string,
     slotQuantity: number;
+    signin:string;
 
     cgu:string;
     cgr:string;

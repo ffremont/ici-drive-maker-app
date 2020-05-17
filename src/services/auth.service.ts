@@ -5,11 +5,14 @@ export class AuthService{
     public subToken = new BehaviorSubject<string|null>(null);
     public isAuth = false;
 
-    public authenticated(): void {
+    public async authenticated(): Promise<any> {
         if(!this.isAuth){
-            makerStore.load();
+            this.isAuth = true;
+            return await makerStore.load();
+        }else{
+            this.isAuth = true;
+            return Promise.resolve();
         }
-        this.isAuth = true;
     }
 
     public setIdToken(idToken:string){
