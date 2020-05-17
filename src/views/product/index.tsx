@@ -79,13 +79,17 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
     this.setState({waiting:true});
     let myPromise: any = null;
     if (this.state.editMode) {
+      newMaker.products = newMaker.products.map( (p:P.Product) => p.ref === this.state.product.ref ? this.state.product : p);
       myPromise = MakerStore.updateProduct(this.state.product, this.myBlob);
     } else {
+      newMaker.products.push(this.state.product);
       myPromise = MakerStore.addProduct(this.state.product, this.myBlob);
     }
 
     myPromise
-      .then(() => this.props.history.push('/products'))
+      .then(() => {
+        makerStore.set(newMaker);
+        this.props.history.push('/products');})
       .catch(() => this.props.history.push('/error'));
   }
 
