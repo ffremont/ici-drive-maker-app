@@ -14,11 +14,13 @@ import './Product.scss';
 import imageCompression from 'browser-image-compression';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @see formik https://stackworx.github.io/formik-material-ui/docs/api/material-ui
-class Product extends React.Component<{ history: any, match: any }, { editMode: boolean, maker: Maker | null, product: P.Product, isSubmitting: boolean }>{
+class Product extends React.Component<{ history: any, match: any }, { waiting:boolean, editMode: boolean, maker: Maker | null, product: P.Product, isSubmitting: boolean }>{
 
-  state = { maker: null, editMode: false, isSubmitting: false, product: { weight: 0, volume: 0, description: '', topOfList: false, bio: false, maxInCart: 10, ref: '', image: conf.baseURL + '/default_image.jpg', label: '', price: 0, categoryId: 'fruit-leg', available: false } };
+  state = { maker: null, waiting:false, editMode: false, isSubmitting: false, product: { weight: 0, volume: 0, description: '', topOfList: false, bio: false, maxInCart: 10, ref: '', image: conf.baseURL + '/default_image.jpg', label: '', price: 0, categoryId: 'fruit-leg', available: false } };
   subMaker: Subscription | null = null;
 
   myBlob: Blob | null = null;
@@ -30,17 +32,17 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
   componentDidMount() {
     const ref: string = this.props.match.params.id;
     const editMode = ref !== '0000'
-    this.setState({ editMode });
+    this.setState({ editMode, waiting:true });
 
     this.subMaker = makerStore.subscribe((maker: Maker) => {
       if (maker) {
         const product: any = (maker.products || []).filter(p => p.ref === ref);
         if (product.length) {
-          this.setState({ maker, product: product[0] });
+          this.setState({ maker, product: product[0], waiting:false });
         } else {
           const newProduct = { ...this.state.product };
           newProduct.ref = maker.prefixOrderRef;
-          this.setState({ maker, product: newProduct });
+          this.setState({ maker, product: newProduct, waiting:false });
         }
       }
     });
@@ -74,6 +76,7 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
       return;
     }
 
+    this.setState({waiting:true});
     let myPromise: any = null;
     if (this.state.editMode) {
       myPromise = MakerStore.updateProduct(this.state.product, this.myBlob);
@@ -288,6 +291,10 @@ class Product extends React.Component<{ history: any, match: any }, { editMode: 
         </Button>
 
       </form>
+
+      {this.state.waiting && (<Backdrop className="backdrop" open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>)}
 
     </div>;
   }

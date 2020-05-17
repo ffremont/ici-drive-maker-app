@@ -30,6 +30,8 @@ import { Maker } from '../../models/maker';
 import { Order } from '../../models/order';
 import AppDialog from '../../components/app-dialog';
 import {MakerStore} from '../../stores/maker';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 interface GraphicProduct extends Product {
@@ -47,9 +49,9 @@ const useStyles = (theme: Theme) => ({
   }
 });
 
-class Catalog extends React.Component<{ history: any, match: any, classes: any }, { openRemove:boolean, wantRemove:Product|null, products: GraphicProduct[], openPreview: string, maker: Maker | null, activeIndex: number, wantToAdd: Product | null, openCleanCart: boolean, cart: Order | null }>{
+class Catalog extends React.Component<{ history: any, match: any, classes: any }, { waiting:boolean,openRemove:boolean, wantRemove:Product|null, products: GraphicProduct[], openPreview: string, maker: Maker | null, activeIndex: number, wantToAdd: Product | null, openCleanCart: boolean, cart: Order | null }>{
 
-  state = { products: [], openCleanCart: false, activeIndex: -1, maker: null, openPreview: '', cart: null, wantToAdd: null, openRemove:false, wantRemove:null };
+  state = { products: [], waiting:false,openCleanCart: false, activeIndex: -1, maker: null, openPreview: '', cart: null, wantToAdd: null, openRemove:false, wantRemove:null };
   subMaker: Subscription | null = null;
 
   componentWillUnmount() {
@@ -57,6 +59,7 @@ class Catalog extends React.Component<{ history: any, match: any, classes: any }
   }
 
   componentDidMount() {
+    this.setState({waiting:true});
     this.subMaker = makerStore.subscribe((maker: Maker) => {
       if (maker) {
         const products = (maker.products || []).map((p: GraphicProduct) => {
@@ -65,7 +68,7 @@ class Catalog extends React.Component<{ history: any, match: any, classes: any }
         });
 
         this.setState({
-          maker, products
+          maker, products,waiting:false
         })
       }
     })
@@ -171,6 +174,10 @@ class Catalog extends React.Component<{ history: any, match: any, classes: any }
 
 
         </Grid>
+
+        {this.state.waiting && (<Backdrop className="backdrop" open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>)}
       </div>
     );
   }
