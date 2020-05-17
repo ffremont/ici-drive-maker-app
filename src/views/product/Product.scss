@@ -1,5 +1,5 @@
 .area{
-    margin-top:70px;
+    /*margin-top:70px;*/
 
     display: flex;
     align-items: center;
@@ -16,6 +16,9 @@
     }    
 }
 
+.product{
+    margin-bottom: 20px;
+}
 .options{
     display: flex;
     flex-direction: row;

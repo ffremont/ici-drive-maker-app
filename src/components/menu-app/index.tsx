@@ -186,6 +186,7 @@ const MenuApp = (props: any) => {
           )}
         </Toolbar>
       </AppBar>
+      <div className="ghost-appbar"></div>
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { deepOrange, grey, green } from '@material-ui/core/colors';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 
 
 
@@ -66,6 +67,10 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
   render() {
     return (<div className="my-orders">
       <MenuApp mode={'full'} history={this.props.history} />
+
+      {!this.state.orders.length && (<div className="empty">
+          <Typography variant="h6">Aucune commande</Typography>
+        </div>)}
 
        <div className="orders">
         <List>
