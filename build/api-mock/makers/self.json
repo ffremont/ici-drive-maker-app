@@ -66,6 +66,7 @@
         "image": "https://icidrive.b-cdn.net/ob_b9d902_roumanie-2018-produit-du-terroir-froma.PNG"
     }, {
         "available": true,
+        "topOfList": true,
         "maxInCart": 4,
         "description": "wZZKUSxdtVi5WK5TJ1HJFUnzYh8X0U",
         "ref": "R+ZEMh2",

@@ -38,6 +38,9 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
       if (maker) {
         const product: any = (maker.products || []).filter(p => p.ref === ref);
         if (product.length) {
+          product[0].bio = product[0].bio || false;
+          product[0].topOfList = product[0].topOfList || false;
+          
           this.setState({ maker, product: product[0], waiting:false });
         } else {
           const newProduct = { ...this.state.product };
@@ -123,7 +126,7 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
 
   render() {
     const product: P.Product = (this.state.product as any);
-
+console.log(product);
     return <div className="product">
       <MenuApp mode="light" history={this.props.history} />
 
@@ -241,11 +244,11 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
         <div className="options">
           <FormControlLabel control={<Checkbox name="topOfList"
             onChange={(e) => this.onChangeValue('topOfList', e.target.checked)}
-            value={this.state.product.topOfList} />} label="Top de la liste" />
+            checked={this.state.product.topOfList} />} label="Top de la liste" />
 
           <FormControlLabel control={<Checkbox name="bio"
             onChange={(e) => this.onChangeValue('bio', e.target.checked)}
-            value={this.state.product.bio} />} label="Bio" />
+            checked={this.state.product.bio} />} label="Bio" />
         </div>
 
         <div className="weight-volume">
