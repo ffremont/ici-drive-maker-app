@@ -17,7 +17,6 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import SearchIcon from '@material-ui/icons/Search';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CheckIcon from '@material-ui/icons/Check';
 import Modal from '@material-ui/core/Modal';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';

@@ -27,6 +27,11 @@ import authService from '../../services/auth.service';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import makerStore from '../../stores/maker';
 import { Maker } from '../../models/maker';
+import pwaService from '../../services/pwa.service';
+import ClearIcon from '@material-ui/icons/Clear';
+import { grey } from '@material-ui/core/colors';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,6 +55,16 @@ const useStyles = makeStyles((theme: Theme) =>
     fullList: {
       width: 'auto',
     },
+    installBar:{
+      color: theme.palette.common.white,
+      backgroundColor: grey[500],
+      marginBottom: 10,
+      padding: '10px 10px'
+    },
+    getApp:{
+      color: theme.palette.common.white,
+      borderColor: theme.palette.common.white
+    }
   }),
 );
 
@@ -59,6 +74,7 @@ const MenuApp = (props: any) => {
   const [auth] = useState(false);
   const [email, setEmail] = useState('');
   const [open, setOpen] = useState(false);
+  const [showInstall, setShowInstall] = useState(false);
 
   React.useEffect(() => {
     setMode(props.mode);
@@ -68,10 +84,25 @@ const MenuApp = (props: any) => {
     const subMaker = makerStore.subscribe((maker:Maker) =>{
       if(maker && maker.email)
         setEmail(maker.email.substr(0, maker.email.indexOf('@')));
-    })
+    });
+    const subInstalled = pwaService.installed.subscribe((installed) => {
+      if(installed)
+        setShowInstall(false)
+    });
+    const subCancelled = pwaService.cancelled.subscribe((cancelled) => {
+      if(cancelled)
+        setShowInstall(false)
+    });
+    const subBeforeinstallprompt = pwaService.beforeinstallprompt.subscribe((beforeinstallprompt) => {
+      if(beforeinstallprompt)
+        setShowInstall(true)
+    });
     return () => {
       // Nettoyage de l'abonnement
       subMaker.unsubscribe();
+      subInstalled.unsubscribe();
+      subCancelled.unsubscribe();
+      subBeforeinstallprompt.unsubscribe();
     };
   });
 
@@ -187,6 +218,23 @@ const MenuApp = (props: any) => {
         </Toolbar>
       </AppBar>
       <div className="ghost-appbar"></div>
+      { showInstall && (<div className={`install-bar ${classes.installBar}`}>
+        <div className="install-close" onClick={() => pwaService.close()}>
+            <ClearIcon/>
+        </div>
+        <div className="install-content">
+          <div className="install-icon">
+            <img src={IciDriveTypoIcon} alt="logo" />
+          </div>
+          <div className="install-title">
+            Drive de producteurs locaux
+          </div>
+        </div>
+        <div className="install-actions">
+        
+        <Button onClick={() => pwaService.install()} variant="outlined" startIcon={<GetAppIcon/>} className={classes.getApp}>Installer</Button>
+        </div>
+      </div>)}
     </div>
   );
 }
