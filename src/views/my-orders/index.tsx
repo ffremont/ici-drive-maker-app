@@ -11,11 +11,13 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import * as moment from 'moment';
 import { withStyles, Theme } from '@material-ui/core/styles';
-import { deepOrange, grey, green } from '@material-ui/core/colors';
+import { deepOrange, grey, green, common } from '@material-ui/core/colors';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
@@ -29,16 +31,16 @@ const useStyles = (theme: Theme) => ({
     backgroundColor: grey[500],
   },
   green:{
-    color: theme.palette.getContrastText(green[500]),
+    color: common.white,
     backgroundColor: green[500],
   }
 });
 
-class MyOrders extends React.Component<{ history: any, classes: any }, { orders: Order[] }>{
+class MyOrders extends React.Component<{ history: any, classes: any }, { orders: Order[], waiting:boolean }>{
 
   
   statusLabel:any = {};
-  state = { orders: [] };
+  state = { orders: [],waiting:false };
   sub: Subscription | null = null;
 
   componentWillUnmount() {
@@ -56,17 +58,22 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
     this.sub = ordersStore.subscribe((orders: Order[]) => {
       console.log('MyOrders > ordersStore.sub ',orders);
       if(orders)
-        (orders as any).sortBy('created',true);
+        (orders as any).sortBy('slot',true);
       this.setState({ orders : orders || [] })
     });
 
     // charge la liste des commandes
-    ordersStore.load();
+    this.setState({waiting:true});
+    ordersStore.load().finally(() => this.setState({waiting:false}));
   }
 
   render() {
     return (<div className="my-orders">
       <MenuApp mode={'full'} history={this.props.history} />
+
+      {this.state.waiting && (<Backdrop className="backdrop" open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>)}
 
       {!this.state.orders.length && (<div className="empty">
           <Typography variant="h6">Aucune commande</Typography>
@@ -81,7 +88,8 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
                   {this.statusLabel[(order.status as any)].label.substr(0,1).toUpperCase()}
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={this.statusLabel[(order.status as any)].label+` (${order.total}€)`} secondary={moment.default(order.created).format('ddd D MMM à HH:mm')} />
+              <ListItemText primary={this.statusLabel[(order.status as any)].label+` (${order.total}€)`} 
+              secondary={moment.default(order.slot).format('ddd D MMM à HH:mm')} />
               <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="next">
                       <ArrowForwardIosIcon />
