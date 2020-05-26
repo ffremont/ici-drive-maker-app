@@ -76,7 +76,7 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
       </Backdrop>)}
 
       {!this.state.orders.length && (<div className="empty">
-          <Typography variant="h6">Aucune commande</Typography>
+          <Typography variant="h6">Aucune réservation</Typography>
         </div>)}
 
        <div className="orders">

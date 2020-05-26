@@ -32,6 +32,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { grey } from '@material-ui/core/colors';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Button from '@material-ui/core/Button';
+import ShareIcon from '@material-ui/icons/Share';
+import Mentions from '../mentions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,10 +77,13 @@ const MenuApp = (props: any) => {
   const [email, setEmail] = useState('');
   const [open, setOpen] = useState(false);
   const [showInstall, setShowInstall] = useState(false);
+  const [hideInstallBanner, setHideInstallBanner] = useState(true);
+  const [openMentions, setOpenMentions] = useState(false);
 
   React.useEffect(() => {
     setMode(props.mode);
-  }, [props.mode])
+    setHideInstallBanner(props.hideInstallBanner);
+  }, [props.mode, props.hideInstallBanner]);
 
   useEffect(() => {
     const subMaker = makerStore.subscribe((maker:Maker) =>{
@@ -112,6 +117,14 @@ const MenuApp = (props: any) => {
       window.location.reload();
     }
   }
+
+  const shareDiscover = () => {
+    (window as any).navigator.share({
+      title: `Drive de produits locaux`,
+      text: `Simple, gratuit, ouvert à tous les producteurs, rendez-vous sur https://admin.ici-drive.fr/decouvrir et inscrivez-vous !`,
+    }); // partage l'URL de MDN
+    
+  };
   
   return (
     
@@ -140,7 +153,7 @@ const MenuApp = (props: any) => {
             <ListItemIcon><BugReportIcon /></ListItemIcon>
             <ListItemText primary="Support" secondary="Déclarer un incident" />
           </ListItem>
-          <ListItem button key="mentions">
+          <ListItem button key="mentions" onClick={() => setOpenMentions(true)}>
             <ListItemIcon><LibraryBooksIcon /></ListItemIcon>
             <ListItemText primary="Mentions" secondary="CGU, CGR, ..." />
           </ListItem>
@@ -158,7 +171,7 @@ const MenuApp = (props: any) => {
               <MenuIcon />
             </IconButton>
           )}
-          {mode !== 'full' && (
+          {mode !== 'full' && mode !== 'discover' && (
             <IconButton edge="start" className={classes.firstButton} onClick={() => props.history.goBack()} color="inherit" aria-label="précédent">
               <ArrowBackIosIcon />
             </IconButton>
@@ -173,6 +186,12 @@ const MenuApp = (props: any) => {
           {['light'].indexOf(mode) > -1 && (
             <Typography variant="h6" align="center" className={classes.title}>
               <img alt="icon ici drive" className="ici-drive-icon" src={IciDriveTypoIcon} />
+
+            </Typography>
+          )}
+          {['discover'].indexOf(mode) > -1 && (
+            <Typography variant="h6" className={classes.title}>
+              <img alt="icon ici drive" className="ici-drive-icon" src={IciDriveBannerIcon} />
 
             </Typography>
           )}
@@ -199,7 +218,15 @@ const MenuApp = (props: any) => {
           )}
           
          
+          {['discover'].indexOf(mode) > -1 && (
+            <IconButton aria-label="se connecter" onClick={() => props.history.push('/login')} color="inherit">
+              <AccountCircleIcon />
+            </IconButton>
+          )}
 
+          {(['discover'].indexOf(mode) > -1 )&&  (window as any).navigator.share && (<IconButton aria-label="partager" onClick={shareDiscover} color="inherit">
+            <ShareIcon />
+          </IconButton>)}
 
           {auth && (
             <div>
@@ -218,7 +245,7 @@ const MenuApp = (props: any) => {
         </Toolbar>
       </AppBar>
       <div className="ghost-appbar"></div>
-      { showInstall && (<div className={`install-bar ${classes.installBar}`}>
+      { !hideInstallBanner && showInstall && (<div className={`install-bar ${classes.installBar}`}>
         <div className="install-close" onClick={() => pwaService.close()}>
             <ClearIcon/>
         </div>
@@ -235,6 +262,8 @@ const MenuApp = (props: any) => {
         <Button onClick={() => pwaService.install()} variant="outlined" startIcon={<GetAppIcon/>} className={classes.getApp}>Installer</Button>
         </div>
       </div>)}
+
+      <Mentions open={openMentions} onClose={() => setOpenMentions(false)} />
     </div>
   );
 }

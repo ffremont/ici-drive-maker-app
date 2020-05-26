@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Slot(props: SlotProps) {
-    const classes = useStyles();
+    //const classes = useStyles();
     const [officeSlot, setOfficeSlot] = React.useState({ openAt: '8:00', closeAt: '12:00' });
 
     //on parcours tous les créneaux pour le jour "ouvert"

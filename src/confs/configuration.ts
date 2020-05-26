@@ -14,6 +14,12 @@ export interface Configuration{
     slotQuantity: number;
     signin:string;
 
+    demoAppIciDriveFr:string;
+    demoAdminIciDriveFr:string;
+
+    mentions:string;
+    privacy_policy:string;
+    acceptableUsePolicy:string;
     cgu:string;
     cgr:string;
     support:string;

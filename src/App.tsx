@@ -25,6 +25,7 @@ import Product from './views/product';
 import MyPlace from './views/my-place';
 import MyDrive from './views/my-drive';
 import CreateAccount from './views/create-account';
+import Discover from './views/discover';
 
 
 // @see https://material-ui.com/customization/palette/
@@ -69,7 +70,9 @@ class App extends React.Component<{}, { concurrentCalls: number }>{
 
             
 
-            <Route path="/login" component={Login} />         
+            <Route path="/discover" component={Discover} />         
+            <Route path="/decouvrir" component={Discover} />         
+            <Route path="/login" component={Login} /> 
             <Route path="/create-account" component={CreateAccount} />  
 
             <PrivateRoute exact path="/" component={MyOrders} /> 

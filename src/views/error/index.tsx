@@ -5,6 +5,7 @@ import BugReportIcon from '@material-ui/icons/BugReport';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import conf from '../../confs';
+import Link from '@material-ui/core/Link';
 
 function Error(props: any) {
   return (
@@ -14,7 +15,10 @@ function Error(props: any) {
       <div className="area">
         <BugReportIcon />
         <Typography variant="h4">Une erreur est survenue</Typography>
-        <Button color="secondary" onClick={() => window.open(conf.support)}>Déposer un ticket</Button>
+        
+        <Link href={conf.support} target="_blank">
+        <Button color="secondary">Déposer un ticket</Button>
+        </Link>
       </div>
     </div>
   );

@@ -1,0 +1,85 @@
+.main-paper{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 10px 10px 10px;
+
+    img.logo-full{
+        width: 30vw;
+    }
+
+    button.inscription{
+        margin-top: 20px;
+    }
+}
+
+.my-paper{
+    margin:15px;
+}
+
+.purposes-paper{
+    margin-top: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    
+    align-items: start;
+    .row{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        .number{
+            width: 70px;
+            min-width: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &.row{
+            margin-top:10px;
+        }
+    }
+}
+
+.demos{
+    .demo + .demo{
+        margin-top:10px;
+    }
+    .demo button{
+        width: 100%;
+    }
+    display: flex;
+    flex-direction: column;
+
+    margin-top:20px;
+}
+
+.my-chip {
+    margin: 0 5px;
+    height:26px !important;
+}
+
+.footer{
+    text-align: center;
+    margin: 30px 0;
+    text-decoration: underline;
+}
+
+.features-paper{
+    padding:15px;
+}
+
+.why-area{
+    background: #4a4a4a;
+    color: white;
+
+    padding:20px;
+
+    .text{
+        margin-top: 15px;
+    font-style: italic;
+    }
+}

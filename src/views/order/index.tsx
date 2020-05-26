@@ -38,10 +38,6 @@ import SnackAdd from '../../components/snack-add';
 import notifStore from '../../stores/notif';
 import { NotifType } from '../../models/notif';
 
-const waitingConfirmation = [
-  { icon: <PrintIcon />, name: 'print', label: 'Imprimer' },
-  { icon: <ClearIcon />, name: 'cancel', label: 'Annuler' }
-];
 const actions = [
   { icon: <PrintIcon />, name: 'print', label: 'Imprimer' },
   { icon: <PhoneIcon />, name: 'phone', label: 'Contacter' },
@@ -132,7 +128,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
     } else if (action && (action.name === 'cancel')) {
       this.setState({ openCancelDialog: true });
     } else if (action && (action.name === 'phone')) {
-      window.open(`tel:${(this.state.order as any).maker.phone}`, '_blank');
+      window.open(`tel:${(this.state.order as any).maker.phone}`);
     } else if (action && (action.name === 'copy-email')) {
       const copyText = document.querySelector('#customer_email') as any;
       if (copyText) {
@@ -271,7 +267,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         </Table>
       </TableContainer>)}
 
-      <Confirm title="Annuler la commande" withText={true} onClose={() => this.setState({ openCancelDialog: false })} onConfirm={(txt: string) => this.cancel(txt)} message="Je souhaite annuler pour le motif :" open={this.state.openCancelDialog} />
+      <Confirm title="Annuler la réservation" withText={true} onClose={() => this.setState({ openCancelDialog: false })} onConfirm={(txt: string) => this.cancel(txt)} message="Je souhaite annuler pour le motif :" open={this.state.openCancelDialog} />
 
 
       <Confirm title="Vérification de stocks"
@@ -279,7 +275,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         onClose={() => this.setState({ openVerifiedDialog: false })}
         onConfirm={(txt: string) => this.onClickVerifiedOrder(txt || '')}
         okText={`J'ai vérifié`}
-        message="La commande passera à l'état 'à confirmer' par le demandeur. Dès qu'elle sera confirmée, vous serez notifié."
+        message="La réservation passera à l'état 'à confirmer' par le demandeur. Dès qu'elle sera confirmée, vous serez notifié."
         open={this.state.openVerifiedDialog} />
 
       <Confirm title="Refuser la demande"
@@ -287,7 +283,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         onClose={() => this.setState({ openRefusedDialog: false })}
         onConfirm={(txt: string) => this.onClickRefusedOrder(txt || '')}
         okText={`Je refuse`}
-        message="La commande passera à l'état 'refuser'. Merci d'indiquer un motif."
+        message="La réservation passera à l'état 'refuser'. Merci d'indiquer un motif."
         open={this.state.openRefusedDialog} />
 
 
@@ -303,8 +299,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         onOpen={() => this.setState({ open: true })}
         open={this.state.open}
       >
-        {(currentOrder.status === O.OrderState.CONFIRMED ? waitingConfirmation : actions)
-        .filter(a => ((currentOrder.status === O.OrderState.CANCELLED) || (
+        {actions.filter(a => ((currentOrder.status === O.OrderState.CANCELLED) || (
           currentOrder.status === O.OrderState.REFUSED) )&& a.name === 'cancel' ? false : true)
         .map((action) => (
           <SpeedDialAction
