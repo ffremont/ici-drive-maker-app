@@ -171,7 +171,7 @@ const MenuApp = (props: any) => {
               <MenuIcon />
             </IconButton>
           )}
-          {mode !== 'full' && mode !== 'discover' && (
+          {mode !== 'full' && mode !== 'discover' && mode !== 'register' && (
             <IconButton edge="start" className={classes.firstButton} onClick={() => props.history.goBack()} color="inherit" aria-label="précédent">
               <ArrowBackIosIcon />
             </IconButton>
@@ -189,7 +189,7 @@ const MenuApp = (props: any) => {
 
             </Typography>
           )}
-          {['discover'].indexOf(mode) > -1 && (
+          {['discover', 'register'].indexOf(mode) > -1 && (
             <Typography variant="h6" className={classes.title}>
               <img alt="icon ici drive" className="ici-drive-icon" src={IciDriveBannerIcon} />
 
@@ -218,7 +218,7 @@ const MenuApp = (props: any) => {
           )}
           
          
-          {['discover'].indexOf(mode) > -1 && (
+          {['discover', 'register'].indexOf(mode) > -1 && (
             <IconButton aria-label="se connecter" onClick={() => props.history.push('/login')} color="inherit">
               <AccountCircleIcon />
             </IconButton>

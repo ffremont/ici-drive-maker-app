@@ -1,0 +1,16 @@
+.register-content{
+    padding:15px;
+}
+
+.next-action, .back-action{
+    position: fixed !important;
+    bottom: 30px;
+   
+    
+}
+.next-action{
+    right: 30px;
+}
+.back-action{
+    right:100px;
+}

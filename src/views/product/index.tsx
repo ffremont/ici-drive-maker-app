@@ -117,6 +117,7 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
         this.myBlob = compressedFile;
 
         newProduct.image = (window as any).URL.createObjectURL(compressedFile);
+        //let blob = await fetch(url).then(r => r.blob());
         this.setState({ product: newProduct });
       })
       .catch(function (error) {
@@ -126,7 +127,7 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
 
   render() {
     const product: P.Product = (this.state.product as any);
-console.log(product);
+
     return <div className="product">
       <MenuApp mode="light" history={this.props.history} />
 

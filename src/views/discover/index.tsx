@@ -21,7 +21,7 @@ function Discover(props: any) {
 
       <Paper className=" my-paper main-paper">
         <img src="https://icidrive.b-cdn.net/admin-ici-drive-fr/ici-drive-full.jpg" className="logo-full" alt="ici-drive.fr" />
-        <Typography variant="h4">
+        <Typography variant="h4" align="center">
           Drive de produits locaux
         </Typography>
         <div>
@@ -73,17 +73,12 @@ function Discover(props: any) {
         </Typography>
         <Typography variant="body2" className="text">
           Jeune parent actif, je partage comme beaucoup de personnes le goût de consommer local (qualité, circuit court, vente directe). Dernière l'achat de produits locaux, je souhaite découvrir et consommer près de chez moi.
-
-
-          Aujourd'hui, il n'existe pas de solution pour acheter local, rapidement et facilement autour de chez nous. En tout cas, pas comme je le souhaite.
-
-
+<br/>
           La vente en "Drive" est pour tous les actifs une réelle solution. C'est simple, clair, et déjà appliqué dans la grande distribution, pourquoi pas pour les producteurs ?
-  
-          Et maintenant, pour que cette initiative citoyenne gratuite prenne vie, j'ai besoin de vous.
+  <br/>
+          Et maintenant, pour que cette initiative citoyenne gratuite prenne vie, j'ai besoin de vous en vous inscrivant.
         </Typography>
         <Typography variant="body2" className="sign" align="right">Florent FREMONT (initiateur)</Typography>
-
       </div>
 
       <Paper className=" my-paper features-paper">
