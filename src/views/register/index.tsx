@@ -10,6 +10,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import MakerContact from '../../components/maker/maker-contact';
 import MakerShop from '../../components/maker/maker-shop';
+import MakerPlace from '../../components/maker/maker-place';
 
 class Register extends React.Component<{ history: any, match: any }, { maker: Maker, activeStep: number, steps: any, validation:any }>{
 
@@ -26,10 +27,11 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
       hebdoSlot: {}
     },
     categories:[]
-   }, activeStep: 1, steps: ['Contact', 'Commerce', 'Retrait',  'Horaires'], validation:{disableNext:true, showErrors:false} };
+   }, activeStep: 3, steps: ['Contact', 'Commerce', 'Retrait',  'Horaires'], validation:{disableNext:true, showErrors:false} };
 
   makerContactRef:any;
   makerShopRef:any;
+  makerPlace:any;
 
   currentMaker :any = null;
 
@@ -40,6 +42,7 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
   componentDidMount() {
     this.makerContactRef = React.createRef();
     this.makerShopRef = React.createRef();
+    this.makerPlace = React.createRef();
     this.currentMaker = {...this.state.maker};
   }
 
@@ -67,14 +70,7 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
     this.checkStep(newIndexStep);
   }
 
-  onMakerContactChange(newMaker:Maker, isValid:boolean){
-    console.log('onMakerContactChange', newMaker, isValid);
-    this.currentMaker = newMaker;
-    this.setState({validation : {...this.state.validation, disableNext: !isValid}});
-  }
-
-  onMakerShopChange(newMaker:Maker, isValid:boolean){
-    console.log('onMakerShopChange', newMaker, isValid);
+  onStepChange(newMaker:Maker, isValid:boolean){
     this.currentMaker = newMaker;
     this.setState({validation : {...this.state.validation, disableNext: !isValid}});
   }
@@ -95,11 +91,15 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
       <div className="register-content">
 
         {this.state.activeStep === 0 && (
-          <MakerContact ref={this.makerContactRef} id="maker-contact" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onMakerContactChange(m,v)} />
+          <MakerContact ref={this.makerContactRef} id="maker-contact" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
         )}
 
         {this.state.activeStep === 1 && (
-          <MakerShop ref={this.makerShopRef} id="maker-shop" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onMakerShopChange(m,v)} />
+          <MakerShop ref={this.makerShopRef} id="maker-shop" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
+        )}
+
+        {this.state.activeStep === 2 && (
+          <MakerPlace ref={this.makerShopRef} id="maker-place" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
         )}
 
       </div>

@@ -17,11 +17,11 @@ export class MakerStore implements Store<Maker|null>{
         return this.sub.subscribe(func);
     }
 
-    static async updateProduct(p:Product, file:Blob|null = null){
+    static async updateProduct(p:Product, file:Blob|null = null, fileName:string = ''){
         const myform = new FormData();
         myform.append('data', JSON.stringify(p));
         if(file)
-            myform.append('file',file);
+            myform.append('file',file, fileName);
 
         await httpClientService.axios.put(conf.API.products(p.ref), myform);
     }
@@ -35,11 +35,11 @@ export class MakerStore implements Store<Maker|null>{
     /**
      * @param product 
      */
-    static async addProduct(p:Product, file:Blob|null = null){
+    static async addProduct(p:Product, file:Blob|null = null, fileName:string = ''){
         const myform = new FormData();
         myform.append('data', JSON.stringify(p));
         if(file)
-            myform.append('file',file);
+            myform.append('file',file, fileName);
         await httpClientService.axios.post(conf.API.products(), myform);
     }
 

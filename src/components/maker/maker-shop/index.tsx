@@ -10,7 +10,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -82,8 +81,12 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
         console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
         console.log(`compressedFile size ${compressedFile.size / 1024} KB`); // smaller than maxSizeMB
 
-        setImage((window as any).URL.createObjectURL(compressedFile));
+        const newImage = (window as any).URL.createObjectURL(compressedFile);
         //let blob = await fetch(url).then(r => r.blob());
+        aChange(() => {
+          setImage(newImage);
+          return { ...maker, image: newImage } as any;
+        });
       })
       .catch(function (error) {
         console.log(error.message);
