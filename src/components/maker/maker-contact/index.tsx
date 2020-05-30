@@ -1,6 +1,5 @@
 import React, {forwardRef} from 'react';
 import TextField from '@material-ui/core/TextField';
-import { Maker } from '../../../models/maker';
 
 export default forwardRef(function MakerContact(props: any, ref:any) {
   const [maker, setMaker] = React.useState<any>({});

@@ -27,6 +27,7 @@ import MyDrive from './views/my-drive';
 import CreateAccount from './views/create-account';
 import Discover from './views/discover';
 import Register from './views/register';
+import RegisterSuccess from './views/register/success';
 
 
 // @see https://material-ui.com/customization/palette/
@@ -71,8 +72,10 @@ class App extends React.Component<{}, { concurrentCalls: number }>{
 
             <Route path="/decouvrir" component={Discover} />         
             <Route path="/inscription" component={Register} />         
+            <Route path="/inscription-reussie" component={RegisterSuccess} />    
 
             <Route path="/register" component={Register} />         
+            <Route path="/register-success" component={RegisterSuccess} />         
             <Route path="/discover" component={Discover} />         
             <Route path="/login" component={Login} /> 
             <Route path="/create-account" component={CreateAccount} />  

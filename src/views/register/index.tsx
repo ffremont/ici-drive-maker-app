@@ -11,6 +11,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import MakerContact from '../../components/maker/maker-contact';
 import MakerShop from '../../components/maker/maker-shop';
 import MakerPlace from '../../components/maker/maker-place';
+import MakerSlots from '../../components/maker/maker-slots';
 
 class Register extends React.Component<{ history: any, match: any }, { maker: Maker, activeStep: number, steps: any, validation:any }>{
 
@@ -27,11 +28,12 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
       hebdoSlot: {}
     },
     categories:[]
-   }, activeStep: 3, steps: ['Contact', 'Commerce', 'Retrait',  'Horaires'], validation:{disableNext:true, showErrors:false} };
+   }, activeStep: 0, steps: ['Contact', 'Commerce', 'Retrait',  'Horaires'], validation:{disableNext:true, showErrors:false} };
 
   makerContactRef:any;
   makerShopRef:any;
-  makerPlace:any;
+  makerPlaceRef:any;
+  makerSlotsRef:any;
 
   currentMaker :any = null;
 
@@ -42,16 +44,17 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
   componentDidMount() {
     this.makerContactRef = React.createRef();
     this.makerShopRef = React.createRef();
-    this.makerPlace = React.createRef();
+    this.makerPlaceRef = React.createRef();
+    this.makerSlotsRef = React.createRef();
     this.currentMaker = {...this.state.maker};
   }
 
-  checkStep(newIndexStep:number){
-    if(newIndexStep === 0){
-      const isValid = this.makerContactRef.current ? this.makerContactRef.current.checkValidity(): false;
-      this.setState({validation : {...this.state.validation, disableNext: !isValid, showErrors: !isValid}})
-    }else if(newIndexStep === 1){
-      const isValid = this.makerShopRef.current ? this.makerShopRef.current.checkValidity(): false;
+  checkStep(newIndexStep:number, cActiveStep: number){
+    const orderRefs = [this.makerContactRef, this.makerShopRef, this.makerPlaceRef, this.makerSlotsRef];
+
+    if(newIndexStep < cActiveStep){
+      // on recule, donc on valide
+      const isValid = orderRefs[newIndexStep] && orderRefs[newIndexStep].current ? orderRefs[newIndexStep].current.checkValidity(): false;
       this.setState({validation : {...this.state.validation, disableNext: !isValid, showErrors: !isValid}})
     }else{
       this.setState({validation:{...this.state.validation, showErrors:false}});
@@ -60,17 +63,20 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
 
   next(newIndexStep:number) {
     window.scrollTo(0,0);
+    const cActiveStep = 0+this.state.activeStep;
     this.setState({ maker: this.currentMaker, activeStep: newIndexStep });
-    this.checkStep(newIndexStep);
+    this.checkStep(newIndexStep, cActiveStep);
   }
 
   back(newIndexStep:number){
     window.scrollTo(0,0);
+    const cActiveStep = 0+this.state.activeStep;
     this.setState({maker: this.currentMaker, activeStep: newIndexStep});
-    this.checkStep(newIndexStep);
+    this.checkStep(newIndexStep, cActiveStep);
   }
 
   onStepChange(newMaker:Maker, isValid:boolean){
+    console.log('step change', newMaker, isValid);
     this.currentMaker = newMaker;
     this.setState({validation : {...this.state.validation, disableNext: !isValid}});
   }
@@ -99,7 +105,11 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
         )}
 
         {this.state.activeStep === 2 && (
-          <MakerPlace ref={this.makerShopRef} id="maker-place" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
+          <MakerPlace ref={this.makerPlaceRef} id="maker-place" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
+        )}
+
+        {this.state.activeStep === 3 && (
+          <MakerSlots ref={this.makerSlotsRef} id="maker-slots" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
         )}
 
       </div>

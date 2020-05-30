@@ -38,7 +38,6 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
       };
 
       const autocomplete = new maps.places.Autocomplete(input, options);
-      console.log("o");
 
       autocomplete.addListener('place_changed', () => {
         var place = autocomplete.getPlace();
@@ -49,13 +48,20 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
             return { ...maker, address: place.formatted_address } as any;
           })        
       });
+    }else{
+      (document as any).getElementById(`${props.id}_address`).addEventListener('change', (e:any) => {
+        aChange(() => {
+          setAddress(e.target.value);
+          return { ...maker, address: e.target.value } as any;
+        })   
+      });
     }
   });
 
   React.useEffect(() => {
     setMaker(props.maker || null);
     if (props.maker) {
-      if (props.maker.image) setImage(props.maker.image)
+      if (props.maker.place.image) setImage(props.maker.place.image)
       setLabel(props.maker.place.label);
       if (props.maker.place.address) setAddress(props.maker.place.address)
     }
@@ -154,7 +160,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         <TextField
           fullWidth
           value={address}
-          label=""
+          label="Adresse complète"
           type="text"
           multiline={true}
           rows={1}
@@ -167,7 +173,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
             id: `${props.id}_address`,
             maxLength: 512,
             name: 'address',
-            placeholder: 'Adresse complète'
+            placeholder: ''
           }}
         />
 

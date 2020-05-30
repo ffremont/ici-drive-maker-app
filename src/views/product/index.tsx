@@ -25,6 +25,7 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
 
   myBlob: Blob | null = null;
   originalFileName = '';
+  originalImage = '';
 
   componentWillUnmount() {
     this.subMaker?.unsubscribe();
@@ -41,7 +42,7 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
         if (product.length) {
           product[0].bio = product[0].bio || false;
           product[0].topOfList = product[0].topOfList || false;
-          
+          this.originalImage = product[0].image ||'';
           this.setState({ maker, product: product[0], waiting:false });
         } else {
           const newProduct = { ...this.state.product };
@@ -84,7 +85,8 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
     let myPromise: any = null;
     if (this.state.editMode) {
       newMaker.products = newMaker.products.map( (p:P.Product) => p.ref === this.state.product.ref ? this.state.product : p);
-      myPromise = MakerStore.updateProduct(this.state.product, this.myBlob, this.originalFileName);
+      
+      myPromise = MakerStore.updateProduct({...this.state.product, image: this.originalImage}, this.myBlob, this.originalFileName);
     } else {
       newMaker.products.push(this.state.product);
       myPromise = MakerStore.addProduct(this.state.product, this.myBlob, this.originalFileName);
@@ -118,7 +120,6 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
         const newProduct: any = { ...this.state.product };
         this.myBlob = compressedFile;
         
-
         newProduct.image = (window as any).URL.createObjectURL(compressedFile);
         //let blob = await fetch(url).then(r => r.blob());
         this.setState({ product: newProduct });

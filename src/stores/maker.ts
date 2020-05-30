@@ -21,7 +21,7 @@ export class MakerStore implements Store<Maker|null>{
         const myform = new FormData();
         myform.append('data', JSON.stringify(p));
         if(file)
-            myform.append('file',file, fileName);
+            myform.append('file',file, fileName.trim().endsWith('blob') ? fileName.replace('.blob','.jpg'):fileName);
 
         await httpClientService.axios.put(conf.API.products(p.ref), myform);
     }
@@ -30,8 +30,6 @@ export class MakerStore implements Store<Maker|null>{
         await httpClientService.axios.delete(conf.API.products(ref));
     }
 
-
-
     /**
      * @param product 
      */
@@ -39,7 +37,7 @@ export class MakerStore implements Store<Maker|null>{
         const myform = new FormData();
         myform.append('data', JSON.stringify(p));
         if(file)
-            myform.append('file',file, fileName);
+            myform.append('file',file, fileName.trim().endsWith('blob') ? fileName.replace('.blob','.jpg'):fileName);
         await httpClientService.axios.post(conf.API.products(), myform);
     }
 

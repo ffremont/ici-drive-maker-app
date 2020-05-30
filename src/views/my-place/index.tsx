@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuApp from '../../components/menu-app';
 import TextField from '@material-ui/core/TextField';
 import { Place } from '../../models/place';
-import Slot from './slot';
+import Slot from '../../components/slot/slot';
 
 class MyPlace extends React.Component<{ history: any, match: any }, { maker: Maker | null }>{
 

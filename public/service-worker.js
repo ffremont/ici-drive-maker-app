@@ -18,7 +18,7 @@ if (firebase) {
   });
 }
 
-const CACHE = "pwabuilder-page";
+const CACHE = "pwabuilder-page_2";
 
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "offline.html";
