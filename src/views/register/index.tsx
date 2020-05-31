@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 import './Register.scss';
 import { Maker } from '../../models/maker';
 import Fab from '@material-ui/core/Fab';
@@ -12,20 +12,31 @@ import MakerContact from '../../components/maker/maker-contact';
 import MakerShop from '../../components/maker/maker-shop';
 import MakerPlace from '../../components/maker/maker-place';
 import MakerSlots from '../../components/maker/maker-slots';
+import CheckIcon from '@material-ui/icons/Check';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { MakerStore } from '../../stores/maker';
 
-class Register extends React.Component<{ history: any, match: any }, { maker: Maker, activeStep: number, steps: any, validation:any }>{
+class Register extends React.Component<{ history: any, match: any }, { maker: Maker, waiting:boolean, activeStep: number, steps: any, validation:any }>{
 
-  state = { maker: {
+  state = { waiting:false, maker: {
     id:'', 
     created:(new Date()).getTime(),
     name: '',
     image: '',
+    startDriveAfterDays:5,
     email: '',
     description: '',
     prefixOrderRef: 'REF_',
     place: {
       label: '',
       hebdoSlot: {}
+    },
+    payments: {
+      acceptCoins: false,
+      acceptCards: false,
+      acceptBankCheck: false,
+      acceptPaypal: false
     },
     categories:[]
    }, activeStep: 0, steps: ['Contact', 'Commerce', 'Retrait',  'Horaires'], validation:{disableNext:true, showErrors:false} };
@@ -52,13 +63,20 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
   checkStep(newIndexStep:number, cActiveStep: number){
     const orderRefs = [this.makerContactRef, this.makerShopRef, this.makerPlaceRef, this.makerSlotsRef];
 
-    if(newIndexStep < cActiveStep){
-      // on recule, donc on valide
-      const isValid = orderRefs[newIndexStep] && orderRefs[newIndexStep].current ? orderRefs[newIndexStep].current.checkValidity(): false;
-      this.setState({validation : {...this.state.validation, disableNext: !isValid, showErrors: !isValid}})
-    }else{
-      this.setState({validation:{...this.state.validation, showErrors:false}});
-    }
+    const isValid = orderRefs[newIndexStep] && orderRefs[newIndexStep].current ? orderRefs[newIndexStep].current.checkValidity(): false;
+    this.setState({validation : {...this.state.validation, disableNext: !isValid}})
+    
+  }
+
+  submit() {
+    this.setState({waiting:true});
+    MakerStore.register(this.state.maker)
+      .then(() => {
+        this.props.history.push('/inscription-reussie');
+      }).catch((e:any) => {
+        console.error(e);
+        this.props.history.push('/error');
+      });
   }
 
   next(newIndexStep:number) {
@@ -114,14 +132,21 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
 
       </div>
       <div className="register-footer">
-        <Fab color="secondary" aria-label="next" disabled={this.state.validation.disableNext} onClick={() => this.next(this.state.activeStep+1)} className="next-action">
+        { this.state.activeStep !== (this.state.steps.length -1) && <Fab color="secondary" aria-label="next" disabled={this.state.validation.disableNext} onClick={() => this.next(this.state.activeStep+1)} className="next-action">
           <ArrowForwardIosIcon />
-        </Fab>
-        {this.state.activeStep > 0 && (<Fab onClick={() => this.back(this.state.activeStep-1)} className="back-action" color="primary" aria-label="back">
+        </Fab>})
+        {this.state.activeStep === (this.state.steps.length -1) && (<Fab onClick={() => this.submit()} disabled={this.state.validation.disableNext} className="check-action" color="secondary" aria-label="back">
+          <CheckIcon />
+        </Fab>)}
+        {this.state.activeStep > 0  && (<Fab onClick={() => this.back(this.state.activeStep-1)} className="back-action" color="primary" aria-label="back">
           <ArrowBackIosIcon />
         </Fab>)}
+        
       </div>
 
+ {this.state.waiting && (<Backdrop className="backdrop" open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>)}
 
 
     </div>);

@@ -2,13 +2,13 @@
     padding:15px;
 }
 
-.next-action, .back-action{
+.next-action, .back-action, .check-action{
     position: fixed !important;
     bottom: 30px;
    
     
 }
-.next-action{
+.next-action, .check-action{
     right: 30px;
 }
 .back-action{

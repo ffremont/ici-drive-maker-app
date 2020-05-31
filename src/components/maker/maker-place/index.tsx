@@ -5,6 +5,7 @@ import { Maker } from '../../../models/maker';
 import Button from '@material-ui/core/Button';
 import conf from '../../../confs';
 import TextField from '@material-ui/core/TextField';
+import { Place } from '../../../models/place';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,11 +25,13 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
 
   const [maker, setMaker] = React.useState<Maker | null>(null);
   const [label, setLabel] = React.useState('');
+  const [description, setDescription] = React.useState('');
   const [address, setAddress] = React.useState('');
   const [readonly, setReadonly] = React.useState(false);
   const [image, setImage] = React.useState(conf.baseURL + '/default_image.jpg');
 
   React.useEffect(() => {
+    let fnChange:any = null;
     if (process.env.REACT_APP_STAGE === 'prod') {
       const maps = (window as any).google.maps
 
@@ -45,16 +48,21 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
 
         aChange(() => {
             setAddress(place.formatted_address);
-            return { ...maker, address: place.formatted_address } as any;
+            return { ...maker?.place, address: place.formatted_address } as any;
           })        
       });
     }else{
-      (document as any).getElementById(`${props.id}_address`).addEventListener('change', (e:any) => {
+      fnChange = (e:any) => {
         aChange(() => {
           setAddress(e.target.value);
-          return { ...maker, address: e.target.value } as any;
+          return { ...maker?.place, address: e.target.value  } as any;
         })   
-      });
+      };
+      (document as any).getElementById(`${props.id}_address`).addEventListener('change', fnChange);
+    }
+
+    return () => {
+      if(fnChange) (document as any).getElementById(`${props.id}_address`).removeEventListener('change', fnChange);
     }
   });
 
@@ -79,12 +87,13 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
 
   const onChangeUpload = (t: any) => {
     const imageFile = t.files[0];
+    if(!imageFile)return;
 
     console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
     console.log(`originalFile size ${imageFile.size / 1024} KB`);
 
     const options = {
-      maxSizeMB: 100 / 1024,
+      maxSizeMB: 150 / 1024,
       maxWidthOrHeight: 1024,
       useWebWorker: true
     }
@@ -98,16 +107,18 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         //let blob = await fetch(url).then(r => r.blob());
         aChange(() => {
           setImage(newImage);
-          return { ...maker, image: newImage } as any;
+          return  {...(maker as any).place, image:newImage};
         });
       })
       .catch(function (error) {
-        console.log(error.message);
+        console.error(error);
+        props.history.push('/error');
       });
   };
 
   const aChange = (makerProviderFn: any) => {
-    const newMaker = makerProviderFn();
+    const place:Place = makerProviderFn();
+    const newMaker:any = {...maker, place: place};
     setMaker(newMaker);
     const check = (document as any).getElementById(props.id).checkValidity();
     if (props.onChange && check !== undefined) props.onChange(newMaker, check)
@@ -146,7 +157,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
           type="text"
           onChange={(e: any) => aChange(() => {
             setLabel(e.target.value);
-            return { ...maker, name: e.target.value } as any;
+            return { ...maker?.place, label: e.target.value } as any;
           })}
           required={!readonly}
           inputProps={{
@@ -174,6 +185,27 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
             maxLength: 512,
             name: 'address',
             placeholder: ''
+          }}
+        />
+
+<TextField
+          fullWidth
+          value={description}
+          label="Description du lieu"
+          type="text"
+          onChange={(e: any) => aChange(() => {
+            setDescription(e.target.value);
+            console.log('place',maker?.place);
+            return { ...maker?.place, description: e.target.value } as any;
+          })}
+          multiline={true}
+          rows={1}
+          rowsMax={3}
+          required={!readonly}
+          inputProps={{
+            readOnly: readonly,
+            maxLength: 256,
+            name: 'description'
           }}
         />
 

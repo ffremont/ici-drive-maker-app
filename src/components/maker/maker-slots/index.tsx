@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cgu:{
       display: 'flex',
-      marginTop: '20px'
+      marginTop: '20px',
+      alignItems: 'center'
     }
     
   }),
@@ -46,8 +47,6 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
     }
   }, [props.validate]);
 
-
-
   const aChange = (makerProviderFn: any) => {
     const newMaker = makerProviderFn();
     setMaker(newMaker);
@@ -55,7 +54,7 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
     if (props.onChange && check !== undefined) props.onChange(newMaker, check)
   }; 
 
-  const aChangeOnSlot = (day:string) => {
+  const aChangeOnSlot =   (day:string) => {
     return (officeSlot:OfficeSlot | null) => {
       aChange( () => {
         const newMaker = {...maker};
@@ -64,8 +63,6 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
       })
     };
   }
-
-
 
   const place = maker && (maker as any).place ? (maker as any).place as Place : null;
   return (
@@ -109,7 +106,7 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
               return maker;
             })}
             inputProps={{ 'aria-label': 'primary checkbox' }}
-          /> <Typography variant="body1" className="accept-cgu">Accepter les <a href={conf.cgr} target="_blank">Conditions Générales d'utilisation</a></Typography>
+          /> <Typography variant="body1" className="accept-cgu">Accepter les <a href={conf.cgr} rel="noopener noreferrer" target="_blank">Conditions Générales d'utilisation</a></Typography>
       </div>
     </form>
   );

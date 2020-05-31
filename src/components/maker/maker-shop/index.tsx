@@ -29,6 +29,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
 
   const [maker, setMaker] = React.useState<Maker | null>(null);
   const [name, setName] = React.useState('');
+  const [startDriveAfterDays, setStartDriveAfterDays] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [webPage, setWebPage] = React.useState('');
   const [prefixOrderRef, setPrefixOrderRef] = React.useState('');
@@ -51,6 +52,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
       setPrefixOrderRef(props.maker.prefixOrderRef);
       if (props.maker.payments) setPayments(props.maker.payments);
       if (props.maker.webPage) setWebPage(props.maker.webPage);
+      if (props.maker.startDriveAfterDays) setStartDriveAfterDays(props.maker.startDriveAfterDays);
     }
   }, [props.maker]);
 
@@ -66,6 +68,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
 
   const onChangeUpload = (t: any) => {
     const imageFile = t.files[0];
+    if(!imageFile)return;
 
     console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
     console.log(`originalFile size ${imageFile.size / 1024} KB`);
@@ -89,22 +92,28 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
         });
       })
       .catch(function (error) {
-        console.log(error.message);
+        console.error(error);
+        props.history.push('/error');
       });
   };
 
+  /**
+   * Changement de l'état de l'étape
+   * @param makerProviderFn 
+   */
   const aChange = (makerProviderFn: any) => {
     const newMaker = makerProviderFn();
     setMaker(newMaker);
-    const check = (document as any).getElementById(props.id).checkValidity();
+    const check = (document as any).getElementById(props.id).checkValidity()
+      && (newMaker.payments.acceptBankCheck || newMaker.payments.acceptCards
+        || newMaker.payments.acceptCoins || newMaker.payments.acceptPaypal);
+
     if (props.onChange && check !== undefined) props.onChange(newMaker, check)
   };
 
   const aPaymentChange = (e:any) => aChange(() => {
-    console.log(e.target.name+' : '+e.target.checked);
     const newP = { ...payments, [e.target.name]: e.target.checked };
     setPayments(newP);
-    console.log(newP);
     return { ...maker, payments: newP } as any;
   });
 
@@ -169,6 +178,26 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
             readOnly: readonly,
             maxLength:512,
             name:'description'
+          }}
+        />
+
+<TextField
+          fullWidth
+          value={startDriveAfterDays}
+          label="Retrait au plus tôt avant (jours ouvrables)"
+          type="number"          
+          onChange={(e: any) => aChange(() => {
+            const v = parseInt(e.target.value) >= 5 ? e.target.value : 5;
+            setStartDriveAfterDays(v);
+            return { ...maker, startDriveAfterDays: v } as any;
+          })}
+          required={!readonly}
+          inputProps={{
+            readOnly: readonly,
+            maxLength:10,
+            max:100,
+            min:5,
+            name:'startDriveAfterDays'
           }}
         />
 

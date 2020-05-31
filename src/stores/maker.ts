@@ -17,6 +17,19 @@ export class MakerStore implements Store<Maker|null>{
         return this.sub.subscribe(func);
     }
 
+    static async register(maker:Maker){
+        const myform = new FormData();
+        myform.append('data', JSON.stringify(maker));
+
+        let blobImage = await fetch(maker.image).then(r => r.blob());
+        myform.append('fileImage',blobImage, `${Math.random().toString(36).substring(2)}.jpg`);
+
+        let blobPlaceImage = await fetch(maker?.place.image || '').then(r => r.blob());
+        myform.append('filePlaceImage',blobPlaceImage, `${Math.random().toString(36).substring(2)}.jpg`);
+
+        await httpClientService.axios.post(conf.API.self(), myform);
+    }
+
     static async updateProduct(p:Product, file:Blob|null = null, fileName:string = ''){
         const myform = new FormData();
         myform.append('data', JSON.stringify(p));
