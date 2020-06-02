@@ -74,12 +74,19 @@ class Catalog extends React.Component<{ history: any, match: any, classes: any }
   }
 
   onConfirmRemove(){
+    this.setState({waiting:true});
     MakerStore.deleteProduct((this.state.wantRemove as any).ref)
-    .then( ()=> this.setState({wantRemove: null}))
+    .then( ()=> {
+      const newMaker: any= {...(this.state.maker as any)};
+      newMaker.products = newMaker.products.filter((p:Product) => p.ref !== (this.state.wantRemove as any).ref);
+      this.setState({wantRemove: null, waiting:false});
+      makerStore.set(newMaker);      
+    })
     .catch( () => this.props.history.push('/error'));    
   }
 
   render() {
+
     return (
       <div className="maker">
         <MenuApp mode="catalog" history={this.props.history} />
@@ -107,7 +114,7 @@ class Catalog extends React.Component<{ history: any, match: any, classes: any }
         </Modal>
 
         <Grid className="products-grid" container alignContent="center" alignItems="center" justify="center" spacing={0}>
-          {this.state.products.map((p: GraphicProduct, i: number) => (
+          {this.state.products.map((p: any, i: number) => (
             <Grid item key={i}>
               <Card className="product-card" >
                 {p.available && (<CardHeader
@@ -157,8 +164,11 @@ class Catalog extends React.Component<{ history: any, match: any, classes: any }
                 </CardActions>
                 <Collapse in={this.state.activeIndex === i} timeout="auto" unmountOnExit>
                   <CardContent>
-                    {p.volume && (<Typography className="my-p" paragraph>Volume: {parseFloat(`${p.volume}`).toFixed(2)}L</Typography>)}
-                    {p.weight && (<Typography className="my-p" paragraph>Poids: {p.weight > 1000 ? parseFloat(`${p.weight / 1000}`).toFixed(1) + 'k' : parseFloat(`${p.weight}`).toFixed(0)}g</Typography>)}
+                    
+                    {p && (p.volume > 0) && (<Typography className="my-p" paragraph>Volume: {parseFloat(`${p.volume}`).toFixed(2)}L</Typography>)}
+                    
+                    
+                    {p && (p.weight > 0) && (<Typography className="my-p" paragraph>Poids: {p.weight > 1000 ? parseFloat(`${p.weight / 1000}`).toFixed(1) + 'k' : parseFloat(`${p.weight}`).toFixed(0)}g</Typography>)}
 
                     {p.description && (<Typography className="my-p" paragraph>
                       {p.description}

@@ -104,7 +104,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
   const aChange = (makerProviderFn: any) => {
     const newMaker = makerProviderFn();
     setMaker(newMaker);
-    const check = (document as any).getElementById(props.id).checkValidity()
+    const check = (document as any).getElementById(props.id).checkValidity() && newMaker.image
       && (newMaker.payments.acceptBankCheck || newMaker.payments.acceptCards
         || newMaker.payments.acceptCoins || newMaker.payments.acceptPaypal);
 
@@ -130,7 +130,6 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
             className="input-upload"
             id="upload_product_image"
             type="file"
-            required
             name="image"
             accept="image/jpeg"
             onChange={(e: any) => onChangeUpload(e.target)}

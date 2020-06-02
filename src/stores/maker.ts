@@ -17,7 +17,7 @@ export class MakerStore implements Store<Maker|null>{
         return this.sub.subscribe(func);
     }
 
-    static async register(maker:Maker){
+    static async register(maker:Maker, recaptcha:any){
         const myform = new FormData();
         myform.append('data', JSON.stringify(maker));
 
@@ -27,7 +27,7 @@ export class MakerStore implements Store<Maker|null>{
         let blobPlaceImage = await fetch(maker?.place.image || '').then(r => r.blob());
         myform.append('filePlaceImage',blobPlaceImage, `${Math.random().toString(36).substring(2)}.jpg`);
 
-        await httpClientService.axios.post(conf.API.self(), myform);
+        await httpClientService.axios.post(`${conf.API.self()}?recaptcha=${encodeURIComponent(recaptcha)}`, myform);
     }
 
     static async updateProduct(p:Product, file:Blob|null = null, fileName:string = ''){

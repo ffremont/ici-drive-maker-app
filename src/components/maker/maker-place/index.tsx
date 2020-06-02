@@ -5,6 +5,7 @@ import { Maker } from '../../../models/maker';
 import Button from '@material-ui/core/Button';
 import conf from '../../../confs';
 import TextField from '@material-ui/core/TextField';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { Place } from '../../../models/place';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,40 +30,46 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
   const [address, setAddress] = React.useState('');
   const [readonly, setReadonly] = React.useState(false);
   const [image, setImage] = React.useState(conf.baseURL + '/default_image.jpg');
+  let autocomplete:any = null;
+
+  /*  var input = document.getElementById(`${props.id}_address`);
+    if(!input)return;
+    const maps = (window as any).google.maps
+    var options = {
+      componentRestrictions: { country: 'fr' }
+    };
+    
+    if(autocomplete){
+      autocomplete.unbindAll();
+      maps.event.clearInstanceListeners(input );
+    }
+    autocomplete = new maps.places.Autocomplete(input, options);
+
+    autocomplete.addListener('place_changed', () => {
+      var place = autocomplete.getPlace();
+      console.log(place);
+
+      aChange(() => {
+        setAddress(place.formatted_address);
+        return { ...maker?.place, address: place.formatted_address } as any;
+      })
+    });*/
 
   React.useEffect(() => {
-    let fnChange:any = null;
-    if (process.env.REACT_APP_STAGE === 'prod') {
-      const maps = (window as any).google.maps
+    let fnChange: any = null;
 
-      var input = document.getElementById(`${props.id}_address`);
-      var options = {
-        componentRestrictions: { country: 'fr' }
-      };
-
-      const autocomplete = new maps.places.Autocomplete(input, options);
-
-      autocomplete.addListener('place_changed', () => {
-        var place = autocomplete.getPlace();
-        console.log(place);
-
-        aChange(() => {
-            setAddress(place.formatted_address);
-            return { ...maker?.place, address: place.formatted_address } as any;
-          })        
-      });
-    }else{
-      fnChange = (e:any) => {
+    if(process.env.REACT_APP_STAGE !== 'prod'){
+      fnChange = (e: any) => {
         aChange(() => {
           setAddress(e.target.value);
-          return { ...maker?.place, address: e.target.value  } as any;
-        })   
+          return { ...maker?.place, address: e.target.value } as any;
+        })
       };
       (document as any).getElementById(`${props.id}_address`).addEventListener('change', fnChange);
     }
 
     return () => {
-      if(fnChange) (document as any).getElementById(`${props.id}_address`).removeEventListener('change', fnChange);
+      if (fnChange) (document as any).getElementById(`${props.id}_address`).removeEventListener('change', fnChange);
     }
   });
 
@@ -72,6 +79,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
       if (props.maker.place.image) setImage(props.maker.place.image)
       setLabel(props.maker.place.label);
       if (props.maker.place.address) setAddress(props.maker.place.address)
+      if (props.maker.place.description) setDescription(props.maker.place.description)
     }
   }, [props.maker]);
 
@@ -87,7 +95,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
 
   const onChangeUpload = (t: any) => {
     const imageFile = t.files[0];
-    if(!imageFile)return;
+    if (!imageFile) return;
 
     console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
     console.log(`originalFile size ${imageFile.size / 1024} KB`);
@@ -107,7 +115,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         //let blob = await fetch(url).then(r => r.blob());
         aChange(() => {
           setImage(newImage);
-          return  {...(maker as any).place, image:newImage};
+          return { ...(maker as any).place, image: newImage };
         });
       })
       .catch(function (error) {
@@ -117,10 +125,10 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
   };
 
   const aChange = (makerProviderFn: any) => {
-    const place:Place = makerProviderFn();
-    const newMaker:any = {...maker, place: place};
+    const place: Place = makerProviderFn();
+    const newMaker: any = { ...maker, place: place };
     setMaker(newMaker);
-    const check = (document as any).getElementById(props.id).checkValidity();
+    const check = newMaker.place.image && (document as any).getElementById(props.id).checkValidity();
     if (props.onChange && check !== undefined) props.onChange(newMaker, check)
   };
 
@@ -137,7 +145,6 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
             className="input-upload"
             id="upload_product_image"
             type="file"
-            required
             name="image"
             accept="image/jpeg"
             onChange={(e: any) => onChangeUpload(e.target)}
@@ -168,7 +175,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         />
 
 
-        <TextField
+        {process.env.REACT_APP_STAGE !== 'prod' && (<TextField
           fullWidth
           value={address}
           label="Adresse complète"
@@ -186,16 +193,30 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
             name: 'address',
             placeholder: ''
           }}
+        />)}
+        {process.env.REACT_APP_STAGE === 'prod' && (
+          <GooglePlacesAutocomplete
+          placeholder='Adresse complète'
+          autocompletionRequest={{
+            componentRestrictions: {
+              country: ['fr'],
+            }
+          }}
+          onSelect={({description}) => aChange(() => {
+            setAddress(description.replace(', France', ''));
+            return { ...maker?.place, address: description} as any;
+          })}
         />
+        )}
 
-<TextField
+        <TextField
           fullWidth
           value={description}
           label="Description du lieu"
           type="text"
           onChange={(e: any) => aChange(() => {
             setDescription(e.target.value);
-            console.log('place',maker?.place);
+            console.log('place', maker?.place);
             return { ...maker?.place, description: e.target.value } as any;
           })}
           multiline={true}

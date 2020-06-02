@@ -39,7 +39,7 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
       acceptPaypal: false
     },
     categories:[]
-   }, activeStep: 0, steps: ['Contact', 'Commerce', 'Retrait',  'Horaires'], validation:{disableNext:true, showErrors:false} };
+   }, activeStep: 0, steps: ['Contact', 'Commerce', 'Retrait',  'Horaires'], validation:{recaptcha:null, disableNext:true, showErrors:false} };
 
   makerContactRef:any;
   makerShopRef:any;
@@ -64,13 +64,14 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
     const orderRefs = [this.makerContactRef, this.makerShopRef, this.makerPlaceRef, this.makerSlotsRef];
 
     const isValid = orderRefs[newIndexStep] && orderRefs[newIndexStep].current ? orderRefs[newIndexStep].current.checkValidity(): false;
-    this.setState({validation : {...this.state.validation, disableNext: !isValid}})
+    
+    this.setState({validation : {...this.state.validation, disableNext: newIndexStep < cActiveStep ? false : !isValid}})
     
   }
 
   submit() {
     this.setState({waiting:true});
-    MakerStore.register(this.state.maker)
+    MakerStore.register(this.state.maker, this.state.validation.recaptcha)
       .then(() => {
         this.props.history.push('/inscription-reussie');
       }).catch((e:any) => {
@@ -93,10 +94,10 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
     this.checkStep(newIndexStep, cActiveStep);
   }
 
-  onStepChange(newMaker:Maker, isValid:boolean){
-    console.log('step change', newMaker, isValid);
+  onStepChange(newMaker:Maker, isValid:boolean, recaptcha:any = null){
+    console.log('step change', newMaker, isValid, recaptcha);
     this.currentMaker = newMaker;
-    this.setState({validation : {...this.state.validation, disableNext: !isValid}});
+    this.setState({validation : {...this.state.validation, disableNext: !isValid, recaptcha}});
   }
 
   render() {
@@ -115,26 +116,26 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
       <div className="register-content">
 
         {this.state.activeStep === 0 && (
-          <MakerContact ref={this.makerContactRef} id="maker-contact" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
+          <MakerContact ref={this.makerContactRef} id="maker-contact" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
         )}
 
         {this.state.activeStep === 1 && (
-          <MakerShop ref={this.makerShopRef} id="maker-shop" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
+          <MakerShop ref={this.makerShopRef} id="maker-shop" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
         )}
 
         {this.state.activeStep === 2 && (
-          <MakerPlace ref={this.makerPlaceRef} id="maker-place" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
+          <MakerPlace ref={this.makerPlaceRef} id="maker-place" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
         )}
 
         {this.state.activeStep === 3 && (
-          <MakerSlots ref={this.makerSlotsRef} id="maker-slots" validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean) => this.onStepChange(m,v)} />
+          <MakerSlots ref={this.makerSlotsRef} id="maker-slots" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean, re:any) => this.onStepChange(m,v, re)} />
         )}
 
       </div>
       <div className="register-footer">
-        { this.state.activeStep !== (this.state.steps.length -1) && <Fab color="secondary" aria-label="next" disabled={this.state.validation.disableNext} onClick={() => this.next(this.state.activeStep+1)} className="next-action">
+        { this.state.activeStep !== (this.state.steps.length -1) && (<Fab color="secondary" aria-label="next" disabled={this.state.validation.disableNext} onClick={() => this.next(this.state.activeStep+1)} className="next-action">
           <ArrowForwardIosIcon />
-        </Fab>})
+        </Fab>)}
         {this.state.activeStep === (this.state.steps.length -1) && (<Fab onClick={() => this.submit()} disabled={this.state.validation.disableNext} className="check-action" color="secondary" aria-label="back">
           <CheckIcon />
         </Fab>)}

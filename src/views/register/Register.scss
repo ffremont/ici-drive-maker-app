@@ -14,3 +14,7 @@
 .back-action{
     right:100px;
 }
+
+.back-action,.next-action,.check-action{
+    z-index:1;
+}

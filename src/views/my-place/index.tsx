@@ -83,13 +83,13 @@ class MyPlace extends React.Component<{ history: any, match: any }, { maker: Mak
         />
 
         <div className="slots">
-          { place.hebdoSlot.lundi && (<Slot id="lundi" officeSlot={place.hebdoSlot.lundi || null} day="Lundi" />)}
-          { place.hebdoSlot.mardi && (<Slot id="mardi" officeSlot={place.hebdoSlot.mardi || null} day="Mardi" />)}
-          { place.hebdoSlot.mercredi && (<Slot id="mercredi" officeSlot={place.hebdoSlot.mercredi || null} day="Mercredi" />)}
-          { place.hebdoSlot.jeudi && (<Slot id="jeudi" officeSlot={place.hebdoSlot.jeudi || null} day="Jeudi" />)}
-          { place.hebdoSlot.vendredi && (<Slot id="vendredi" officeSlot={place.hebdoSlot.vendredi || null} day="Vendredi" />)}
-          { place.hebdoSlot.samedi && (<Slot id="samedi" officeSlot={place.hebdoSlot.samedi || null} day="Samedi" />)}
-          { place.hebdoSlot.dimanche && (<Slot id="dimanche" officeSlot={place.hebdoSlot.dimanche || null} day="Dimanche" />)}
+          { place.hebdoSlot.lundi && (<Slot readonly={true} id="lundi" officeSlot={place.hebdoSlot.lundi || null} day="Lundi" />)}
+          { place.hebdoSlot.mardi && (<Slot id="mardi" readonly={true} officeSlot={place.hebdoSlot.mardi || null} day="Mardi" />)}
+          { place.hebdoSlot.mercredi && (<Slot id="mercredi" readonly={true} officeSlot={place.hebdoSlot.mercredi || null} day="Mercredi" />)}
+          { place.hebdoSlot.jeudi && (<Slot id="jeudi" readonly={true} officeSlot={place.hebdoSlot.jeudi || null} day="Jeudi" />)}
+          { place.hebdoSlot.vendredi && (<Slot id="vendredi" readonly={true} officeSlot={place.hebdoSlot.vendredi || null} day="Vendredi" />)}
+          { place.hebdoSlot.samedi && (<Slot id="samedi" readonly={true} officeSlot={place.hebdoSlot.samedi || null} day="Samedi" />)}
+          { place.hebdoSlot.dimanche && (<Slot id="dimanche" readonly={true} officeSlot={place.hebdoSlot.dimanche || null} day="Dimanche" />)}
 
 
 
