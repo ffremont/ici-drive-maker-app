@@ -24,12 +24,12 @@ import Catalog from './views/catalog';
 import Product from './views/product';
 import MyPlace from './views/my-place';
 import MyDrive from './views/my-drive';
-import CreateAccount from './views/create-account';
 import Discover from './views/discover';
 import Register from './views/register';
 import RegisterSuccess from './views/register/success';
 
 import 'react-google-places-autocomplete/dist/index.min.css';
+import How from './views/how';
 
 
 // @see https://material-ui.com/customization/palette/
@@ -80,7 +80,7 @@ class App extends React.Component<{}, { concurrentCalls: number }>{
             <Route path="/register-success" component={RegisterSuccess} />         
             <Route path="/discover" component={Discover} />         
             <Route path="/login" component={Login} /> 
-            <Route path="/create-account" component={CreateAccount} />  
+            <Route path="/how" component={How} /> 
 
             <PrivateRoute exact path="/" component={MyOrders} /> 
             <PrivateRoute exact path="/my-orders/:id" component={Order} />           

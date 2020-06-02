@@ -24,6 +24,7 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import RoomIcon from '@material-ui/icons/Room';
 import conf from '../../confs';
 import authService from '../../services/auth.service';
+import HelpIcon from '@material-ui/icons/Help';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import makerStore from '../../stores/maker';
 import { Maker } from '../../models/maker';
@@ -135,6 +136,11 @@ const MenuApp = (props: any) => {
             <ListItemIcon><AccountCircleIcon /></ListItemIcon>
             <ListItemText primary="Connecté" secondary={email} />
           </ListItem>)}
+
+          <ListItem button key="how-to" onClick={() => props.history.push('/how')}>
+            <ListItemIcon><HelpIcon /></ListItemIcon>
+            <ListItemText primary="Premiers pas" secondary="" />
+          </ListItem>
          
           <ListItem button key="catalog" onClick={() => props.history.push('/products')}>
             <ListItemIcon><ImportContactsIcon /></ListItemIcon>
@@ -254,7 +260,7 @@ const MenuApp = (props: any) => {
             <img src={IciDriveTypoIcon} alt="logo" />
           </div>
           <div className="install-title">
-            Drive des produits locaux
+            Drive de produits locaux
           </div>
         </div>
         <div className="install-actions">

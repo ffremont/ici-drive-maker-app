@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     container: {
       marginBottom: "60px"
+    },
+    autocomplete:{
+      boxShadow: 'none',
+      borderBottom: '1px solid #9e9e9e'
     }
   }),
 );
@@ -210,6 +214,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         {process.env.REACT_APP_STAGE === 'prod' && (
           <GooglePlacesAutocomplete
             placeholder='Adresse complète'
+            inputClassName={`MuiInputBase-input MuiInput-input ${classes.autocomplete}`}
             autocompletionRequest={{
               componentRestrictions: {
                 country: ['fr'],
