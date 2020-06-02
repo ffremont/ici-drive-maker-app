@@ -31,11 +31,11 @@ function Discover(props: any) {
           <Chip label="Sans gestion de stocks" color="secondary" variant="outlined" className="my-chip" />, et <Chip label="sans gestion des paiements" color="secondary" variant="outlined" className="my-chip" />, je gère ma vente.
           </div>
 
-          <Link href={conf.signin} target="_blank">
+         
    
-        <Button color="primary" variant="contained" className="inscription">S'inscrire</Button>
+        <Button onClick={() => props.history.push('/inscription')} color="primary" variant="contained" className="inscription">S'inscrire</Button>
         
-  </Link>
+  
         <div className="demos">
         <Link href={conf.demoAppIciDriveFr} target="_blank" className="demo">
         <Button color="primary" startIcon={<ShoppingCartIcon />} variant="outlined" >Démo app.ici-drive.fr</Button>

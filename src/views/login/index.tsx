@@ -124,7 +124,7 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
                 fullWidth
                 size="medium"
                 color="default"
-                onClick={() => window.location.href= conf.signin}
+                onClick={() => this.props.history.push('/inscription')}
                 className="signin"
               >
                 S'inscrire

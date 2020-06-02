@@ -5,7 +5,7 @@ import { Maker } from '../../../models/maker';
 import Button from '@material-ui/core/Button';
 import conf from '../../../confs';
 import TextField from '@material-ui/core/TextField';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import { Place } from '../../../models/place';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,7 +30,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
   const [address, setAddress] = React.useState('');
   const [readonly, setReadonly] = React.useState(false);
   const [image, setImage] = React.useState(conf.baseURL + '/default_image.jpg');
-  let autocomplete:any = null;
+  let autocomplete: any = null;
 
   /*  var input = document.getElementById(`${props.id}_address`);
     if(!input)return;
@@ -58,7 +58,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
   React.useEffect(() => {
     let fnChange: any = null;
 
-    if(process.env.REACT_APP_STAGE !== 'prod'){
+    if (process.env.REACT_APP_STAGE !== 'prod') {
       fnChange = (e: any) => {
         aChange(() => {
           setAddress(e.target.value);
@@ -123,6 +123,19 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         props.history.push('/error');
       });
   };
+
+  const onSelectAddress = (newAddress: string) => {
+    geocodeByAddress(newAddress)
+      .then(results => getLatLng(results[0]))
+      .then( ({ lat, lng }) =>{
+
+        aChange(() => {
+          setAddress(newAddress.replace(', France', ''));
+          return { ...maker?.place, address: newAddress, point: {latitude:lat, longitude:lng}} as any;
+        });
+      
+      });
+  }
 
   const aChange = (makerProviderFn: any) => {
     const place: Place = makerProviderFn();
@@ -196,17 +209,14 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         />)}
         {process.env.REACT_APP_STAGE === 'prod' && (
           <GooglePlacesAutocomplete
-          placeholder='Adresse complète'
-          autocompletionRequest={{
-            componentRestrictions: {
-              country: ['fr'],
-            }
-          }}
-          onSelect={({description}) => aChange(() => {
-            setAddress(description.replace(', France', ''));
-            return { ...maker?.place, address: description} as any;
-          })}
-        />
+            placeholder='Adresse complète'
+            autocompletionRequest={{
+              componentRestrictions: {
+                country: ['fr'],
+              }
+            }}
+            onSelect={(place: any) => onSelectAddress(place.description)}
+          />
         )}
 
         <TextField
