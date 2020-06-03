@@ -32,18 +32,21 @@ function Discover(props: any) {
           </div>
 
          
-   
+        <div className="discover-actions">
         <Button onClick={() => props.history.push('/inscription')} color="primary" variant="contained" className="inscription">S'inscrire</Button>
+        <Button onClick={() => props.history.push('/how')} color="secondary" variant="contained" className="btn-how">Premiers pas</Button>
         
+        </div>
+       
   
-        <div className="demos">
+        {/*<div className="demos">
         <Link href={conf.demoAppIciDriveFr} target="_blank" className="demo">
         <Button color="primary" startIcon={<ShoppingCartIcon />} variant="outlined" >Démo app.ici-drive.fr</Button>
         </Link>
         <Link href={conf.demoAdminIciDriveFr} target="_blank" className="demo">
         <Button color="primary" startIcon={<SupervisorAccountIcon />} variant="outlined">Démo admin.ici-drive.fr</Button>
         </Link>
-        </div>
+  </div>*/}
       </Paper>
 
       <Paper className="my-paper purposes-paper">

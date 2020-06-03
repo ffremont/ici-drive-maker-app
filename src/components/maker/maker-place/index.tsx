@@ -36,29 +36,6 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
   const [image, setImage] = React.useState(conf.baseURL + '/default_image.jpg');
   let autocomplete: any = null;
 
-  /*  var input = document.getElementById(`${props.id}_address`);
-    if(!input)return;
-    const maps = (window as any).google.maps
-    var options = {
-      componentRestrictions: { country: 'fr' }
-    };
-    
-    if(autocomplete){
-      autocomplete.unbindAll();
-      maps.event.clearInstanceListeners(input );
-    }
-    autocomplete = new maps.places.Autocomplete(input, options);
-
-    autocomplete.addListener('place_changed', () => {
-      var place = autocomplete.getPlace();
-      console.log(place);
-
-      aChange(() => {
-        setAddress(place.formatted_address);
-        return { ...maker?.place, address: place.formatted_address } as any;
-      })
-    });*/
-
   React.useEffect(() => {
     let fnChange: any = null;
 

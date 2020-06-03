@@ -8,8 +8,13 @@
         width: 30vw;
     }
 
-    button.inscription{
-        margin-top: 20px;
+}
+
+.discover-actions{
+    padding:30px 0px;
+
+    button+button{
+        margin-left:20px;
     }
 }
 
