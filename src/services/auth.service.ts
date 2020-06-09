@@ -1,11 +1,14 @@
 import { BehaviorSubject } from "rxjs";
 import makerStore from '../stores/maker';
+import fcmService from "./fcm.service";
 
 export class AuthService{
     public subToken = new BehaviorSubject<string|null>(null);
     public isAuth = false;
 
     public async authenticated(): Promise<any> {
+        fcmService.init();
+
         if(!this.isAuth){
             this.isAuth = true;
             return await makerStore.load();

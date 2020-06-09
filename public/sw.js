@@ -62,31 +62,22 @@ self.addEventListener('fetch', (event) => {
   }
 });
 
-self.addEventListener('notificationclick', event => {
-  const url = event.notification.data.url;
-  event.notification.close();
-  if (url) {
-    event.waitUntil(clients.openWindow(url));
+self.onmessage = function (msg) {
+  switch (msg.data.name) {
+      case 'push':
+        const {title, body,icon, tag, url} = msg.data;
+        const notificationOptions = {
+          body,
+          icon: icon,
+          data: {
+            url: url
+          },
+          tag
+        };
+    
+        self.registration.showNotification(title, notificationOptions);
+      break;
   }
-});
-
-
-if (firebase) {
-  const messaging = firebase.messaging();
-  messaging.setBackgroundMessageHandler(function (payload) {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload);
-
-    // Customize notification here
-    const notificationTitle = 'Background Message Title';
-    const notificationOptions = {
-      body: 'Background Message body.',
-      icon: '/default_image.jpg',
-      data: {
-        url: null
-      }
-    };
-
-    return self.registration.showNotification(notificationTitle,
-      notificationOptions);
-  });
 }
+
+
