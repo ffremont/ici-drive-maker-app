@@ -68,7 +68,7 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
             // déclenche la redirection
             this.setState({ loading: false, isSignedIn: !!user })
           }).catch(e => {
-              this.setState({from :'/create-account', loading: false, isSignedIn: !!user});
+              this.setState({from :'/inscription', loading: false, isSignedIn: !!user});
           });
 
           

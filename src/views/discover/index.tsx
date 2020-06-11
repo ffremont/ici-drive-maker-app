@@ -6,11 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import conf from '../../confs';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import Mentions from '../../components/mentions';
-import Link from '@material-ui/core/Link';
 
 function Discover(props: any) {
   const [openMentions, setOpenMentions] = useState(false);

@@ -1,18 +1,27 @@
 import React from 'react';
 import './MyPlace.scss';
 import { Subscription } from 'rxjs';
-import makerStore from '../../stores/maker';
+import makerStore, { MakerStore } from '../../stores/maker';
 import { Maker } from '../../models/maker';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuApp from '../../components/menu-app';
-import TextField from '@material-ui/core/TextField';
 import { Place } from '../../models/place';
-import Slot from '../../components/slot/slot';
+import MakerPlace from '../../components/maker/maker-place';
+import MakerSlots from '../../components/maker/maker-slots';
+import Fab from '@material-ui/core/Fab';
+import SaveIcon from '@material-ui/icons/Save';
+import SnackAdd from '../../components/snack-add';
+import notifStore from '../../stores/notif';
+import { NotifType } from '../../models/notif';
 
-class MyPlace extends React.Component<{ history: any, match: any }, { maker: Maker | null }>{
 
-  state = { maker: null };
+class MyPlace extends React.Component<{ history: any, match: any }, { maker: Maker | null, canSave:boolean, loading:boolean }>{
+
+  state = { maker: null, canSave:false, loading:true };
+
+  makerPlaceRef: any;
+  makerSlotsRef: any;
 
   subMaker: Subscription | null = null;
 
@@ -21,11 +30,33 @@ class MyPlace extends React.Component<{ history: any, match: any }, { maker: Mak
   }
 
   componentDidMount() {
+    this.makerPlaceRef = React.createRef();
+    this.makerSlotsRef = React.createRef();
     this.subMaker = makerStore.subscribe((maker: Maker) => {
       if (maker) {
-        this.setState({ maker });
+        this.setState({ maker, loading:false });
       }
+
     });
+  }
+
+  onChange(newMaker:Maker, isValid:boolean){
+    this.setState({ canSave: isValid, maker: newMaker });
+  }
+
+  onClickSave() {
+    this.setState({ loading: true });
+    const nMaker = { ...(this.state.maker as any) };
+    delete nMaker.products;
+    MakerStore.updateSelf(nMaker as any)
+      .then(() => {
+        this.setState({ canSave: false });
+        notifStore.set({ message: 'Enregistrement réussi', type: NotifType.DEFAULT })
+      })
+      .catch(e => {
+        console.error(e);
+        this.props.history.push('/error');
+      }).finally(() => this.setState({ loading: false }));
   }
 
   render() {
@@ -33,71 +64,16 @@ class MyPlace extends React.Component<{ history: any, match: any }, { maker: Mak
 
     return (<div className="my-place">
       <MenuApp mode="light" history={this.props.history} />
+      <SnackAdd />
+      {place && (<MakerPlace ref={this.makerPlaceRef} id="maker-shop_edit" history={this.props.history} maker={this.state.maker} onChange={(m: Maker, v: boolean) => this.onChange(m, v)} />)}
+      {place && (<MakerSlots standalone={true} ref={this.makerSlotsRef} id="maker-slots_edit" history={this.props.history} maker={this.state.maker} onChange={(m: Maker, v: boolean) => this.onChange(m, v)} />)}
 
-      {place && (<div className="area">
-        <div className="image">
-          <img src={place.image} alt="retrait et livraison" />
-        </div>
-
-
-        <TextField
-          fullWidth
-          value={place.label}
-          label="Titre du lieu"
-          type="text"
-          inputProps={{
-            readOnly: true
-          }}
-        />
-        <TextField
-          fullWidth
-          value={place.slotsDescription}
-          label="Description des horaires"
-          type="text"
-          multiline
-          rows={2}
-          inputProps={{
-            readOnly: true
-          }}
-        />
-        <TextField
-          fullWidth
-          value={place.address}
-          label="Adresse"
-          type="text"
-          inputProps={{
-            readOnly: true
-          }}
-        />
-
-        <TextField
-          fullWidth
-          value={place.description}
-          label="Description du lieu"
-          multiline
-          rows={2}
-          type="text"
-          inputProps={{
-            readOnly: true
-          }}
-        />
-
-        <div className="slots">
-          { place.hebdoSlot.lundi && (<Slot readonly={true} id="lundi" officeSlot={place.hebdoSlot.lundi || null} day="Lundi" />)}
-          { place.hebdoSlot.mardi && (<Slot id="mardi" readonly={true} officeSlot={place.hebdoSlot.mardi || null} day="Mardi" />)}
-          { place.hebdoSlot.mercredi && (<Slot id="mercredi" readonly={true} officeSlot={place.hebdoSlot.mercredi || null} day="Mercredi" />)}
-          { place.hebdoSlot.jeudi && (<Slot id="jeudi" readonly={true} officeSlot={place.hebdoSlot.jeudi || null} day="Jeudi" />)}
-          { place.hebdoSlot.vendredi && (<Slot id="vendredi" readonly={true} officeSlot={place.hebdoSlot.vendredi || null} day="Vendredi" />)}
-          { place.hebdoSlot.samedi && (<Slot id="samedi" readonly={true} officeSlot={place.hebdoSlot.samedi || null} day="Samedi" />)}
-          { place.hebdoSlot.dimanche && (<Slot id="dimanche" readonly={true} officeSlot={place.hebdoSlot.dimanche || null} day="Dimanche" />)}
-
-
-
-        </div>
-      </div>)}
-      {!place && (<Backdrop className="backdrop" open={true}>
+      <Fab color="primary" onClick={() => this.onClickSave()} className="save-fab" aria-label="add" disabled={!this.state.canSave}>
+        <SaveIcon />
+      </Fab>
+      <Backdrop className="backdrop" open={this.state.loading}>
         <CircularProgress color="inherit" />
-      </Backdrop>)}
+      </Backdrop>
 
     </div>);
 

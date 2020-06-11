@@ -17,6 +17,23 @@ export class MakerStore implements Store<Maker|null>{
         return this.sub.subscribe(func);
     }
 
+    static async updateSelf(maker:Maker){
+        const myform = new FormData();
+        myform.append('data', JSON.stringify(maker));
+
+        if(maker.image.startsWith('blob:')){
+            let blobImage = await fetch(maker.image).then(r => r.blob());
+            myform.append('fileImage',blobImage, `${Math.random().toString(36).substring(2)}.jpg`);
+        }
+        const placeImage = maker?.place.image || '';
+        if(placeImage.startsWith('blob:')){
+            let blobPlaceImage = await fetch(maker?.place.image || '').then(r => r.blob());
+            myform.append('filePlaceImage',blobPlaceImage, `${Math.random().toString(36).substring(2)}.jpg`);
+        }
+
+        await httpClientService.axios.put(`${conf.API.self()}`, myform);
+    }
+
     static async register(maker:Maker, recaptcha:any){
         const myform = new FormData();
         myform.append('data', JSON.stringify(maker));

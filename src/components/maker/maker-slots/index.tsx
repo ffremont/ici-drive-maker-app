@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default forwardRef(function MakerSlots(props: any, ref: any) {
   const classes = useStyles();
   const [maker, setMaker] = React.useState<any>({});
+  const [standalone, setStandalone] = React.useState(true);
   const [recaptcha, setRecaptcha] = React.useState<any>(null);
   const [checkCgu, setCheckCgu] = React.useState(false);
   const [readonly, setReadonly] = React.useState(false);
@@ -45,6 +46,10 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
       setSlotsDescription(props.maker.place.slotsDescription || '');
     }
   }, [props.maker]);
+
+  React.useEffect(() => {
+    setStandalone(props.standalone);
+  }, [props.standalone]);
 
   React.useEffect(() => {
     setReadonly(props.readonly);
@@ -60,8 +65,13 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
   const aChange = (makerProviderFn: any) => {
     const newMaker = makerProviderFn();
     setMaker(newMaker);
-    console.log(recaptcha, Object.keys(maker.place.hebdoSlot).some(day => maker.place.hebdoSlot[day]), (document as any).getElementById(props.id).checkValidity())
-    const check = (recaptcha||false) && Object.keys(maker.place.hebdoSlot).some(day => maker.place.hebdoSlot[day]) && (document as any).getElementById(props.id).checkValidity();
+
+    let check = Object.keys(maker.place.hebdoSlot).some(day => maker.place.hebdoSlot[day]) && (document as any).getElementById(props.id).checkValidity();
+    if(!standalone){
+      console.log(recaptcha, Object.keys(maker.place.hebdoSlot).some(day => maker.place.hebdoSlot[day]), (document as any).getElementById(props.id).checkValidity())
+      check = check && (recaptcha||false);
+    }
+    
     if (props.onChange && check !== undefined) props.onChange(newMaker, check, recaptcha)
   };
 
@@ -75,10 +85,10 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
     };
   }
 
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const { executeRecaptcha } = useGoogleReCaptcha();  
   const place = maker && (maker as any).place ? (maker as any).place as Place : null;
   return (
-    <form className={classes.mslContainer} ref={ref} id={props.id} onSubmit={e => e.preventDefault()}>
+    <form className={`${classes.mslContainer} msl-container`} ref={ref} id={props.id} onSubmit={e => e.preventDefault()}>
       <TextField
         fullWidth
         value={slotsDescription}
@@ -108,7 +118,7 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
         <Slot id="dimanche" officeSlot={place.hebdoSlot.dimanche || null} onChange={aChangeOnSlot('dimanche')} day="Dimanche" />
       </div>)}
 
-      <div className={classes.cgu}>
+      {!standalone && (<div className={classes.cgu}>
         <Checkbox
           checked={checkCgu}
           required
@@ -116,16 +126,17 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
             
             if(executeRecaptcha)
               setRecaptcha(executeRecaptcha('register'));
+
             setCheckCgu(e.target.checked);
             return maker;
           })}
           inputProps={{ 'aria-label': 'primary checkbox' }}
         /> <Typography variant="body1" className="accept-cgu">Accepter les <a href={conf.cgr} rel="noopener noreferrer" target="_blank">Conditions Générales d'utilisation</a></Typography>
-      </div>
+      </div>)}
 
-      <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCH_SITEKEY}>
+      {!standalone && (<GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCH_SITEKEY}>
         <GoogleReCaptcha onVerify={token => setRecaptcha(token)} />
-      </GoogleReCaptchaProvider>
+      </GoogleReCaptchaProvider>)}
 
     </form>
   );

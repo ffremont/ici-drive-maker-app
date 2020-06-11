@@ -191,6 +191,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         {process.env.REACT_APP_STAGE === 'prod' && (
           <GooglePlacesAutocomplete
             placeholder='Adresse complète'
+            initialValue={address}
             inputClassName={`MuiInputBase-input MuiInput-input ${classes.autocomplete}`}
             autocompletionRequest={{
               componentRestrictions: {
@@ -208,7 +209,6 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
           type="text"
           onChange={(e: any) => aChange(() => {
             setDescription(e.target.value);
-            console.log('place', maker?.place);
             return { ...maker?.place, description: e.target.value } as any;
           })}
           multiline={true}

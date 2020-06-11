@@ -14,6 +14,8 @@ export interface Configuration{
     slotQuantity: number;
     signin:string;
 
+    defaultStartDriveAfterDays:number;
+
     demoAppIciDriveFr:string;
     demoAdminIciDriveFr:string;
 

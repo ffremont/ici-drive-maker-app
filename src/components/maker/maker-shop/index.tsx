@@ -50,7 +50,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
       setName(props.maker.name);
       setDescription(props.maker.description);
       setPrefixOrderRef(props.maker.prefixOrderRef);
-      if (props.maker.payments) setPayments(props.maker.payments);
+      if (props.maker.payments) setPayments({...payments, ...props.maker.payments});
       if (props.maker.webPage) setWebPage(props.maker.webPage);
       if (props.maker.startDriveAfterDays) setStartDriveAfterDays(props.maker.startDriveAfterDays);
     }

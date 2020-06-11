@@ -128,7 +128,7 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
         )}
 
         {this.state.activeStep === 3 && (
-          <MakerSlots ref={this.makerSlotsRef} id="maker-slots" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean, re:any) => this.onStepChange(m,v, re)} />
+          <MakerSlots standalone={false} ref={this.makerSlotsRef} id="maker-slots" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m:Maker,v:boolean, re:any) => this.onStepChange(m,v, re)} />
         )}
 
       </div>

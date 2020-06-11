@@ -2,7 +2,7 @@
 import { Configuration } from "./configuration";
 
 
-const DEV_API_BASEURL = '/api-mock';
+const DEV_API_BASEURL = 'http://localhost:5001/ici-drive/us-central1/api/api';
 const other: Configuration = {
     cgu: 'https://docs.google.com/document/d/e/2PACX-1vRxz61BpPZL-YJXX2E6tvdYsI0PG1vxv1eGjxQ7TMfqififiO-Snb5pZU21bkjZgTHyENu3I5nFzxRZ/pub',
     cgr: 'https://docs.google.com/document/d/e/2PACX-1vTQkz2Kno4710sHi1MDtQwbIRU3tkddacvc5mlkHKfcJtOpcGLdKxxWDbPyxm4-mnLdeSyRVL4tjJKB/pub',
@@ -13,13 +13,17 @@ const other: Configuration = {
     signin: 'https://forms.gle/fZrFyvJShxZLRQjt8',
     demoAdminIciDriveFr: 'https://www.loom.com/share/076161f8abe045218bfd249153e83851',
     demoAppIciDriveFr: 'https://www.loom.com/share/f84e9d674b9f4299aeb9744fd4303d44',
+    defaultStartDriveAfterDays:5,
     baseURL: 'https://app.ici-drive.fr',
     fcmPublicVapidKey: 'BO7yESbBXsx7ddVzYqvkNpWf-3S6sjqQxEoolQQ1OG02D0-nmrpowEsYRHuoGEzT4w5Np6Gdwto5FiLsS--sONw',
     API: {
-        self: () => `${DEV_API_BASEURL}/makers/self.json`,
+        /*self: () => `${DEV_API_BASEURL}/makers/self.json`,
         products: (ref?:string) => `${DEV_API_BASEURL}/makers/self.json?ref=${ref}`,
         //orders: (ref?:string) => `${DEV_API_BASEURL}/my-orders.json?ref=${ref}`,
-        orders: (ref?:string) => `${DEV_API_BASEURL}/empty.json`,
+        orders: (ref?:string) => `${DEV_API_BASEURL}/empty.json`,*/
+        self: () => `${DEV_API_BASEURL}/admin/makers/self`,
+        products: (ref?:string) => `${DEV_API_BASEURL}/admin/makers/self/products/${ref||''}`,
+        orders: (ref?:string) => `${DEV_API_BASEURL}/admin/my-orders/${ref || ''}`,
     },
     slotQuantity:900000, // 15 minutes par créneau
     categories:[
@@ -44,6 +48,8 @@ const prod: Configuration = {
     
     demoAdminIciDriveFr: 'https://www.loom.com/share/076161f8abe045218bfd249153e83851',
     demoAppIciDriveFr: 'https://www.loom.com/share/f84e9d674b9f4299aeb9744fd4303d44',
+
+    defaultStartDriveAfterDays:5,
 
     signin: 'https://forms.gle/fZrFyvJShxZLRQjt8',
     support: 'https://forms.gle/q4KYieunhwWVn1BR6',

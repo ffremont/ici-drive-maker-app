@@ -53,9 +53,11 @@ export default function Slot(props: SlotProps) {
 
     React.useEffect(() => {
         if (props.officeSlot) {
-            setOfficeSlot(props.officeSlot)
+            setOfficeSlot(props.officeSlot);
+            setEnable(true);
         } else {
             setOfficeSlot({ openAt: '8:00', closeAt: '18:00' });
+            setEnable(false);
         }
     }, [props.officeSlot])
 

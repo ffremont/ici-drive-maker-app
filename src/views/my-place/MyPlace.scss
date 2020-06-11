@@ -2,6 +2,12 @@
     /*margin-top:70px !important;*/
 }
 
+.save-fab{
+    position: fixed !important;
+    right: 30px;
+    bottom: 30px;
+}
+
 .area{
     padding:0px 20px;
     display: flex;
@@ -20,6 +26,10 @@
     &> div + div{
         margin-top:10px;
     }
+}
+
+.msl-container{
+    padding: 0 20px;
 }
 
 .slots{
