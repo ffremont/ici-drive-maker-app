@@ -14,13 +14,13 @@ import MailIcon from '../../assets/images/mail.svg';
 import IciDriveIcon from '../../assets/images/ici-drive-icon.png';
 import authService from '../../services/auth.service';
 import conf from '../../confs';
-import {FirebaseStub} from '../../stubs/firebase';
+import { FirebaseStub } from '../../stubs/firebase';
 
-if(process.env.REACT_APP_STAGE !== 'prod'){
+if (process.env.REACT_APP_STAGE !== 'prod') {
   (window as any).firebase = (new FirebaseStub()).init();
 }
 
-class Login extends React.Component<{history:any,location:any}, {loading:boolean, isSignedIn:boolean, from:string}> {
+class Login extends React.Component<{ history: any, location: any }, { loading: boolean, isSignedIn: boolean, from: string }> {
   unregisterAuthObserver: any = null;
 
   // The component's Local state.
@@ -30,75 +30,90 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
     from: '/'
   };
 
-  private sign(provider:any){
-    provider.addScope('profile');
-    provider.addScope('email');
+  private sign(provider: any) {
     (window as any).firebase.auth().signInWithRedirect(provider);
   }
 
-  signEmail(){
-    this.sign(process.env.REACT_APP_STAGE === 'prod' ? new (window as any).firebase.auth.EmailAuthProvider() : new ((window as any).firebase.auth.EmailAuthProvider()));
+  signEmail() {
+    const f = (window as any).firebase;
+
+    if(f){
+      const email:any = window.prompt('Merci de saisir votre email ');
+
+      f.auth().sendSignInLinkToEmail(email, {
+        url: window.location.origin+'/email-check',
+        handleCodeInApp: true,
+
+      })
+      .then(function() {
+        window.localStorage.setItem('emailForSignIn', email);
+        alert('Un message vous a été envoyé');
+      })
+    }
   }
 
-  signGoogle(){
-    const provider:any = process.env.REACT_APP_STAGE === 'prod' ?  new (window as any).firebase.auth.GoogleAuthProvider() : new ((window as any).firebase.auth.GoogleAuthProvider());
-    this.sign(provider);    
+  signGoogle() {
+    const provider: any = process.env.REACT_APP_STAGE === 'prod' ? new (window as any).firebase.auth.GoogleAuthProvider() : new ((window as any).firebase.auth.GoogleAuthProvider());
+    provider.addScope('profile');
+    provider.addScope('email');
+    this.sign(provider);
   }
 
   componentDidMount() {
     this.registerOnFirebase();
 
-    if(this.props.location){
-      if(this.props.location.state){
-        this.setState({from: this.props.location.state.fromPathname});
-      }else{
-        this.setState({from: '/'});
-      }      
+    if (this.props.location) {
+      if (this.props.location.state) {
+        this.setState({ from: this.props.location.state.fromPathname });
+      } else {
+        this.setState({ from: '/' });
+      }
     }
   }
 
-  private registerOnFirebase(){
+  private registerOnFirebase() {
     this.unregisterAuthObserver = (window as any).firebase.auth().onAuthStateChanged(
-      (user:any) => {
-        if(user){
-          (window as any).firebase.auth().currentUser.getIdToken().then((token:string) => authService.setIdToken(token));
+      (user: any) => {
+        console.log(user);
+        if (user) {
+          (window as any).firebase.auth().currentUser.getIdToken().then((token: string) => authService.setIdToken(token));
           // avec le idToken, self() marchera
           authService.authenticated()
-          .then(()=> {
-            // déclenche la redirection
-            this.setState({ loading: false, isSignedIn: !!user })
-          }).catch(e => {
-              this.setState({from :'/inscription', loading: false, isSignedIn: !!user});
-          });
+            .then(() => {
+              // déclenche la redirection
+              this.setState({ loading: false, isSignedIn: !!user })
+            }).catch(e => {
+              this.setState({ from: '/inscription', loading: false, isSignedIn: !!user });
+            });
 
-          
-        }else{
+
+        } else {
           // déclenche la redirection
           this.setState({ loading: false, isSignedIn: !!user })
           // no authenticated, noop show buttons
-        }        
+        }
       }
     );
   }
 
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
-    if(this.unregisterAuthObserver){
+    if (this.unregisterAuthObserver) {
       this.unregisterAuthObserver();
     }
   }
 
   render() {
-    if(this.state.loading){
+    if (this.state.loading) {
       return <div
-      style={{
-          position: 'absolute', 
-          left: '50%', 
+        style={{
+          position: 'absolute',
+          left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)'
-      }}
-  ><CircularProgress className="wait-auth" /></div>;
-    }else{
+        }}
+      ><CircularProgress className="wait-auth" /></div>;
+    } else {
       if (this.state.isSignedIn) {
         return <Redirect
           to={{
@@ -111,15 +126,15 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="paper">
-              <Avatar className="avatar" src={IciDriveIcon} alt="ici drive logo"/>
+              <Avatar className="avatar" src={IciDriveIcon} alt="ici drive logo" />
               <Typography component="h1" variant="h5">
                 Connexion
           </Typography>
-           <Typography variant="body1">
+              <Typography variant="body1">
                 Plateforme de drive pour producteurs locaux
           </Typography>
-              
-          <Button
+
+              <Button
                 type="button"
                 fullWidth
                 size="medium"
@@ -140,7 +155,7 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
               >
                 <img alt="google" src={GoogleIcon} /> Connexion par Google
             </Button>
-            <Button
+              <Button
                 type="button"
                 fullWidth
                 color="primary"
@@ -153,13 +168,13 @@ class Login extends React.Component<{history:any,location:any}, {loading:boolean
             </Button>
             </div>
           </Container>
-  
+
         </div>;
       }
     }
 
-    
-    
+
+
   }
 }
 

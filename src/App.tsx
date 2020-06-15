@@ -27,6 +27,7 @@ import MyDrive from './views/my-drive';
 import Discover from './views/discover';
 import Register from './views/register';
 import RegisterSuccess from './views/register/success';
+import EmailCheck from './views/email-check';
 
 import 'react-google-places-autocomplete/dist/index.min.css';
 import How from './views/how';
@@ -64,6 +65,8 @@ class App extends React.Component<{}, {  }>{
             <Route path="/discover" component={Discover} />         
             <Route path="/login" component={Login} /> 
             <Route path="/how" component={How} /> 
+            <Route path="/email-check" component={EmailCheck} /> 
+            
 
             <PrivateRoute exact path="/" component={MyOrders} /> 
             <PrivateRoute exact path="/my-orders/:id" component={Order} />           

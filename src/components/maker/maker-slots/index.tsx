@@ -6,11 +6,11 @@ import Slot from '../../slot/slot';
 import conf from '../../../confs';
 import { OfficeSlot } from '../../../models/hebdo-slot';
 import Typography from '@material-ui/core/Typography';
-import {
+/*import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
   GoogleReCaptcha
-} from 'react-google-recaptcha-v3';
+} from 'react-google-recaptcha-v3';*/
 import Checkbox from '@material-ui/core/Checkbox';
 
 
@@ -34,7 +34,7 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
   const classes = useStyles();
   const [maker, setMaker] = React.useState<any>({});
   const [standalone, setStandalone] = React.useState(true);
-  const [recaptcha, setRecaptcha] = React.useState<any>(null);
+  const [recaptcha, setRecaptcha] = React.useState<any>("1");
   const [checkCgu, setCheckCgu] = React.useState(false);
   const [readonly, setReadonly] = React.useState(false);
 
@@ -85,7 +85,7 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
     };
   }
 
-  const { executeRecaptcha } = useGoogleReCaptcha();  
+  //const { executeRecaptcha } = useGoogleReCaptcha();  
   const place = maker && (maker as any).place ? (maker as any).place as Place : null;
   return (
     <form className={`${classes.mslContainer} msl-container`} ref={ref} id={props.id} onSubmit={e => e.preventDefault()}>
@@ -124,8 +124,8 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
           required
           onChange={(e) => aChange(() => {
             
-            if(executeRecaptcha)
-              setRecaptcha(executeRecaptcha('register'));
+            /*if(executeRecaptcha)
+              setRecaptcha(executeRecaptcha('register'));*/
 
             setCheckCgu(e.target.checked);
             return maker;
@@ -134,9 +134,9 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
         /> <Typography variant="body1" className="accept-cgu">Accepter les <a href={conf.cgr} rel="noopener noreferrer" target="_blank">Conditions Générales d'utilisation</a></Typography>
       </div>)}
 
-      {!standalone && (<GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCH_SITEKEY}>
+      {/*{!standalone && (<GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCH_SITEKEY}>
         <GoogleReCaptcha onVerify={token => setRecaptcha(token)} />
-      </GoogleReCaptchaProvider>)}
+      </GoogleReCaptchaProvider>)}*/}
 
     </form>
   );
