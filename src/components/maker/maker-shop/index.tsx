@@ -204,6 +204,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
           fullWidth
           value={webPage}
           label="Page web existante"
+          helperText="https://exemple.fr"
           type="url"
           onChange={(e: any) => aChange(() => {
             setWebPage(e.target.value);

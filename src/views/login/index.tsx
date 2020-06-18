@@ -74,7 +74,6 @@ class Login extends React.Component<{ history: any, location: any }, { loading: 
   private registerOnFirebase() {
     this.unregisterAuthObserver = (window as any).firebase.auth().onAuthStateChanged(
       (user: any) => {
-        console.log(user);
         if (user) {
           (window as any).firebase.auth().currentUser.getIdToken().then((token: string) => authService.setIdToken(token));
           // avec le idToken, self() marchera
@@ -83,6 +82,7 @@ class Login extends React.Component<{ history: any, location: any }, { loading: 
               // déclenche la redirection
               this.setState({ loading: false, isSignedIn: !!user })
             }).catch(e => {
+              authService.signout();
               this.setState({ from: '/inscription', loading: false, isSignedIn: !!user });
             });
 

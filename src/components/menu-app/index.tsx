@@ -164,10 +164,10 @@ const MenuApp = (props: any) => {
             <ListItemText primary="Mentions" secondary="CGU, CGR, ..." />
           </ListItem>
           
-          {email && (<ListItem button key="logout" onClick={logout}>
+          <ListItem button key="logout" onClick={logout}>
             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
             <ListItemText primary="Se déconnecter" secondary="Dissocier cet appareil" />
-          </ListItem>)}
+          </ListItem>
         </List>
       </Drawer>
       <AppBar position="fixed" className={classes.appBar}>
