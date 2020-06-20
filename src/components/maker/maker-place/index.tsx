@@ -122,7 +122,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
     const place: Place = makerProviderFn();
     const newMaker: any = { ...maker, place: place };
     setMaker(newMaker);
-    const check = newMaker.place.image && (document as any).getElementById(props.id).checkValidity();
+    const check = newMaker.place.image && newMaker.place.address && (document as any).getElementById(props.id).checkValidity();
     if (props.onChange && check !== undefined) props.onChange(newMaker, check)
   };
 
@@ -154,6 +154,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         <TextField
           fullWidth
           value={label}
+          helperText="ex: Sur mon exploitation, Boutique de la coopérative..."
           label="Nom du lieu"
           type="text"
           onChange={(e: any) => aChange(() => {
@@ -190,7 +191,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         />)}
         {process.env.REACT_APP_STAGE === 'prod' && (
           <GooglePlacesAutocomplete
-            placeholder='Adresse complète'
+            placeholder='Adresse complète*'
             initialValue={address}
             inputClassName={`MuiInputBase-input MuiInput-input ${classes.autocomplete}`}
             autocompletionRequest={{
@@ -206,6 +207,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
           fullWidth
           value={description}
           label="Description du lieu"
+          helperText="ex: Atelier de fabrication de mes produits"
           type="text"
           onChange={(e: any) => aChange(() => {
             setDescription(e.target.value);

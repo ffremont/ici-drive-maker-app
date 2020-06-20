@@ -1,6 +1,6 @@
 import React from 'react';
 
-class EmailCheck extends React.Component<{ history: any, match: any }, {}>{
+class EmailCheck extends React.Component<{ history: any, match: any, location: any }, {}>{
 
 
   componentWillUnmount() {
@@ -24,7 +24,7 @@ class EmailCheck extends React.Component<{ history: any, match: any }, {}>{
       }
       // The client SDK will parse the code from the link for you.
       firebase.auth().signInWithEmailLink(email, window.location.href)
-        .then( (result:any) => {
+        .then((result: any) => {
           // Clear email from storage.
           window.localStorage.removeItem('emailForSignIn');
           this.props.history.push('/');
@@ -34,13 +34,13 @@ class EmailCheck extends React.Component<{ history: any, match: any }, {}>{
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
         })
-        .catch( (error:any) => {
+        .catch((error: any) => {
           console.error(error);
           this.props.history.push('/error');
           // Some error occurred, you can inspect the code: error.code
           // Common errors could be invalid email and invalid or expired OTPs.
         });
-    }
+    } 
   }
 
   render() {

@@ -10,6 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -146,6 +147,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
           fullWidth
           value={name}
           label="Nom"
+          helperText="Nom principal visible de votre espace producteur"
           type="text"
           onChange={(e: any) => aChange(() => {
             setName(e.target.value);
@@ -180,10 +182,11 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
           }}
         />
 
-<TextField
+      <TextField
           fullWidth
           value={startDriveAfterDays}
           label="Retrait au plus tôt avant (jours ouvrables)"
+          helperText="min 5j entre la réservation et le retrait"
           type="number"          
           onChange={(e: any) => aChange(() => {
             const v = parseInt(e.target.value) >= 5 ? e.target.value : 5;
@@ -233,6 +236,10 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
           }}
         />
 
+{payments.acceptPaypal && (<Alert severity="info">
+  <AlertTitle>Paypal en ligne</AlertTitle>
+  Une fois la réservation est <strong>confirmée</strong>, vous êtes invitez à emettre une demande de paiement depuis votre application paypal qui est indépendante d'ici-drive. 
+</Alert>)}
       <FormControl component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">Moyens de paiement</FormLabel>
         <FormGroup>

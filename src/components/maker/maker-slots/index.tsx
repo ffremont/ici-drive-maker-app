@@ -93,6 +93,7 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
         fullWidth
         value={slotsDescription}
         label="Description des horaires"
+        helperText="ex: Habituellement ouvert tous les mardi/jeudi/vendredi/samedi de 9h-13h / 16h-18h30"
         type="text"
         onChange={(e: any) => aChange(() => {
           setSlotsDescription(e.target.value);

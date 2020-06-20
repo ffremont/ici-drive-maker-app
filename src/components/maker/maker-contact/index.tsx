@@ -1,7 +1,20 @@
 import React, {forwardRef} from 'react';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+
+    formControl: {
+      marginTop: "25px"
+    },
+    container: {}
+  }),
+);
 
 export default forwardRef(function MakerContact(props: any, ref:any) {
+  const classes = useStyles();
   const [maker, setMaker] = React.useState<any>({});
   const [readonly, setReadonly] = React.useState(false);
 
@@ -42,7 +55,7 @@ export default forwardRef(function MakerContact(props: any, ref:any) {
   };
 
   return (
-    <form className="mc-container" ref={ref} id={props.id} onSubmit={e => e.preventDefault()}>
+    <form  className={`${classes.container} mc-container`} ref={ref} id={props.id} onSubmit={e => e.preventDefault()}>
       <TextField
         fullWidth
         value={email}
@@ -58,6 +71,7 @@ export default forwardRef(function MakerContact(props: any, ref:any) {
       />
       <TextField
         fullWidth
+        className={classes.formControl}
         value={phone}
         label="Téléphone"
         onChange={(e:any) => phoneChange(e.target.value)}
