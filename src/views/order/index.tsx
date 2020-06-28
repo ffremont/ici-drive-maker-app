@@ -275,7 +275,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         onClose={() => this.setState({ openVerifiedDialog: false })}
         onConfirm={(txt: string) => this.onClickVerifiedOrder(txt || '')}
         okText={`J'ai vérifié`}
-        message="La réservation passera à l'état 'à confirmer' par le demandeur. Dès qu'elle sera confirmée, vous serez notifié."
+        message="Merci de préciser s'il manque ou non des produits."
         open={this.state.openVerifiedDialog} />
 
       <Confirm title="Refuser la demande"

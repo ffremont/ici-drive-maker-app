@@ -2,8 +2,8 @@
 import { Configuration } from "./configuration";
 
 
-//const DEV_API_BASEURL = 'http://localhost:5001/ici-drive/us-central1/api/api';
-const DEV_API_BASEURL = '/api-mock';
+const DEV_API_BASEURL = 'http://localhost:5001/ici-drive/us-central1/api/api';
+//const DEV_API_BASEURL = '/api-mock';
 const other: Configuration = {
     cgu: 'https://docs.google.com/document/d/e/2PACX-1vRxz61BpPZL-YJXX2E6tvdYsI0PG1vxv1eGjxQ7TMfqififiO-Snb5pZU21bkjZgTHyENu3I5nFzxRZ/pub',
     cgr: 'https://docs.google.com/document/d/e/2PACX-1vTQkz2Kno4710sHi1MDtQwbIRU3tkddacvc5mlkHKfcJtOpcGLdKxxWDbPyxm4-mnLdeSyRVL4tjJKB/pub',
@@ -18,13 +18,13 @@ const other: Configuration = {
     baseURL: 'https://app.ici-drive.fr',
     fcmPublicVapidKey: 'BO7yESbBXsx7ddVzYqvkNpWf-3S6sjqQxEoolQQ1OG02D0-nmrpowEsYRHuoGEzT4w5Np6Gdwto5FiLsS--sONw',
     API: {
-        self: () => `${DEV_API_BASEURL}/makers/self.json`,
+        /*self: () => `${DEV_API_BASEURL}/makers/self.json`,
         products: (ref?:string) => `${DEV_API_BASEURL}/makers/self.json?ref=${ref}`,
         //orders: (ref?:string) => `${DEV_API_BASEURL}/my-orders.json?ref=${ref}`,
-        orders: (ref?:string) => `${DEV_API_BASEURL}/empty.json`,
-       /* self: () => `${DEV_API_BASEURL}/admin/makers/self`,
+        orders: (ref?:string) => `${DEV_API_BASEURL}/empty.json`,*/
+       self: () => `${DEV_API_BASEURL}/admin/makers/self`,
         products: (ref?:string) => `${DEV_API_BASEURL}/admin/makers/self/products/${ref||''}`,
-        orders: (ref?:string) => `${DEV_API_BASEURL}/admin/my-orders/${ref || ''}`,*/
+        orders: (ref?:string) => `${DEV_API_BASEURL}/admin/my-orders/${ref || ''}`,
     },
     slotQuantity:900000, // 15 minutes par créneau
     categories:[

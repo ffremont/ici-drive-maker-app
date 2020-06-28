@@ -146,14 +146,15 @@ const MenuApp = (props: any) => {
             <ListItemIcon><ImportContactsIcon /></ListItemIcon>
             <ListItemText primary="Catalogue produits" />
           </ListItem>
-          <ListItem button key="point" onClick={() => props.history.push('/my-place')}>
-            <ListItemIcon><RoomIcon /></ListItemIcon>
-            <ListItemText primary="Retrait &amp; livraison" />
-          </ListItem>
           <ListItem button key="account" onClick={() => props.history.push('/my-drive')}>
             <ListItemIcon><StorefrontIcon /></ListItemIcon>
-            <ListItemText primary="Mon drive" />
+            <ListItemText primary="Mon activité" />
           </ListItem>
+          <ListItem button key="point" onClick={() => props.history.push('/my-place')}>
+            <ListItemIcon><RoomIcon /></ListItemIcon>
+            <ListItemText primary="Retrait et Horaires" />
+          </ListItem>
+          
 
           <ListItem button key="support" onClick={() => window.open(conf.support)}>
             <ListItemIcon><BugReportIcon /></ListItemIcon>

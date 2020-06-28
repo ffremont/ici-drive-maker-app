@@ -37,8 +37,8 @@ class How extends React.Component<{ history: any, match: any }, {}>{
           <StepLabel>Réservation</StepLabel>
           <StepContent>
           <Typography variant="body1">
-          Chaque producteur adapte la date du retrait en fonction de son  activité (min 5jrs après). Lorsque votre réservation est terminée sur <Link href="app.ici-drive.fr">app.ici-drive.fr</Link>. 
-          <strong> Le producteur peut la vérifier jusqu'à 72h avant la date du retrait.</strong>
+          Chaque producteur adapte la date du retrait (au plus tôt) en fonction de son  activité. Lorsque votre réservation est terminée sur <Link href="app.ici-drive.fr">app.ici-drive.fr</Link>. 
+          <strong> Le producteur doit la vérifier</strong>, au plus tard, 3h avant le retrait si le retrait est prévu dans les moins de 5 jours, sinon 48h avant le retrait.
           </Typography>
             
           </StepContent>
@@ -50,12 +50,12 @@ class How extends React.Component<{ history: any, match: any }, {}>{
           </StepContent>
         </Step>
         <Step active={true} key="confirmation">
-          <StepLabel>Confirmation par le consommateur</StepLabel>
+          <StepLabel>Confirmation</StepLabel>
           <StepContent>
-          <Typography variant="body1">Un lapse de temps peut s'écouler entre la réservation et la vérification. Pour éviter tout oubli. Une confirmation est nécessaire jusqu'à 48h avant la date du retrait.
-
-<br/>
-En cas de réservation compatible par PayPal, le producteur enverra la demande de paiement.</Typography>
+          <Typography variant="body1">Si le retrait se fait dans - de 5j, la confirmation est automatique.</Typography>
+          <Typography variant="body1">Si le retrait se fait dans + de 5j, la confirmation par le consommateur sera nécessaire et cela pour éviter tout oubli. Elle peut se faire jusqu'à 48h avant la date du retrait.
+</Typography>
+<Typography variant="body1">En cas de réservation compatible par PayPal, le producteur enverra la demande de paiement.</Typography>
           </StepContent>
         </Step>
         <Step active={true} key="retrat">

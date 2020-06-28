@@ -30,7 +30,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
 
   const [maker, setMaker] = React.useState<Maker | null>(null);
   const [name, setName] = React.useState('');
-  const [startDriveAfterDays, setStartDriveAfterDays] = React.useState('');
+  const [startDriveAfterDays, setStartDriveAfterDays] = React.useState(1);
   const [description, setDescription] = React.useState('');
   const [webPage, setWebPage] = React.useState('');
   const [prefixOrderRef, setPrefixOrderRef] = React.useState('');
@@ -185,11 +185,11 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
       <TextField
           fullWidth
           value={startDriveAfterDays}
-          label="Retrait au plus tôt avant (jours ouvrables)"
-          helperText="min 5j entre la réservation et le retrait"
+          label="Retrait au plus tôt avant X jours"
+          helperText="ex, 1: retrait possible le lendemain"
           type="number"          
           onChange={(e: any) => aChange(() => {
-            const v = parseInt(e.target.value) >= 5 ? e.target.value : 5;
+            const v = parseInt(e.target.value) >= 1 ? parseInt(e.target.value) : 1;
             setStartDriveAfterDays(v);
             return { ...maker, startDriveAfterDays: v } as any;
           })}
@@ -198,7 +198,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
             readOnly: readonly,
             maxLength:10,
             max:100,
-            min:5,
+            min:1,
             name:'startDriveAfterDays'
           }}
         />

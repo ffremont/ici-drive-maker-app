@@ -2,6 +2,7 @@ import React from 'react';
 import './MyOrders.scss';
 import MenuApp from '../../components/menu-app';
 import ordersStore from '../../stores/orders';
+import makerStore from '../../stores/maker';
 import { Subscription } from 'rxjs';
 import { Order, OrderState } from '../../models/order';
 import List from '@material-ui/core/List';
@@ -18,6 +19,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Maker } from '../../models/maker';
+import Alert from '@material-ui/lab/Alert';
 
 
 
@@ -36,12 +39,13 @@ const useStyles = (theme: Theme) => ({
   }
 });
 
-class MyOrders extends React.Component<{ history: any, classes: any }, { orders: Order[], waiting:boolean }>{
+class MyOrders extends React.Component<{ history: any, classes: any }, { maker:Maker|null, orders: Order[], waiting:boolean }>{
 
   
   statusLabel:any = {};
-  state = { orders: [],waiting:false };
+  state = { orders: [],waiting:false, maker:null };
   sub: Subscription | null = null;
+  subMaker: Subscription | null = null;
 
   componentWillUnmount() {
     this.sub?.unsubscribe();
@@ -54,7 +58,12 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
     this.statusLabel[OrderState.CONFIRMED] = {label: 'Confirmée', color: this.props.classes.green};
     this.statusLabel[OrderState.REFUSED] = {label:'Refusée', color: this.props.classes.grey}
 
-    
+    this.subMaker = makerStore.subscribe((maker: Maker) => {
+      if (maker) {
+        this.setState({ maker });
+      }
+    });
+
     this.sub = ordersStore.subscribe((orders: Order[]) => {
       console.log('MyOrders > ordersStore.sub ',orders);
       if(orders)
@@ -68,12 +77,16 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { orders:
   }
 
   render() {
+    const maker = this.state.maker as any;
     return (<div className="my-orders">
       <MenuApp mode={'full'} history={this.props.history} />
 
       {this.state.waiting && (<Backdrop className="backdrop" open={true}>
         <CircularProgress color="inherit" />
       </Backdrop>)}
+
+      {maker && maker.active && (<Alert className="status-account" severity="success">Espace producteur actif</Alert>)}
+      {maker && !maker.active && (<Alert className="status-account" severity="warning">Espace producteur inactif</Alert>)}
 
       {!this.state.orders.length && (<div className="empty">
           <Typography variant="h6">Aucune réservation</Typography>
