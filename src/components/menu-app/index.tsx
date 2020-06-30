@@ -76,6 +76,7 @@ const MenuApp = (props: any) => {
   const [mode, setMode] = useState('full');
   const [auth] = useState(false);
   const [email, setEmail] = useState('');
+  const [goBackPath, setGoBackPath] = useState('');
   const [open, setOpen] = useState(false);
   const [showInstall, setShowInstall] = useState(false);
   const [hideInstallBanner, setHideInstallBanner] = useState(true);
@@ -84,7 +85,8 @@ const MenuApp = (props: any) => {
   React.useEffect(() => {
     setMode(props.mode);
     setHideInstallBanner(props.hideInstallBanner);
-  }, [props.mode, props.hideInstallBanner]);
+    setGoBackPath(props.goBackPath);
+  }, [props.mode, props.hideInstallBanner, props.goBackPath]);
 
   useEffect(() => {
     const subMaker = makerStore.subscribe((maker:Maker) =>{
@@ -179,7 +181,7 @@ const MenuApp = (props: any) => {
             </IconButton>
           )}
           {mode !== 'full' && mode !== 'discover' && mode !== 'register' && mode !== 'register-success' && (
-            <IconButton edge="start" className={classes.firstButton} onClick={() => props.history.goBack()} color="inherit" aria-label="précédent">
+            <IconButton edge="start" className={classes.firstButton} onClick={() => goBackPath ? props.history.push(goBackPath) : props.history.goBack()} color="inherit" aria-label="précédent">
               <ArrowBackIosIcon />
             </IconButton>
           )}

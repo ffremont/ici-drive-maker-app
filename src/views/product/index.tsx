@@ -133,7 +133,7 @@ class Product extends React.Component<{ history: any, match: any }, { waiting:bo
     const product: P.Product = (this.state.product as any);
 
     return <div className="product">
-      <MenuApp mode="light" history={this.props.history} />
+      <MenuApp mode="light" goBackPath="/products" history={this.props.history} />
 
       <div className="area">
 

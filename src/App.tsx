@@ -29,8 +29,11 @@ import Register from './views/register';
 import RegisterSuccess from './views/register/success';
 import EmailCheck from './views/email-check';
 
+import './main.scss';
+import 'react-calendar/dist/Calendar.css';
 import 'react-google-places-autocomplete/dist/index.min.css';
 import How from './views/how';
+import MyCalendar from './views/my-calendar';
 
 
 // @see https://material-ui.com/customization/palette/
@@ -74,6 +77,7 @@ class App extends React.Component<{}, {  }>{
             <PrivateRoute exact path="/products/:id" component={Product} />   
             <PrivateRoute exact path="/my-drive" component={MyDrive} />   
             <PrivateRoute exact path="/my-place" component={MyPlace} />   
+            <PrivateRoute exact path="/my-calendar" component={MyCalendar} />   
 
             <Route path="/error" component={Error} />
             <Route path="*" component={NoMatch} />

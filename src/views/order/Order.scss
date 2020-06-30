@@ -1,4 +1,4 @@
-.order{
+.order-content{
     padding: 0px 30px 30px 30px;
 }
 
@@ -19,6 +19,20 @@
 }
 .fab-actions button + button {
     margin-left: 40px;
+}
+
+.order-sumup, .order-product{
+    margin:20px;
+}
+
+strong.total{
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.product-label{
+    font-size:1.3rem !important;
 }
 
 @media print {

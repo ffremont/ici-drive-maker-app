@@ -12,12 +12,8 @@ import { deepOrange, grey, green } from '@material-ui/core/colors';
 import Chip from '@material-ui/core/Chip';
 import Fab from '@material-ui/core/Fab';
 import { Maker } from '../../models/maker';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import SpeedDial from '@material-ui/lab/SpeedDial';
@@ -37,6 +33,7 @@ import SnackAdd from '../../components/snack-add';
 
 import notifStore from '../../stores/notif';
 import { NotifType } from '../../models/notif';
+import Typography from '@material-ui/core/Typography';
 
 const actions = [
   { icon: <PrintIcon />, name: 'print', label: 'Imprimer' },
@@ -162,7 +159,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
 
     return (<div className="order">
       <MenuApp mode="light" history={this.props.history} />
-      {currentOrder && (<Grid container direction="column" justify="center" spacing={1}>
+      {currentOrder && (<Grid container direction="column" justify="center" className="order-content" spacing={1}>
 
         <SnackAdd />
         <Grid item>
@@ -238,34 +235,37 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
 
       </Grid>)}
 
-      {currentOrder && currentOrder.choices && (<TableContainer>
-        <Table className={this.props.classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Quantité</TableCell>
-              <TableCell align="center">Réf.</TableCell>
-              <TableCell align="center">P.U.</TableCell>
-              <TableCell align="center">Libellé</TableCell>
-              <TableCell align="center">Description</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentOrder.choices.map((pc: O.ProductChoice, i) => (
-              <TableRow key={`pc_${i}`}>
-                <TableCell align="center">{pc.quantity}</TableCell>
-                <TableCell align="center">{pc.product.ref}</TableCell>
-                <TableCell align="center">{pc.product.price}</TableCell>
-                <TableCell align="center">{pc.product.label}</TableCell>
-                <TableCell align="center">{pc.product.description}</TableCell>
-              </TableRow>
+      {currentOrder && currentOrder.choices && (<Card className="order-sumup" variant="outlined">
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            Résumé du panier 
+        </Typography>
+          <Typography color="textSecondary">
+            {currentOrder.choices.length} produits différents
+        </Typography>
+          <Typography variant="body2" component="p">
+            Total de <strong className="total">{currentOrder.total || 'ERREUR'}€</strong>
+          </Typography>
+        </CardContent>
+      </Card>)}
+
+      {currentOrder && currentOrder.choices.map((pc: O.ProductChoice, i) => (
+              <Card key={`product_${i}`} className="order-product" variant="outlined">
+              <CardContent>
+                <Typography className="product-label" variant="h5">
+                x{pc.quantity} - {pc.product.label}
+              </Typography>
+                <Typography color="textSecondary">
+                  {pc.product.ref}
+              </Typography>
+                <Typography variant="body2" component="p">
+                  <strong>Prix unitaire </strong> {pc.product.price}€
+                  <br/>
+                  <strong>Description</strong> : {pc.product.description}
+                </Typography>
+              </CardContent>
+            </Card>
             ))}
-            <TableRow>
-              <TableCell colSpan={3} align="right">Total</TableCell>
-              <TableCell align="center">{currentOrder.total || 'ERREUR'}€</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>)}
 
       <Confirm title="Annuler la réservation" withText={true} onClose={() => this.setState({ openCancelDialog: false })} onConfirm={(txt: string) => this.cancel(txt)} message="Je souhaite annuler pour le motif :" open={this.state.openCancelDialog} />
 

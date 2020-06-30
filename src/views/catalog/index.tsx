@@ -89,7 +89,7 @@ class Catalog extends React.Component<{ history: any, match: any, classes: any }
 
     return (
       <div className="maker">
-        <MenuApp mode="catalog" history={this.props.history} />
+        <MenuApp mode="catalog" goBackPath="/" history={this.props.history} />
 
         <Fab size="large" onClick={() => this.props.history.push(`/products/0000`)} color="primary" className="add-product" aria-label="add product">
           <AddIcon />
