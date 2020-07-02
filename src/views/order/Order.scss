@@ -1,45 +1,107 @@
-.order-content{
+.order-content {
     padding: 0px 30px 30px 30px;
 }
 
-.my-group{
-    margin:15px 0px !important;
+.my-group {
+    margin: 15px 0px !important;
 }
 
-.my-speed-dial{
+.my-speed-dial {
     position: fixed;
-    bottom:30px;
-    right:40px;
+    bottom: 30px;
+    right: 40px;
 }
 
-.fab-actions{
+.fab-actions {
     position: fixed;
     bottom: 26px;
     right: 41px;
 }
-.fab-actions button + button {
+
+.fab-actions button+button {
     margin-left: 40px;
 }
 
-.order-sumup, .order-product{
-    margin:20px;
+.order-sumup,
+.order-product {
+    margin: 20px;
 }
 
-strong.total{
+strong.total {
     font-size: 1.3rem;
     font-weight: bold;
     text-decoration: underline;
 }
 
-.product-label{
-    font-size:1.3rem !important;
+.product-label {
+    font-size: 1.3rem !important;
+}
+
+.flag-ok{
+    color:#4caf50 !important;
+}
+.flag-ko{
+    color:#f44336 !important;
+}
+.flag{
+    margin-right:10px;
+    margin-bottom: 10px;
 }
 
 @media print {
-    .my-speed-dial, .MuiAppBar-root{
-        display:none !important;
+
+    .my-speed-dial,
+    .MuiAppBar-root {
+        display: none !important;
     }
-    .order{
-        margin-top:0px !important;
+
+    .order {
+        margin-top: 0px !important;
+    }
+
+    .install-bar {
+        display: none;
+    }
+
+
+    .order-sumup,
+    .order-product {
+        display: inline-block;
+    }
+
+    .order-content {
+        flex-direction: inherit;
+        justify-content: left;
+
+
+
+        .status-item {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        .MuiGrid-spacing-xs-1>.MuiGrid-item {
+            padding: 0px;
+        }
+
+        .ref-item,
+        .maker-item,
+        .customer-item,
+        .drive-item {
+            width: 100%;
+
+            &>.MuiGrid-container {
+                display: flex;
+                flex-direction: row;
+
+                &>div+div {
+                    margin-left: 5px;
+                }
+
+                &>div {
+                    flex: 1;
+                }
+            }
+        }
     }
 }
