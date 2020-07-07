@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import IciDriveTypoIcon from '../../assets/images/ici-drive-icon.png';
 import IciDriveBannerIcon from '../../assets/images/ici-drive-banner.png';
@@ -155,6 +156,10 @@ const MenuApp = (props: any) => {
           <ListItem button key="point" onClick={() => props.history.push('/my-place')}>
             <ListItemIcon><RoomIcon /></ListItemIcon>
             <ListItemText primary="Retrait et Horaires" />
+          </ListItem>
+          <ListItem button key="calendar" onClick={() => props.history.push('/my-calendar')}>
+            <ListItemIcon><DateRangeIcon /></ListItemIcon>
+            <ListItemText primary="Fermetures Drive" />
           </ListItem>
           
 

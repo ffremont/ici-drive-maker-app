@@ -21,6 +21,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Maker } from '../../models/maker';
 import Alert from '@material-ui/lab/Alert';
+import TutoModal from '../../components/tuto-modal';
 
 
 
@@ -39,11 +40,11 @@ const useStyles = (theme: Theme) => ({
   }
 });
 
-class MyOrders extends React.Component<{ history: any, classes: any }, { maker:Maker|null, orders: Order[], waiting:boolean }>{
+class MyOrders extends React.Component<{ history: any, classes: any }, { maker:Maker|null, orders: Order[], waiting:boolean, tutoModalOpen:boolean }>{
 
   
   statusLabel:any = {};
-  state = { orders: [],waiting:false, maker:null };
+  state = { orders: [],waiting:false, maker:null, tutoModalOpen:false };
   sub: Subscription | null = null;
   subMaker: Subscription | null = null;
 
@@ -52,6 +53,7 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
   }
 
   componentDidMount() {
+
     this.statusLabel[OrderState.PENDING] = {label: 'A vérifier', color: this.props.classes.orange};
     this.statusLabel[OrderState.CANCELLED] = {label: 'Annulée', color: this.props.classes.grey};
     this.statusLabel[OrderState.VERIFIED] = {label: 'En attente de confirmation', color: this.props.classes.orange};
@@ -72,7 +74,10 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
     });
 
     // charge la liste des commandes
-    this.setState({waiting:true});
+    this.setState({
+      waiting:true,
+      tutoModalOpen: localStorage && !localStorage.getItem('tutoModalIknown')
+    });
     ordersStore.load().finally(() => this.setState({waiting:false}));
   }
 
@@ -84,6 +89,16 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
       {this.state.waiting && (<Backdrop className="backdrop" open={true}>
         <CircularProgress color="inherit" />
       </Backdrop>)}
+
+      <TutoModal open={this.state.tutoModalOpen} onClose={() => {
+        this.setState({tutoModalOpen:false});
+      }} onIGetIt={() => {
+        this.setState({tutoModalOpen:false});
+        if(localStorage) localStorage.setItem('tutoModalIknown', '1');
+        }} onFirstStep={() => {
+          this.setState({tutoModalOpen:false});
+          this.props.history.push('/how')
+        }}/>
 
       {maker && maker.active && (<Alert className="status-account" severity="success">Espace producteur actif</Alert>)}
       {maker && !maker.active && (<Alert className="status-account" severity="warning">Espace producteur inactif</Alert>)}

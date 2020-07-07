@@ -1,8 +1,36 @@
 .my-title{
     text-align: center;
 }
-
+.save-fab{
+    position: fixed !important;
+    right: 30px;
+    bottom: 30px;
+}
 .my-element{
     margin: auto;
     margin-top: 28px;
+    width: 500px;
+    border: 1px solid #a0a0964a;
+}
+.info-drive{
+    margin: 10px 10px 0px 10px;
+}
+
+button:enabled:hover, button:enabled:focus{
+    background: #9e9e9e;
+}
+.react-calendar__tile--active{
+    background: #9e9e9e;
+}
+
+.wc{
+    background: #cc372c !important;
+    color:white !important;
+}
+.wc:disabled{
+    background:#cc372c94 !important;
+}
+.container-calendar{
+    padding: 0px 10px;
+    margin-bottom: 100px;
 }

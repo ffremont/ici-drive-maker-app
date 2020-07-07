@@ -4,7 +4,6 @@ import  { BrowserRouter } from "react-router-dom";
 import './index.css';
 import App from './App';
 import './array.sortBy';
-import './date.getWeek';
 //import './serviceWorker';
 
 ReactDOM.render(

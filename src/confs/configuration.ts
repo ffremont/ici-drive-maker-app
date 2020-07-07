@@ -19,6 +19,8 @@ export interface Configuration{
     demoAppIciDriveFr:string;
     demoAdminIciDriveFr:string;
 
+    publicHolidays:{date:string, public_holiday:boolean, label:string}[],
+
     mentions:string;
     privacy_policy:string;
     acceptableUsePolicy:string;
