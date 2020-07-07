@@ -84,6 +84,7 @@ class MyCalendar extends React.Component<{ history: any, location: any }, { make
         delete nMaker.products;
         MakerStore.updateSelf(nMaker as any)
             .then(() => {
+                makerStore.load();
                 this.setState({ canSave: false });
                 notifStore.set({ message: 'Enregistrement réussi', type: NotifType.DEFAULT })
             })

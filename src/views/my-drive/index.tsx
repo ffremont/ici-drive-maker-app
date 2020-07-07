@@ -48,6 +48,7 @@ class MyDrive extends React.Component<{ history: any, match: any }, { maker: Mak
     MakerStore.updateSelf(nMaker as any)
       .then(() => {
         this.setState({ canSave: false });
+        makerStore.load();
         notifStore.set({ message: 'Enregistrement réussi', type: NotifType.DEFAULT })
       })
       .catch(e => {
