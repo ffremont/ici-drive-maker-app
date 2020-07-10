@@ -30,6 +30,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
 
   const [maker, setMaker] = React.useState<Maker | null>(null);
   const [name, setName] = React.useState('');
+  const [placeholderOrderComment, setPlaceholderOrderComment] = React.useState('');
   const [startDriveAfterDays, setStartDriveAfterDays] = React.useState(1);
   const [description, setDescription] = React.useState('');
   const [webPage, setWebPage] = React.useState('');
@@ -54,6 +55,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
       if (props.maker.payments) setPayments({...payments, ...props.maker.payments});
       if (props.maker.webPage) setWebPage(props.maker.webPage);
       if (props.maker.startDriveAfterDays) setStartDriveAfterDays(props.maker.startDriveAfterDays);
+      if (props.maker.placeholderOrderComment) setPlaceholderOrderComment(props.maker.placeholderOrderComment);
     }
   }, [props.maker]);
 
@@ -235,6 +237,25 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
             name:'prefixOrderRef'
           }}
         />
+
+      <TextField
+          fullWidth
+          value={placeholderOrderComment}
+          label="Indication de commentaire"
+          type="text"
+          helperText="Champ visible dans Panier > Commentaire"
+          multiline
+          rowsMax={2}
+          onChange={(e: any) => aChange(() => {
+            setPlaceholderOrderComment(e.target.value);
+            return { ...maker, placeholderOrderComment: e.target.value } as any;
+          })}
+          inputProps={{
+            readOnly: readonly,
+            maxLength:512
+          }}
+        />
+
 
 {payments.acceptPaypal && (<Alert severity="info">
   <AlertTitle>Paypal en ligne</AlertTitle>

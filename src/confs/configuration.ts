@@ -27,4 +27,6 @@ export interface Configuration{
     cgu:string;
     cgr:string;
     support:string;
+
+    defaultPlaceholderOrderComment:string;
 }

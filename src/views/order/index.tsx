@@ -27,6 +27,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PhoneIcon from '@material-ui/icons/Phone';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
 
 import Confirm from './confirm';
 import MenuApp from '../../components/menu-app';
@@ -200,6 +201,10 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
 
         {currentOrder.reasonOf && (<Grid className="info-item" item>
           <Alert severity="info">{currentOrder.reasonOf}</Alert>
+        </Grid>)}
+
+        {currentOrder.comment && (<Grid item>
+          <Alert icon={<ModeCommentOutlinedIcon fontSize="inherit" />} severity="info">{currentOrder.comment}</Alert>
         </Grid>)}
 
 

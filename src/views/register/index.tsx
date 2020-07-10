@@ -121,18 +121,13 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
           <Alert severity="info">
             <AlertTitle>Inscription producteur ici-drive</AlertTitle>
             Bienvenue sur le formulaire d'inscription à la plateforme citoyenne <strong>ici-drive</strong>. 
-            Elle a pour objectif de proposer aux consommateurs des Drives des produits locaux de qualité près de chez eux. <a href="https://ici-drive.fr" target="_blank">Pour en savoir plus</a>
+            Elle a pour objectif de proposer aux consommateurs des Drives de produits locaux de qualité près de chez eux. <a href="https://ici-drive.fr" target="_blank">Pour en savoir plus</a>
           </Alert>
         )}
         {this.state.activeStep === 0 && (
           <MakerContact ref={this.makerContactRef} id="maker-contact" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m: Maker, v: boolean) => this.onStepChange(m, v)} />
         )}
 
-{this.state.activeStep === 1 && (
-          <Alert severity="info">
-            
-          </Alert>
-        )}
         {this.state.activeStep === 1 && (
           <MakerShop ref={this.makerShopRef} id="maker-shop" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m: Maker, v: boolean) => this.onStepChange(m, v)} />
         )}

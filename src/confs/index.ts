@@ -16,6 +16,7 @@ const other: Configuration = {
     demoAppIciDriveFr: 'https://www.loom.com/share/f84e9d674b9f4299aeb9744fd4303d44',
     defaultStartDriveAfterDays:5,
     baseURL: 'https://app.ici-drive.fr',
+    defaultPlaceholderOrderComment: 'Précision à apporter sur la réservation',
     fcmPublicVapidKey: 'BO7yESbBXsx7ddVzYqvkNpWf-3S6sjqQxEoolQQ1OG02D0-nmrpowEsYRHuoGEzT4w5Np6Gdwto5FiLsS--sONw',
     API: {
         self: () => `${DEV_API_BASEURL}/makers/self.json`,
@@ -57,6 +58,7 @@ const prod: Configuration = {
     support: 'https://forms.gle/q4KYieunhwWVn1BR6',
     baseURL: 'https://app.ici-drive.fr',
     fcmPublicVapidKey: 'BO7yESbBXsx7ddVzYqvkNpWf-3S6sjqQxEoolQQ1OG02D0-nmrpowEsYRHuoGEzT4w5Np6Gdwto5FiLsS--sONw',
+    defaultPlaceholderOrderComment: 'Précision à apporter sur la réservation',
     API: {
         self: () => `${API_BASEURL}/admin/makers/self`,
         products: (ref?:string) => `${API_BASEURL}/admin/makers/self/products/${ref||''}`,

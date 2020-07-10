@@ -68,7 +68,6 @@ export default forwardRef(function MakerSlots(props: any, ref: any) {
 
     let check = Object.keys(maker.place.hebdoSlot).some(day => maker.place.hebdoSlot[day]) && (document as any).getElementById(props.id).checkValidity();
     if(!standalone){
-      console.log(recaptcha, Object.keys(maker.place.hebdoSlot).some(day => maker.place.hebdoSlot[day]), (document as any).getElementById(props.id).checkValidity())
       check = check && (recaptcha||false);
     }
     
