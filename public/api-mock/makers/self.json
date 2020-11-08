@@ -44,7 +44,8 @@
     "phone": "0284512069",
     "created": 1588358270684,
     "description": "CqIIAQBpwDbjaoLM30s33OS7BVJ8K7Y9utdaKc2YMYJFh3ZhvK",
-    
+    "delivery":{"lundi":{"openAt":"8:00","closeAt":"18:00"}},
+    "deliveryAvailableFrom":10,"deliveryRadius":5,"deliveryCost":0,
     "payments":{
         "acceptPaypal": true
     },

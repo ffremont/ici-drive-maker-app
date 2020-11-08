@@ -1,5 +1,5 @@
 import React from 'react';
-import './MyPlace.scss';
+import './MyDelivery.scss';
 import { Subscription } from 'rxjs';
 import makerStore, { MakerStore } from '../../stores/maker';
 import { Maker } from '../../models/maker';
@@ -7,19 +7,21 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuApp from '../../components/menu-app';
 import { Place } from '../../models/place';
-import MakerPlace from '../../components/maker/maker-place';
 import MakerSlots from '../../components/maker/maker-slots';
 import Fab from '@material-ui/core/Fab';
 import SaveIcon from '@material-ui/icons/Save';
 import SnackAdd from '../../components/snack-add';
 import notifStore from '../../stores/notif';
 import { NotifType } from '../../models/notif';
+import { TextField } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { HebdoSlot } from '../../models/hebdo-slot';
+import MakerDelivery from '../../components/maker/maker-delivery';
 
 
-class MyPlace extends React.Component<{ history: any, match: any }, { maker: Maker | null, canSave:boolean, loading:boolean }>{
+class MyDelivery extends React.Component<{ history: any, match: any }, { maker: Maker | null, canSave: boolean, loading: boolean, makerDeliveryValidator:boolean, makerSlotsValidator:boolean }>{
 
-  state = { maker: null, canSave:false, loading:true };
+  state = { maker: null, canSave: false, loading: true, makerDeliveryValidator:false, makerSlotsValidator:false };
 
   makerPlaceRef: any;
   makerSlotsRef: any;
@@ -35,20 +37,19 @@ class MyPlace extends React.Component<{ history: any, match: any }, { maker: Mak
     this.makerSlotsRef = React.createRef();
     this.subMaker = makerStore.subscribe((maker: Maker) => {
       if (maker) {
-        this.setState({ maker, loading:false });
+        this.setState({ maker, loading: false });
       }
 
     });
   }
 
-  onChange(newMaker:Maker, isValid:boolean){
+  onChange(newMaker: Maker, isValid: boolean) {
     this.setState({ canSave: isValid, maker: newMaker });
   }
 
   onClickSave() {
     this.setState({ loading: true });
     const nMaker = { ...(this.state.maker as any) };
-    
     MakerStore.updateSelf(nMaker as any)
       .then(() => {
         makerStore.load();
@@ -63,16 +64,24 @@ class MyPlace extends React.Component<{ history: any, match: any }, { maker: Mak
 
   render() {
     const place = this.state.maker && (this.state.maker as any).place ? (this.state.maker as any).place as Place : null;
+    const maker: any = this.state.maker;
 
-    return (<div className="my-place">
+    return (<div className="my-delivery">
       <MenuApp mode="light" history={this.props.history} />
       <SnackAdd />
-      {place && (<MakerPlace ref={this.makerPlaceRef} id="maker-shop_edit" history={this.props.history} maker={this.state.maker} onChange={(m: Maker, v: boolean) => this.onChange(m, v)} />)}
-      {place && (<MakerSlots ref={this.makerSlotsRef} id="maker-slots_edit" history={this.props.history} slots={place.hebdoSlot} onChange={(hs: HebdoSlot, v: boolean) => {
-        const newMaker = {...(this.state.maker as any)};
-        newMaker.place.hebdoSlot = hs
-        this.onChange(newMaker, v);
-      }} />)}
+      <div className="content-my-delivery">
+      <Alert severity="info">
+        <AlertTitle>Fonctionnement des livraisons</AlertTitle>
+          <strong>En plus du Drive obligatoire</strong>, je paramètre ici mes créneaux de livraisons (facultatif).<br/> <strong>Dès qu'un créneau sera renseigné, la fonctionnalité sera activée</strong>.
+      </Alert>
+
+      {place && (<MakerDelivery id="my_delivery" validateSlots={false} maker={maker} onChange={(m:Maker,v:boolean) =>{ 
+        this.setState({makerDeliveryValidator:v});
+        this.onChange(m, v);
+      }}
+
+      ></MakerDelivery>)}
+
 
       <Fab color="primary" onClick={() => this.onClickSave()} className="save-fab" aria-label="add" disabled={!this.state.canSave}>
         <SaveIcon />
@@ -80,11 +89,10 @@ class MyPlace extends React.Component<{ history: any, match: any }, { maker: Mak
       <Backdrop className="backdrop" open={this.state.loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-
+      </div>
     </div>);
 
   }
 }
 
-
-export default MyPlace;
+export default MyDelivery;

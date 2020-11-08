@@ -9,10 +9,13 @@ import StepContent from '@material-ui/core/StepContent';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Card from '@material-ui/core/Card';
+import conf from '../../confs';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import EuroIcon from '@material-ui/icons/Euro';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 import ClearIcon from '@material-ui/icons/Clear';
+import { Fab } from '@material-ui/core';
 
 class How extends React.Component<{ history: any, match: any }, {}>{
 
@@ -29,39 +32,45 @@ class How extends React.Component<{ history: any, match: any }, {}>{
     return (<div className="how">
       <MenuApp mode="light" history={this.props.history} />
 <div className="how-content">
+
+  <Link href={conf.youtubeTuto} target="_blank"><Fab variant="extended" className="how-youtube">
+          <YouTubeIcon className="help-icon" />
+          Tutoriels
+        </Fab></Link>
       <Typography variant="h5">Premiers pas</Typography>
 
       <Stepper orientation="vertical">
 
         <Step active={true} key="reservation">
-          <StepLabel>Réservation</StepLabel>
+          <StepLabel>Je propose mon catalogue en Drive + Livraison (facultatif)</StepLabel>
           <StepContent>
           <Typography variant="body1">
-          Chaque producteur adapte la date du retrait (au plus tôt) en fonction de son  activité. Lorsque votre réservation est terminée sur <Link href="app.ici-drive.fr">app.ici-drive.fr</Link>. 
-          <strong> Le producteur doit la vérifier</strong>, au plus tard, 3h avant le retrait si le retrait est prévu dans les moins de 5 jours, sinon 48h avant le retrait.
+            
+          Sur l'application des consommateurs, la réservation est effectuée avec l'option Drive ou livraison en fonction des préférences du consommateur. 
+          Votre planning Drive / Livraison est configurable dans le menu latéral de ce site.          
           </Typography>
             
           </StepContent>
         </Step>
-        <Step active={true} key="verification">
-          <StepLabel>Vérification par le producteur</StepLabel>
+        <Step active={true} key="verify">
+          <StepLabel>Je vérifie</StepLabel>
           <StepContent>
-          <Typography variant="body1">Le producteur s'assure d'avoir le stock suffisant pour honorer la réservation. Le cas échéant une note sera transmise.</Typography>
-          </StepContent>
-        </Step>
-        <Step active={true} key="confirmation">
-          <StepLabel>Confirmation</StepLabel>
-          <StepContent>
-          <Typography variant="body1">Si le retrait se fait dans - de 5j, la confirmation est automatique.</Typography>
-          <Typography variant="body1">Si le retrait se fait dans + de 5j, la confirmation par le consommateur sera nécessaire et cela pour éviter tout oubli. Elle peut se faire jusqu'à 48h avant la date du retrait.
-</Typography>
-<Typography variant="body1">En cas de réservation compatible par PayPal, le producteur enverra la demande de paiement.</Typography>
+            <Typography variant="body1">Pour les commandes prévues :</Typography>
+            <ul>
+              <li>- 5j : j'ai maximum 24h pour vérifier la commande, et elle est automatiquement confirmée</li>
+              <li>+ 5j : j'ai jusqu'à 3 jours avant la date du Drive / livraison pour vérifier la commande
+                <ul>
+                  <li>Pour éviter tous oublis, une confirmation est demandée au client</li>
+                </ul>
+              </li>
+            </ul>
+            <Typography variant="body1">Le producteur s'assure d'avoir le stock suffisant pour honorer la réservation. Le cas échéant une note pourra être transmise.</Typography>
           </StepContent>
         </Step>
         <Step active={true} key="retrat">
-          <StepLabel>Retrait</StepLabel>
+          <StepLabel>Retrait / livraison</StepLabel>
           <StepContent>
-          <Typography variant="body1">Le retrait se fera à la date choisie lors de la réservation sur le lieu du Drive du producteur.
+          <Typography variant="body1">Le retrait / livraison se fera à la date choisie lors de la réservation sur le lieu du Drive du producteur ou au domicile du client.
 Toutes les informations se trouvent sur votre app dans "mes réservations".</Typography>
           </StepContent>
         </Step>

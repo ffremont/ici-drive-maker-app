@@ -11,7 +11,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -35,6 +35,7 @@ import { grey } from '@material-ui/core/colors';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Button from '@material-ui/core/Button';
 import ShareIcon from '@material-ui/icons/Share';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import Mentions from '../mentions';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -147,19 +148,23 @@ const MenuApp = (props: any) => {
          
           <ListItem button key="catalog" onClick={() => props.history.push('/products')}>
             <ListItemIcon><ImportContactsIcon /></ListItemIcon>
-            <ListItemText primary="Catalogue produits" />
+            <ListItemText primary="Mes produits" />
           </ListItem>
           <ListItem button key="account" onClick={() => props.history.push('/my-drive')}>
             <ListItemIcon><StorefrontIcon /></ListItemIcon>
             <ListItemText primary="Mon activité" />
           </ListItem>
           <ListItem button key="point" onClick={() => props.history.push('/my-place')}>
-            <ListItemIcon><RoomIcon /></ListItemIcon>
-            <ListItemText primary="Retrait et Horaires" />
+            <ListItemIcon><DriveEtaIcon /></ListItemIcon>
+            <ListItemText primary="Mon planning Drive" />
+          </ListItem>
+          <ListItem button key="delivery" onClick={() => props.history.push('/my-delivery')}>
+            <ListItemIcon><LocalShippingIcon /></ListItemIcon>
+            <ListItemText primary="Mon planning Livraison" />
           </ListItem>
           <ListItem button key="calendar" onClick={() => props.history.push('/my-calendar')}>
             <ListItemIcon><DateRangeIcon /></ListItemIcon>
-            <ListItemText primary="Fermetures Drive" />
+            <ListItemText primary="Mes absences" />
           </ListItem>
           
 
@@ -186,7 +191,9 @@ const MenuApp = (props: any) => {
             </IconButton>
           )}
           {mode !== 'full' && mode !== 'discover' && mode !== 'register' && mode !== 'register-success' && (
-            <IconButton edge="start" className={classes.firstButton} onClick={() => goBackPath ? props.history.push(goBackPath) : props.history.goBack()} color="inherit" aria-label="précédent">
+            <IconButton edge="start" className={classes.firstButton} onClick={() => {
+              goBackPath ? props.history.push(goBackPath) : props.history.push('/');
+            }} color="inherit" aria-label="précédent">
               <ArrowBackIosIcon />
             </IconButton>
           )}

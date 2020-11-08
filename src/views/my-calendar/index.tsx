@@ -99,15 +99,19 @@ class MyCalendar extends React.Component<{ history: any, location: any }, { make
             <MenuApp mode="light" history={this.props.history} />
 
             <Typography className="my-title" variant="h5">
-                Fermetures du Drive
+                Mes absences
 </Typography>
 
             <Typography align="center" className="close-description" variant="body1">
-                Calendrier des fermetures du Drive à l'année.
+                Calendrier des fermetures du Drive / Livraison à l'année.
 </Typography>
 
-            {this.state.firstSlot && (<Alert severity="info" className="info-drive">
-                Créneau possible au plus tôt dans {(this.state.maker as any).startDriveAfterDays|| conf.defaultStartDriveAfterDays}j soit le <strong>{this.state.firstSlot}</strong></Alert>)}
+            {this.state.firstSlot && false && (<Alert severity="info" className="info-drive">
+                Exemple, créneau Drive possible au plus tôt dans {(this.state.maker as any).startDriveAfterDays|| conf.defaultStartDriveAfterDays}j soit le <strong>{this.state.firstSlot}</strong></Alert>)}
+                <Alert severity="info" className="info-drive">
+        Veuillez renseigner précisément toutes les <strong>semaines</strong> où vous souhaitez fermer le Drive et les livraisons (congés, rupture des stocks, activité saisonnière...). <br/>Vous êtes libre de fermer autant que vous le souhaitez et de modifier selon vos besoins ce planning.
+        <br/>Les fermetures sont faites à la semaine entière.
+                    </Alert>
 
             <div className="container-calendar">
                 {this.state.maker && (<Calendar

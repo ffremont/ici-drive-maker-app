@@ -18,7 +18,7 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const tutorialSteps = [
     {
-        label: 'Réservation en ligne ici-drive',
+        label: 'Gérer vos réservations en ligne',
         imgPath:
             'https://icidrive.b-cdn.net/extra-assets-adminappicidrivefr/1_app-to-admin.png',
     },
@@ -26,19 +26,19 @@ const tutorialSteps = [
         label: 'Recevez vos notifications sur mobile',
         imgPath:
             'https://icidrive.b-cdn.net/extra-assets-adminappicidrivefr/2-notif.png',
-    },
+    }/*,
     {
         label: 'Vérifiez vos réservations',
         imgPath:
             'https://icidrive.b-cdn.net/extra-assets-adminappicidrivefr/3-resa.png',
-    },
+    }*/,
     {
         label: 'Gérez votre catalogue',
         imgPath:
             'https://icidrive.b-cdn.net/extra-assets-adminappicidrivefr/4-catalogue.png',
     },
     {
-        label: 'Modifier vos horaires',
+        label: 'Modifier vos horaires Drive / livraison',
         imgPath:
             'https://icidrive.b-cdn.net/extra-assets-adminappicidrivefr/5-horaires.png',
     }

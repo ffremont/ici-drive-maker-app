@@ -28,6 +28,8 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import PhoneIcon from '@material-ui/icons/Phone';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
 
 import Confirm from './confirm';
 import MenuApp from '../../components/menu-app';
@@ -180,17 +182,32 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
           <Typography color="textSecondary">
             {currentOrder.choices.length} produits différents
         </Typography>
+        {currentOrder.wantDelivery && (
+            <Typography color="textSecondary">
+            Frais de livraison {(currentOrder.maker as any).deliveryCost > 0 ? currentOrder.maker?.deliveryCost?.toFixed(2)+'€': 'gratuit'}
+        </Typography>
+          )}
           <Typography variant="body2" component="p">
-            Total de <strong className="total">{currentOrder.total || 'ERREUR'}€</strong>
+            Total TTC {currentOrder.wantDelivery ? '(livraison incluse) ': ''}<strong className="total">{currentOrder.total || 'ERREUR'}€</strong>
           </Typography>
         </CardContent>
       </Card>)}
 
-      {currentOrder && (<Grid container direction="column" justify="center" className="order-content" spacing={1}>
+      {currentOrder && (
+      <Grid container direction="column" justify="center" className="order-content" spacing={1}>
 
+      
         <SnackAdd />
         <Grid item className="status-item">
           <Chip label={this.status[(currentOrder.status as any)].label} className={this.status[(currentOrder.status as any)].color} />
+          {currentOrder.wantDelivery && (<Chip className="chip-mode"
+            avatar={<Avatar className="avatar-transparent"><LocalShippingIcon /></Avatar>}
+            label="Livraison"
+          />)}
+          {!currentOrder.wantDelivery && (<Chip className="chip-mode"
+            avatar={<Avatar className="avatar-transparent"><DriveEtaIcon /></Avatar>}
+            label="Drive"
+          />)}
         </Grid>
 
         {(currentOrder.status === O.OrderState.CONFIRMED) && paymentsLabels && (<Grid item className="payments-item">
@@ -198,6 +215,11 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
             <strong>Consignes de paiement : </strong>{paymentsLabels}
           </Alert>
         </Grid>)}
+
+        {currentOrder.wantDelivery && (<Alert severity="warning" icon={false}>
+          {`${currentOrder.customer?.firstname} ${currentOrder.customer?.lastname} ${currentOrder.customer?.address}`} 
+          <br/>le <strong>{moment.default(currentOrder.slot).format('ddd D MMM à HH:mm')}</strong>
+        </Alert>)}
 
         {currentOrder.reasonOf && (<Grid className="info-item" item>
           <Alert severity="info">{currentOrder.reasonOf}</Alert>
@@ -227,7 +249,7 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
               <TextField label="Téléphone" variant="filled" fullWidth={true} value={maker.phone} inputProps={{ readOnly: true }} />
             </Grid>)}
             {maker.address && (<Grid item>
-              <TextField label="Adresse" variant="filled" fullWidth={true} value={maker.address} inputProps={{ readOnly: true }} />
+              <TextField label="Adresse" className="delivery-info" variant="filled" fullWidth={true} value={maker.address} inputProps={{ readOnly: true }} />
             </Grid>)}
           </Grid>
         </Grid>
@@ -249,10 +271,10 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
         </Grid>
 
 
-        <Grid item className="drive-item">
+        {!currentOrder.wantDelivery && (<Grid item>
           <Grid container direction="column" justify="center" spacing={1}>
             <Grid item>
-              <TextField label="Retrait / livraison" variant="filled" fullWidth={true} value={maker.place.label} inputProps={{ readOnly: true }} />
+              <TextField label="Retrait" variant="filled" fullWidth={true} value={maker.place.label} inputProps={{ readOnly: true }} />
             </Grid>
             <Grid item>
               <TextField label="Adresse" variant="filled" fullWidth={true} value={maker.place.address} inputProps={{ readOnly: true }} />
@@ -261,7 +283,17 @@ class Order extends React.Component<{ history: any, classes: any, match: any }, 
               <TextField label="Horaire du retrait" variant="filled" fullWidth={true} value={moment.default(currentOrder.slot).format('ddd D MMM à HH:mm')} inputProps={{ readOnly: true }} />
             </Grid>
           </Grid>
-        </Grid>
+        </Grid>)}
+        {currentOrder.wantDelivery && (<Grid item>
+          <Grid container direction="column" justify="center" spacing={1}>
+            <Grid item>
+              <TextField label="Adresse de livraison" variant="filled" fullWidth={true} value={currentOrder.customer?.address} inputProps={{ readOnly: true }} />
+            </Grid>
+            <Grid item>
+              <TextField label="Horaire" variant="filled" fullWidth={true} value={currentOrder.slot ? moment.default(currentOrder.slot).format('ddd D MMM à HH:mm') : 'Voir plus haut'} inputProps={{ readOnly: true }} />
+            </Grid>
+          </Grid>
+        </Grid>)}
 
 
       </Grid>)}

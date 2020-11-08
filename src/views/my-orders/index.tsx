@@ -14,6 +14,8 @@ import * as moment from 'moment';
 import { withStyles, Theme } from '@material-ui/core/styles';
 import { deepOrange, grey, green, common } from '@material-ui/core/colors';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -22,6 +24,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Maker } from '../../models/maker';
 import Alert from '@material-ui/lab/Alert';
 import TutoModal from '../../components/tuto-modal';
+import { Chip } from '@material-ui/core';
 
 
 
@@ -100,8 +103,28 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
           this.props.history.push('/how')
         }}/>
 
-      {maker && maker.active && (<Alert className="status-account" severity="success">Espace producteur actif</Alert>)}
-      {maker && !maker.active && (<Alert className="status-account" severity="warning">Espace producteur inactif</Alert>)}
+      {maker && maker.active && (<Alert className="status-account" severity="success">Espace producteur actif
+      <br/>
+         <Chip className="chip-mode"
+            avatar={<Avatar className="avatar-transparent"><DriveEtaIcon /></Avatar>}
+            label="Drive"
+          />
+          {maker.delivery && (<Chip className="chip-mode"
+            avatar={<Avatar className="avatar-transparent"><LocalShippingIcon /></Avatar>}
+            label="Livraison"
+          />)}
+      
+      </Alert>)}
+      {maker && !maker.active && (<Alert className="status-account" severity="warning">Espace producteur inactif
+      <br/><Chip className="chip-mode"
+            avatar={<Avatar className="avatar-transparent"><LocalShippingIcon /></Avatar>}
+            label="Livraison"
+          />
+         {maker.delivery && (<Chip className="chip-mode"
+            avatar={<Avatar className="avatar-transparent"><DriveEtaIcon /></Avatar>}
+            label="Drive"
+          />)}
+      </Alert>)}
 
       {!this.state.orders.length && (<div className="empty">
           <Typography variant="h6">Aucune réservation</Typography>
@@ -116,7 +139,7 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
                   {this.statusLabel[(order.status as any)].label.substr(0,1).toUpperCase()}
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={this.statusLabel[(order.status as any)].label+` (${order.total}€)`} 
+              <ListItemText primary={this.statusLabel[(order.status as any)].label+` (${order.total}€) / ${order.wantDelivery ? 'livraison' : 'drive'}`} 
               secondary={moment.default(order.slot).format('ddd D MMM à HH:mm')} />
               <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="next">

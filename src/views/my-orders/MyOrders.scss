@@ -20,3 +20,13 @@
 .status-account{
     justify-content: center;
 }
+
+.status-account {
+    .MuiAlert-message{
+        text-align: center;
+    }
+    .MuiAlert-icon{
+    display: flex;
+    align-items: center;
+}
+}

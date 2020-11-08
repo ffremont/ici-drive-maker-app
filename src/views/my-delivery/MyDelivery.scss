@@ -1,0 +1,57 @@
+.my-place{
+    /*margin-top:90px !important;*/
+    #maker-shop_edit{
+        margin-bottom: 20px;
+    }
+}
+
+.save-fab{
+    position: fixed !important;
+    right: 30px;
+    bottom: 30px;
+}
+
+.area{
+    padding:0px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    img{
+        max-height: 150px;
+        max-width: 150px;
+        width:auto;
+        height:auto;
+        border-radius: 4px;
+        border: 0px;
+    }   
+
+    &> div + div{
+        margin-top:10px;
+    }
+}
+
+.msl-container{
+    padding: 0 20px;
+}
+
+.slots{
+    width:100%;
+}
+
+.categories > div+div{
+    margin:0px 5px;
+}
+
+.categories.payments{
+    width: 100%;
+}
+
+.field-container{
+    padding: 0px 20px;
+    margin-bottom:10px;
+}
+
+.content-my-delivery{
+    padding:0px 20px;
+}

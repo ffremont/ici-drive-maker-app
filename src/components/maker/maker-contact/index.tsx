@@ -74,12 +74,14 @@ export default forwardRef(function MakerContact(props: any, ref:any) {
         className={classes.formControl}
         value={phone}
         label="Téléphone"
+        helperText="ex: 0601010101"
         onChange={(e:any) => phoneChange(e.target.value)}
         required={!readonly}
-        type="tel"
+        type="text"
         inputProps={{
           readOnly: readonly,
-          maxLength:20
+          pattern:"[0-9]{10}",
+          maxLength:10
         }}
       />
     </form>

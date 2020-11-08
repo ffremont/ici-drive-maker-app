@@ -7,16 +7,19 @@ import conf from '../../../confs';
 import TextField from '@material-ui/core/TextField';
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import { Place } from '../../../models/place';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-
+    notice:{
+      marginBottom: "10px"
+    },
     formControl: {
       width: "100%",
       marginTop: "25px"
     },
     container: {
-      marginBottom: "60px"
+      marginBottom: "10px"
     },
     autocomplete:{
       boxShadow: 'none',
@@ -129,6 +132,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
   return (
     <form ref={ref} className={`${classes.container} ms-container`} id={props.id} onSubmit={e => e.preventDefault()}>
 
+<Alert severity="info" className={classes.notice}>Veuillez renseigner les informations autour du lieu de retrait <strong>Drive</strong></Alert>
       <div className="area">
         <div className="image">
           <img src={image} alt="apercu produit" />
@@ -155,7 +159,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
           fullWidth
           value={label}
           helperText="ex: Sur mon exploitation, Boutique de la coopérative..."
-          label="Nom du lieu"
+          label="Nom du lieu du retrait"
           type="text"
           onChange={(e: any) => aChange(() => {
             setLabel(e.target.value);
@@ -224,7 +228,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
           }}
         />
 
-
+        
 
 
 

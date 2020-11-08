@@ -14,7 +14,9 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    
+    notice:{
+      marginBottom: "10px"
+    },
     formControl: {
       width: "100%",
       marginTop:"25px"
@@ -123,6 +125,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
   return (
     <form ref={ref} className={`${classes.container} ms-container`} id={props.id} onSubmit={e => e.preventDefault()}>
 
+<Alert severity="info" className={classes.notice}>Veuillez renseigner les informations de votre <strong>espace producteur</strong></Alert>
       <div className="area">
         <div className="image">
           <img src={image} alt="apercu produit" />
@@ -148,7 +151,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
         <TextField
           fullWidth
           value={name}
-          label="Nom"
+          label="Nom de l'espace producteur"
           helperText="Nom principal visible de votre espace producteur"
           type="text"
           onChange={(e: any) => aChange(() => {
@@ -184,13 +187,14 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
           }}
         />
 
+
       <TextField
           fullWidth
           value={startDriveAfterDays}
-          label="Retrait au plus tôt avant X jours"
-          helperText="ex, 1: retrait possible le lendemain"
+          label="Interval minimal entre la commande et le retrait / livraison (en jours)"
+          helperText="ex: vidéo explicative youtube"
           type="number"          
-          onChange={(e: any) => aChange(() => {
+          onChange={(e: any) => aChange(() => { 
             const v = parseInt(e.target.value) >= 1 ? parseInt(e.target.value) : 1;
             setStartDriveAfterDays(v);
             return { ...maker, startDriveAfterDays: v } as any;

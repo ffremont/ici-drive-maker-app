@@ -14,6 +14,11 @@ export interface Configuration{
     slotQuantity: number;
     signin:string;
 
+    youtubeTuto: string;
+    youtubeStepActivity:string;
+    youtubeStepDrive:string;
+    youtubeStepDelivery: string;
+
     defaultStartDriveAfterDays:number;
 
     demoAppIciDriveFr:string;
