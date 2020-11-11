@@ -185,6 +185,7 @@ Vous êtes producteur et souhaitez développer votre activité <strong>Drive</st
           <MakerContact ref={this.makerContactRef} id="maker-contact" history={this.props.history} validate={this.state.validation.showErrors} maker={this.state.maker} onChange={(m: Maker, v: boolean) => {
             this.setState({makerContactValidator : v});
 
+            console.log(m);
             this.onStepChange(m, v && this.state.youtube);
 
           }} />

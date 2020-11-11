@@ -41,9 +41,10 @@ export default forwardRef(function MakerContact(props: any, ref:any) {
 
   const emailChange = (email:string) => {
     setEmail(email);
-    setMaker({...maker, email} as any);
+    const newMaker = {...maker, email} as any;
+    setMaker(newMaker);
     const check = (document as any).getElementById(props.id).checkValidity();
-    if(props.onChange && check !== undefined) props.onChange(maker, check)
+    if(props.onChange && check !== undefined) props.onChange(newMaker, check)
   };
 
   const phoneChange = (phone:string) => {

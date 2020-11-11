@@ -3,6 +3,7 @@
     "id": "aaaaa",
     "ref":"GAEC_346025QSG576RB",
     "status": "pending",
+    "wantDelivery":false,
     "total": 6.5,
     "comment": "blabla",
     "slot": 1588255735514,
@@ -46,6 +47,7 @@
     "maker": {
         "email": "ff.fremont.florent@gmail.com",
         "id": "AB7",
+        "deliveryCost":2,
         "created":12423525345,
         "name":"GAEC de terre noire",
         "webPage": "https://www.acheteralasource.com/producteur/77782",

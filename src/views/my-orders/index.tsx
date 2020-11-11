@@ -70,9 +70,13 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
     });
 
     this.sub = ordersStore.subscribe((orders: Order[]) => {
-      console.log('MyOrders > ordersStore.sub ',orders);
-      if(orders)
-        (orders as any).sortBy('slot',true);
+      if(orders){
+        orders = orders.map((o:any) => {
+          o.nStatus = [OrderState.PENDING, OrderState.VERIFIED, OrderState.CONFIRMED, OrderState.CANCELLED, OrderState.REFUSED].indexOf(o.status || OrderState.PENDING);
+          return o;
+        });
+        (orders as any).sortBy('nStatus', false,'slot',true);
+      }
       this.setState({ orders : orders || [] })
     });
 
