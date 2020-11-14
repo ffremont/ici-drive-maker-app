@@ -72,7 +72,7 @@ class MyDrive extends React.Component<{ history: any, match: any }, { maker: Mak
     const maker = (this.state.maker as any) as any;
 
     return (<div className="my-drive">
-      <MenuApp mode="light" history={this.props.history} />
+      <MenuApp mode="my-drive" history={this.props.history} />
       <SnackAdd />
       {maker && (<div className="categories">
         <span className="cat-title">Catégories :</span> {(maker.categories || []).map((catId: any, i: any) => {

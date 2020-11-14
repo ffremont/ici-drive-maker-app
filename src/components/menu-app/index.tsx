@@ -227,6 +227,26 @@ const MenuApp = (props: any) => {
               Catalogue
             </Typography>
           )}
+          {['my-place'].indexOf(mode) > -1 && (
+            <Typography variant="h6" align="center" className={classes.title}>
+              Drive
+            </Typography>
+          )}
+          {['my-delivery'].indexOf(mode) > -1 && (
+            <Typography variant="h6" align="center" className={classes.title}>
+              Livraison
+            </Typography>
+          )}
+          {['my-calendar'].indexOf(mode) > -1 && (
+            <Typography variant="h6" align="center" className={classes.title}>
+              Absences
+            </Typography>
+          )}
+           {['my-drive'].indexOf(mode) > -1 && (
+            <Typography variant="h6" align="center" className={classes.title}>
+              Activité
+            </Typography>
+          )}
           {['product-edit'].indexOf(mode) > -1 && (
             <Typography variant="h6" align="center" className={classes.title}>
               Editer produit

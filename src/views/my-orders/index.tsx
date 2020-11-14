@@ -121,12 +121,12 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
       </Alert>)}
       {maker && !maker.active && (<Alert className="status-account" severity="warning">Espace vendeur inactif
       <br/><Chip className="chip-mode"
-            avatar={<Avatar className="avatar-transparent"><LocalShippingIcon /></Avatar>}
-            label="Livraison"
-          />
-         {maker.delivery && (<Chip className="chip-mode"
             avatar={<Avatar className="avatar-transparent"><DriveEtaIcon /></Avatar>}
             label="Drive"
+          />
+         {maker.delivery && (<Chip className="chip-mode"
+            avatar={<Avatar className="avatar-transparent"><LocalShippingIcon /></Avatar>}
+            label="Livraison"
           />)}
       </Alert>)}
 

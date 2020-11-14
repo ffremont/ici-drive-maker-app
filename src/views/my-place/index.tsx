@@ -65,7 +65,7 @@ class MyPlace extends React.Component<{ history: any, match: any }, { maker: Mak
     const place = this.state.maker && (this.state.maker as any).place ? (this.state.maker as any).place as Place : null;
 
     return (<div className="my-place">
-      <MenuApp mode="light" history={this.props.history} />
+      <MenuApp mode="my-place" history={this.props.history} />
       <SnackAdd />
       {place && (<MakerPlace ref={this.makerPlaceRef} id="maker-shop_edit" history={this.props.history} maker={this.state.maker} onChange={(m: Maker, v: boolean) => this.onChange(m, v)} />)}
       {place && (<MakerSlots ref={this.makerSlotsRef} id="maker-slots_edit" history={this.props.history} slots={place.hebdoSlot} onChange={(hs: HebdoSlot, v: boolean) => {

@@ -96,7 +96,7 @@ class MyCalendar extends React.Component<{ history: any, location: any }, { make
 
     render() {
         return (<div className="my-calendar">
-            <MenuApp mode="light" history={this.props.history} />
+            <MenuApp mode="my-calendar" history={this.props.history} />
 
             <Typography className="my-title" variant="h5">
                 Mes absences

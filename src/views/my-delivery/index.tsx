@@ -67,7 +67,7 @@ class MyDelivery extends React.Component<{ history: any, match: any }, { maker: 
     const maker: any = this.state.maker;
 
     return (<div className="my-delivery">
-      <MenuApp mode="light" history={this.props.history} />
+      <MenuApp mode="my-delivery" history={this.props.history} />
       <SnackAdd />
       <div className="content-my-delivery">
       <Alert severity="info">
