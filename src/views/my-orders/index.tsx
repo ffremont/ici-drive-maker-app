@@ -107,7 +107,7 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
           this.props.history.push('/how')
         }}/>
 
-      {maker && maker.active && (<Alert className="status-account" severity="success">Espace producteur actif
+      {maker && maker.active && (<Alert className="status-account" severity="success">Espace vendeur actif
       <br/>
          <Chip className="chip-mode"
             avatar={<Avatar className="avatar-transparent"><DriveEtaIcon /></Avatar>}
@@ -119,7 +119,7 @@ class MyOrders extends React.Component<{ history: any, classes: any }, { maker:M
           />)}
       
       </Alert>)}
-      {maker && !maker.active && (<Alert className="status-account" severity="warning">Espace producteur inactif
+      {maker && !maker.active && (<Alert className="status-account" severity="warning">Espace vendeur inactif
       <br/><Chip className="chip-mode"
             avatar={<Avatar className="avatar-transparent"><LocalShippingIcon /></Avatar>}
             label="Livraison"

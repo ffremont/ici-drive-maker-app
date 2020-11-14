@@ -158,7 +158,7 @@ export default forwardRef(function MakerPlace(props: any, ref: any) {
         <TextField
           fullWidth
           value={label}
-          helperText="ex: Sur mon exploitation, Boutique de la coopérative..."
+          helperText="ex: A mon magasin / Sur mon exploitation / Boutique de la coopérative..."
           label="Nom du lieu du retrait"
           type="text"
           onChange={(e: any) => aChange(() => {

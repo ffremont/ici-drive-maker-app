@@ -64,13 +64,13 @@ class How extends React.Component<{ history: any, match: any }, {}>{
                 </ul>
               </li>
             </ul>
-            <Typography variant="body1">Le producteur s'assure d'avoir le stock suffisant pour honorer la réservation. Le cas échéant une note pourra être transmise.</Typography>
+            <Typography variant="body1">Le vendeur s'assure d'avoir le stock suffisant pour honorer la réservation. Le cas échéant une note pourra être transmise.</Typography>
           </StepContent>
         </Step>
         <Step active={true} key="retrat">
           <StepLabel>Retrait / livraison</StepLabel>
           <StepContent>
-          <Typography variant="body1">Le retrait / livraison se fera à la date choisie lors de la réservation sur le lieu du Drive du producteur ou au domicile du client.
+          <Typography variant="body1">Le retrait / livraison se fera à la date choisie lors de la réservation sur le lieu du Drive du vendeur ou au domicile du client.
 Toutes les informations se trouvent sur votre app dans "mes réservations".</Typography>
           </StepContent>
         </Step>
@@ -84,7 +84,7 @@ Toutes les informations se trouvent sur votre app dans "mes réservations".</Typ
         } title="Paiement"/>
         <CardContent>
           <Typography variant="body1">
-          Les paiements sont du ressort du producteur. Ils se dérouleront soit via PayPal ou sur le lieu du retrait en fonction des préférences du producteur.
+          Les paiements sont du ressort du vendeur. Ils se dérouleront soit via PayPal ou sur le lieu du retrait en fonction des préférences du vendeur.
           </Typography>
         </CardContent>
         </Card>
@@ -97,7 +97,7 @@ Toutes les informations se trouvent sur votre app dans "mes réservations".</Typ
         } title="Annuler"/>
         <CardContent>
           <Typography variant="body1">
-          Le producteur et le consommateur peuvent annuler la réservation depuis leur espace respectif.
+          Le vendeur et le consommateur peuvent annuler la réservation depuis leur espace respectif.
           </Typography>
         </CardContent>
         </Card>

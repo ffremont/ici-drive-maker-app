@@ -135,8 +135,8 @@ class Register extends React.Component<{ history: any, match: any }, { maker: Ma
       <div className="register-content">
         {this.state.activeStep === 0 && (
           <Alert icon={false} severity="info">
-            <AlertTitle>Mon inscription producteur ici-drive</AlertTitle>
-Vous êtes producteur et souhaitez développer votre activité <strong>Drive</strong> +/- <strong>livraison</strong> à domicile, adaptée à vos besoins (activité ponctuelle ou permanente).
+            <AlertTitle>Mon inscription vendeur ici-drive</AlertTitle>
+Vous êtes producteur, commerçant, restaurateur ou artisan et souhaitez développer votre activité <strong>Drive</strong> +/- <strong>livraison</strong> à domicile, adaptée à vos besoins (activité ponctuelle ou permanente).
             <br />Vous êtes au bon endroit !
 
             <br /><br /><strong>Bienvenue chez ici-drive, plateforme citoyenne entièrement gratuite. </strong>

@@ -22,8 +22,8 @@ function Discover(props: any) {
         </Typography>
         <div>
           <Chip label="Simple" color="secondary" variant="outlined" className="my-chip" />, <Chip label="Gratuit" color="secondary" variant="outlined" className="my-chip" /> et <Chip label="Ouvert à tous" color="secondary" variant="outlined" className="my-chip" />, ici-drive est une app de réservation de produits locaux.
-          Depuis mon <Chip label="espace producteur" color="secondary" variant="outlined" className="my-chip" />, je propose facilement mes produits.
-          Mon exploitation ou ma boutique se transforme en Drive.
+          Depuis mon <Chip label="espace vendeur" color="secondary" variant="outlined" className="my-chip" />, je propose facilement mes produits.
+          Ma boutique ou mon lieu d'exploitation se transforme en Drive.
           <Chip label="Sans gestion de stocks" color="secondary" variant="outlined" className="my-chip" />, et <Chip label="sans gestion des paiements" color="secondary" variant="outlined" className="my-chip" />, je gère ma vente.
           </div>
 
@@ -50,7 +50,7 @@ function Discover(props: any) {
           <div className="number">
             <Avatar variant="circle" color="primary">1</Avatar>
           </div>
-          <div className="text">Créer votre espace producteur, enregistrer vos produits une fois la confirmation reçue</div>
+          <div className="text">Créer votre espace vendeur, enregistrer vos produits une fois la confirmation reçue</div>
         </div>
         <div className="row">
           <div className="number">
@@ -73,7 +73,7 @@ function Discover(props: any) {
         <Typography variant="body2" className="text">
           Jeune parent actif, je partage comme beaucoup de personnes le goût de consommer local (qualité, circuit court, vente directe). Dernière l'achat de produits locaux, je souhaite découvrir et consommer près de chez moi.
 <br/>
-          La vente en "Drive" est pour tous les actifs une réelle solution. C'est simple, clair, et déjà appliqué dans la grande distribution, pourquoi pas pour les producteurs ?
+          La vente en "Drive" est pour tous les actifs une réelle solution. C'est simple, clair, et déjà appliqué dans la grande distribution, pourquoi pas pour les vendeurs locaux ?
   <br/>
           Et maintenant, pour que cette initiative citoyenne gratuite prenne vie, j'ai besoin de vous en vous inscrivant.
         </Typography>
@@ -88,15 +88,15 @@ function Discover(props: any) {
         <div>
           <strong>Depuis l'app ici-drive :</strong>
           <ul>
-            <li>près de chez moi, je découvre les producteurs</li>
-            <li>consultation des produits du producteur</li>
+            <li>près de chez moi, je découvre les vendeurs locaux (producteurs, commerçants, restaurateurs, artisans)</li>
+            <li>consultation des produits du vendeur</li>
             <li>réservation 100% en ligne</li>
             <li>rappel automatique</li>
-            <li>choix de l'horaire de retrait chez le producteur</li>
+            <li>choix de l'horaire de retrait chez le vendeur</li>
           </ul>
           </div>
         <div>
-          <strong>Depuis l'espace producteur :</strong>
+          <strong>Depuis l'espace vendeur :</strong>
           <ul>
             <li>pilotage des réservations</li>
             <li>notifications temps réelles</li>

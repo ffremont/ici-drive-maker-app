@@ -131,7 +131,7 @@ class Login extends React.Component<{ history: any, location: any }, { loading: 
                 Connexion
           </Typography>
               <Typography variant="body1">
-                Plateforme de drive pour producteurs locaux
+                Plateforme de drive pour vendeurs locaux
           </Typography>
 
               <Button

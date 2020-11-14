@@ -125,7 +125,7 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
   return (
     <form ref={ref} className={`${classes.container} ms-container`} id={props.id} onSubmit={e => e.preventDefault()}>
 
-<Alert severity="info" className={classes.notice}>Veuillez renseigner les informations de votre <strong>espace producteur</strong></Alert>
+<Alert severity="info" className={classes.notice}>Veuillez renseigner les informations de votre <strong>espace vendeur</strong></Alert>
       <div className="area">
         <div className="image">
           <img src={image} alt="apercu produit" />
@@ -151,8 +151,8 @@ export default forwardRef(function MakerShop(props: any, ref:any) {
         <TextField
           fullWidth
           value={name}
-          label="Nom de l'espace producteur"
-          helperText="Nom principal visible de votre espace producteur"
+          label="Nom de l'espace vendeur"
+          helperText="Nom principal visible de votre espace vendeur"
           type="text"
           onChange={(e: any) => aChange(() => {
             setName(e.target.value);

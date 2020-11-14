@@ -126,7 +126,7 @@ const MenuApp = (props: any) => {
   const shareDiscover = () => {
     (window as any).navigator.share({
       title: `Drive de produits locaux`,
-      text: `Simple, gratuit, ouvert à tous les producteurs, rendez-vous sur https://admin.ici-drive.fr/decouvrir et inscrivez-vous !`,
+      text: `Simple, gratuit, ouvert à tous les vendeurs locaux (producteurs, commerçants, restaurateurs, artisans), rendez-vous sur https://admin.ici-drive.fr/decouvrir et inscrivez-vous !`,
     }); // partage l'URL de MDN
     
   };
