@@ -19,7 +19,7 @@
     "@types/react-router-dom": "^5.1.4",
     "@types/react-swipeable-views": "^0.13.0",
     "@types/react-swipeable-views-utils": "^0.13.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "browser-image-compression": "^1.0.11",
     "firebase": "^7.14.0",
     "formik": "^2.1.4",
